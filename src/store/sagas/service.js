@@ -43,34 +43,37 @@ const initialState = {
 
 const service = handleActions(
     {
-      [serviceActionType.CHANGE_FIELD]: (state, { payload: { form, key, value } }) =>
-        produce(state, (draft) => {
-            draft[form][key] = value;
-        }),
-      [serviceActionType.INITIALIZE_FORM]: (state, { payload: form }) => ({
+        [serviceActionType.CHANGE_FIELD]: (state, { payload: { form, key, value } }) =>
+            produce(state, (draft) => {
+                draft[form][key] = value;
+            }),
+        [serviceActionType.INITIALIZE_FORM]: (state, { payload: form }) => ({
             ...state,
             [form]: initialState[form],
-      }),
-      [serviceActionType.REGISTER_SUCCESS]: (state, { payload: message }) => ({
+        }),
+        [serviceActionType.REGISTER_SUCCESS]: (state, { payload: message }) => ({
             ...state,
             registerError: null,
             registerInfo: message,
-      }),
-      [serviceActionType.REGISTER_FAILURE]: (state, { payload: error }) => ({
+        }),
+        [serviceActionType.REGISTER_FAILURE]: (state, { payload: error }) => ({
             ...state,
             registerError: error,
             registerInfo: null,
-      }),
-      [serviceActionType.CHKDUP_SUCCESS]: (state, { payload: message }) => ({
+        }),
+        [serviceActionType.CHKDUP_SUCCESS]: (state, { payload: message }) => ({
             ...state,
             chkdupError: null,
             chkdupInfo: message,
-      }),
-      [serviceActionType.CHKDUP_FAILURE]: (state, { payload: error }) => ({
+        }),
+        [serviceActionType.CHKDUP_FAILURE]: (state, { payload: error }) => ({
             ...state,
             chkdupError: error,
             chkdupInfo: null,
-      }),    
+        }),
+        [serviceActionType.CLEAR]: () => ({
+            initialState
+        })
     },
     initialState,
   );

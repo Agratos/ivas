@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     Dialog, DialogContent, Card, CardContent, Divider,
@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import { deepPurple } from '@mui/material/colors';
 import { serviceProperties } from 'assets/properties/serviceProperties';
+import serviceAction from 'store/actions/service';
 
 import ColorDialogTitle from 'components/modal/login/ColorDialogTitle';
 import ColorDialogAction from 'components/modal/login/ColorDialogAction';
@@ -16,14 +17,32 @@ const CreateAccount = ({open, onClose}) => {
         chkdupInfo: service.chkdupInfo,
         chkdupError: service.chkdupError
     }))
+    const test = useSelector(({service}) => service);
     const dispatch = useDispatch();
     const idRef = useRef();
     const pwd1Ref = useRef();
     const pwd2Ref = useRef();
 
+    const [validId, setValidId] = useState(serviceProperties.login.validation.info.id);
+    const [validPwd, setValidPwd] = useState('');
+    const [chkId, setCheckId] = useState(0);
+
+    useEffect(() => {
+        dispatch(serviceAction.clear());
+        setValidId(serviceProperties.login.validation.info.id)
+    },[open])
+
     const handleDupChk = () => {
-        console.log(idRef.current.value);
+        dispatch(serviceAction.chkdup({id: idRef.current.value}))
     }
+
+    // 중복체크 응답
+    useEffect(() => {
+        chkdupInfo && setValidId(serviceProperties.login.validation.info.valid); 
+    }, [chkdupInfo]);
+    useEffect(() => {
+        chkdupError && setValidId(serviceProperties.login.validation.info.unvalid);
+    }, [chkdupError]);
 
     return (
         <Dialog
@@ -56,7 +75,7 @@ const CreateAccount = ({open, onClose}) => {
                     <TextField
                         fullWidth
                         required
-                        //helperText={validId}
+                        helperText={validId}
                         label="아이디"
                         name="id"
                         inputRef={idRef}
@@ -81,7 +100,7 @@ const CreateAccount = ({open, onClose}) => {
                         helperText={serviceProperties.login.validation.info.password}
                         label="비밀번호"
                         name="password"
-                        inputRef={idRef}
+                        inputRef={pwd1Ref}
                         variant="outlined"
                         size="small"
                         type="password"
@@ -94,7 +113,7 @@ const CreateAccount = ({open, onClose}) => {
                         //helperText={validPwd}
                         label="비밀번호 확인"
                         name="confirmPassword"
-                        inputRef={idRef}
+                        inputRef={pwd2Ref}
                         variant="outlined"
                         size="small"
                         type="password"

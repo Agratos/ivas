@@ -19,6 +19,10 @@ const serviceAction = {
     chkdup: createAction(
         serviceActionType.CHKDUP,
         ({ id }) => ({ id }),
+    ),
+
+    clear: createAction(
+        serviceActionType.CLEAR
     )
 }
 
