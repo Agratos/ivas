@@ -17,32 +17,62 @@ const CreateAccount = ({open, onClose}) => {
         chkdupInfo: service.chkdupInfo,
         chkdupError: service.chkdupError
     }))
-    const test = useSelector(({service}) => service);
     const dispatch = useDispatch();
     const idRef = useRef();
     const pwd1Ref = useRef();
     const pwd2Ref = useRef();
+    const streamRef = useRef();
+    const checkboxRef = useRef([]);
 
-    const [validId, setValidId] = useState(serviceProperties.login.validation.info.id);
+    const [validId, setValidId] = useState('');
     const [validPwd, setValidPwd] = useState('');
     const [chkId, setCheckId] = useState(0);
 
+    /** 초기화 부분 */
     useEffect(() => {
         dispatch(serviceAction.clear());
         setValidId(serviceProperties.login.validation.info.id)
     },[open])
 
-    const handleDupChk = () => {
+    /** 아이디 중복 체크 */
+    const handleDupChk = () => { 
+        
         dispatch(serviceAction.chkdup({id: idRef.current.value}))
     }
 
-    // 중복체크 응답
+    /** 중복체크 응답 */
     useEffect(() => {
         chkdupInfo && setValidId(serviceProperties.login.validation.info.valid); 
     }, [chkdupInfo]);
     useEffect(() => {
         chkdupError && setValidId(serviceProperties.login.validation.info.unvalid);
     }, [chkdupError]);
+
+    /** 전송 */
+    const onSubmit = () => {
+        // console.log(idRef.current.vlaue);
+        // console.log(pwd1Ref.current.value);
+        // console.log(pwd2Ref.current.value);
+        // console.log(streamRef.current.value);
+        // checkboxRef.current.map((check, index) => {
+        //     console.log(index, check.checked);
+        // })
+
+        let checkBox = [];
+        checkboxRef.current.map((box, index) => {
+            if(box.checked === true){
+                checkBox.push(index + 1);
+            }
+        })
+
+        dispatch(serviceAction.register({
+            id: idRef.current.value,
+            password: pwd1Ref.current.value,
+            confirmPassword: pwd2Ref.current.value,
+            stream: streamRef.current.value,
+            functions: checkBox
+        }))
+    }
 
     return (
         <Dialog
@@ -110,7 +140,7 @@ const CreateAccount = ({open, onClose}) => {
                     <TextField
                         fullWidth
                         required
-                        //helperText={validPwd}
+                        helperText={validPwd}
                         label="비밀번호 확인"
                         name="confirmPassword"
                         inputRef={pwd2Ref}
@@ -153,8 +183,8 @@ const CreateAccount = ({open, onClose}) => {
                                     shrink: true,
                                 }}
                                 name="stream"
-                                //value={form.stream}
-                                //onChange={onChange}
+                                inputRef={streamRef}
+                                defaultValue={0}
                                 size="small"
                             />
                         </FormControl>
@@ -168,20 +198,19 @@ const CreateAccount = ({open, onClose}) => {
                         >
                             <FormLabel component="legend">사용 기능</FormLabel>
                             <FormGroup aria-label="position" row>
-                            {serviceProperties.service.types.map((type) => (
+                            {serviceProperties.service.types.map((type, index) => (
                                 <FormControlLabel
-                                key={type}
-                                control={
-                                    <Checkbox
-                                    //checked={selectedCheckBox.type}
-                                    //onChange={(e) => handleCheckChange(e, type)}
-                                    />
-                                }
-                                label={
-                                    <Typography variant="h5">
-                                    {serviceProperties.service[type]}
-                                    </Typography>
-                                }
+                                    key={type}
+                                    control={
+                                        <Checkbox
+                                            inputRef={(e) => checkboxRef.current[index] = e}
+                                        />
+                                    }
+                                    label={
+                                        <Typography variant="h5">
+                                        {serviceProperties.service[type]}
+                                        </Typography>
+                                    }
                                 />
                             ))}
                             </FormGroup>
@@ -197,7 +226,7 @@ const CreateAccount = ({open, onClose}) => {
             gradientColor1={deepPurple[600]}
             gradientColor2={deepPurple[100]}
             closeEvent={onClose}
-            //closeAction={handleConfirm}
+            closeAction={onSubmit}
             buttonTitle="서비스 신청"
         />
         </Dialog>
