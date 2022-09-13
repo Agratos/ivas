@@ -3,7 +3,7 @@ import axios from 'axios';
 //import localStoreService from 'utils/localStoreService';
 axios.defaults.withCredentials = true;
 
-export default {
+const api = {
     get: async (url) => {
         return await axios.get(
             url,
@@ -35,3 +35,5 @@ export default {
         );
     },
 }
+
+export default api;

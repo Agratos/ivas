@@ -1,6 +1,6 @@
 import api from './common';
 
-export default {
+const userApi = {
     login: ({ id, password }) => api.post('/api/auth/login', { id, password }), // 유저 로그인
 
     logout: ({ id }) => api.post('/api/auth/logout', { id }), // 유저 로그아웃
@@ -26,3 +26,5 @@ export default {
     setControlConfig: ({ id, idx, detect, roi, line, alarm, overlay }) => api.post('/api/service/config/proc', { id, idx, detect, roi, line, alarm, overlay }), // 영상 처리 설정
     
 }
+
+export default userApi;

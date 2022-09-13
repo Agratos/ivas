@@ -8,7 +8,7 @@ import createRequestSaga from 'utils/createRequestSaga';
 
 const loginSaga = createRequestSaga(userActionType.LOGIN, userAPI.login);
 const logoutSaga = createRequestSaga(userActionType.LOGOUT, userAPI.logout);
-const getResourceListSaga = createRequestSaga(userActionType.RESOURCE,userAPI. getResourceList);
+const getResourceListSaga = createRequestSaga(userActionType.RESOURCE, userAPI.getResourceList);
 const getVideoConfigSaga = createRequestSaga(userActionType.GET_VIDEO_CONFIG, userAPI.getVideoConfig);
 const setInputConfigSaga = createRequestSaga(userActionType.SET_INPUT_CONFIG, userAPI.setInputConfig);
 const setOutputConfigSaga = createRequestSaga(userActionType.SET_OUTPUT_CONFIG, userAPI.setOutputConfig);
@@ -82,6 +82,7 @@ const initialState = {
         id: '',
         password: '',
     },
+
     loginInfo: null,
     loginError: null,
 

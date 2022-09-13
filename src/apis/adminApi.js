@@ -1,6 +1,6 @@
 import api from './common'
 
-export default {
+const adminApi = {
     login: ({ id, password }) => api.post('/api/auth/login_admin', { id, password }),
 
     getResourceList: () => api.get('/api/system/dashboard'),
@@ -18,3 +18,5 @@ export default {
     getUsageInfo: ({ id }) => api.post('', { id }),
 
 }
+
+export default adminApi;

@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogContent, Grid, TextField, Typography, Divider } from '@mui/material';
 import { pink, blue } from '@mui/material/colors';
 import { serviceProperties } from 'assets/properties/serviceProperties';
-import { initializeForm, login } from 'store/actions/user';
+import userAction from 'store/actions/user';
+import adminAction from 'store/actions/admin';
 
 import ColorDialogAction from 'components/modal/login/ColorDialogAction';
 import ColorDialogTitle from 'components/modal/login/ColorDialogTitle';
@@ -34,10 +35,11 @@ const Login = ({open, onClose, target}) => {
     const idRef = useRef();
     const passwordRef = useRef();
 
-    const loginInfo = useSelector(({user}) => user.loginInfo);
-
     useEffect(() => {
-        dispatch(initializeForm('login'))
+        target === 'user'  
+        ?   dispatch(userAction.initializeForm('login')) 
+        :   dispatch(adminAction.initializeForm('login'))
+  
     },[dispatch])
 
     const handleAlertOpen = () => {
@@ -52,12 +54,9 @@ const Login = ({open, onClose, target}) => {
         const id = idRef.current.value;
         const password = passwordRef.current.value;
 
-        if(target === 'user'){
-            dispatch(login({id, password}));
-
-        }else{
-            console.log('여기는 시스템 관리자 로그인 로직');
-        }
+        target === 'user'
+        ?   dispatch(userAction.login({id, password}))
+        :   dispatch(adminAction.login({id, password}))
     };
 
     const handleClose = (event, reason) => {

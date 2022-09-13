@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects';
-import { startLoading, finishLoading } from 'store/actions/loading';
+import loadingAction from 'store/actions/loading';
 
 export const createRequestActionTypes = (type) => {
   const SUCCESS = `${type}_SUCCESS`;
@@ -13,7 +13,7 @@ export default function createRequestSaga(type, request) {
 
   // api 호출후 자동으로 데이터 저장
   return function* (action) {
-    yield put(startLoading(type));
+    yield put(loadingAction.startLoading(type));
     try {
       const response = yield call(request, action.payload);
       console.log(response);
@@ -29,6 +29,6 @@ export default function createRequestSaga(type, request) {
         error: true,
       });
     }
-    yield put(finishLoading(type));
+    yield put(loadingAction.finishLoading(type));
   };
 }
