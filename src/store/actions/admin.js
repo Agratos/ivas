@@ -1,4 +1,4 @@
-import { createAction, handleActions } from 'redux-actions';
+import { createAction } from 'redux-actions';
 import * as adminActionType from 'store/action-types/admin';
 
 const adminAction = {

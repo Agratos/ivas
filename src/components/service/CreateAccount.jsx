@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     Dialog, DialogContent, Card, CardContent, Divider,
     Grid, TextField, Typography, Checkbox, 
@@ -6,10 +7,24 @@ import {
 } from '@mui/material';
 import { deepPurple } from '@mui/material/colors';
 import { serviceProperties } from 'assets/properties/serviceProperties';
+
 import ColorDialogTitle from 'components/modal/login/ColorDialogTitle';
 import ColorDialogAction from 'components/modal/login/ColorDialogAction';
 
 const CreateAccount = ({open, onClose}) => {
+    const { chkdupInfo, chkdupError } = useSelector(({service}) => ({
+        chkdupInfo: service.chkdupInfo,
+        chkdupError: service.chkdupError
+    }))
+    const dispatch = useDispatch();
+    const idRef = useRef();
+    const pwd1Ref = useRef();
+    const pwd2Ref = useRef();
+
+    const handleDupChk = () => {
+        console.log(idRef.current.value);
+    }
+
     return (
         <Dialog
             open={open}
@@ -44,8 +59,7 @@ const CreateAccount = ({open, onClose}) => {
                         //helperText={validId}
                         label="아이디"
                         name="id"
-                        //value={form.id}
-                        //onChange={onChange}
+                        inputRef={idRef}
                         variant="outlined"
                         size="small"
                     />
@@ -54,11 +68,7 @@ const CreateAccount = ({open, onClose}) => {
                     <Button 
                         variant="contained" 
                         sx={{ mt: '2px' }}
-                        // onClick={() =>
-                        //   handleDupChk(
-                        //     form.id,
-                        //   )                               
-                        // }
+                        onClick={() => handleDupChk() }
                     >
                         중복확인
                     </Button>
@@ -71,8 +81,7 @@ const CreateAccount = ({open, onClose}) => {
                         helperText={serviceProperties.login.validation.info.password}
                         label="비밀번호"
                         name="password"
-                        //value={form.password}
-                        //onChange={onChange}
+                        inputRef={idRef}
                         variant="outlined"
                         size="small"
                         type="password"
@@ -85,8 +94,7 @@ const CreateAccount = ({open, onClose}) => {
                         //helperText={validPwd}
                         label="비밀번호 확인"
                         name="confirmPassword"
-                        //value={form.confirmPassword}
-                        //onChange={onChange}
+                        inputRef={idRef}
                         variant="outlined"
                         size="small"
                         type="password"

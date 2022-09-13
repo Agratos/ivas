@@ -33,7 +33,7 @@ const Login = ({open, onClose, target}) => {
     const [flag, setFlag] = useState(false);
 
     const idRef = useRef();
-    const passwordRef = useRef();
+    const pwdRef = useRef();
 
     useEffect(() => {
         target === 'user'  
@@ -52,7 +52,7 @@ const Login = ({open, onClose, target}) => {
 
     const onLogin = () => {
         const id = idRef.current.value;
-        const password = passwordRef.current.value;
+        const password = pwdRef.current.value;
 
         target === 'user'
         ?   dispatch(userAction.login({id, password}))
@@ -96,7 +96,7 @@ const Login = ({open, onClose, target}) => {
                         required
                         label="비밀번호"
                         name="password"
-                        inputRef={passwordRef}
+                        inputRef={pwdRef}
                         variant="outlined"
                         type="password"
                     />
