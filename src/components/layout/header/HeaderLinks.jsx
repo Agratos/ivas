@@ -43,6 +43,7 @@ const HeaderLinks = ({ type }) => {
       console.log('로그인 상태 : ' + state)
       
       if(state === 'outing') {
+        // dispacth로 초기화 예정
         localStorage.setItem('user', '');
         localStorage.setItem('pwd', '');
         localStorage.setItem('logged', 'out');

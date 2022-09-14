@@ -11,6 +11,7 @@ import serviceAction from 'store/actions/service';
 
 import ColorDialogTitle from 'components/modal/login/ColorDialogTitle';
 import ColorDialogAction from 'components/modal/login/ColorDialogAction';
+import CommonSnackbar from 'components/common/CommonSnackbar';
 
 const CreateAccount = ({open, onClose}) => {
     const { chkdupInfo, chkdupError } = useSelector(({service}) => ({
@@ -24,9 +25,17 @@ const CreateAccount = ({open, onClose}) => {
     const streamRef = useRef();
     const checkboxRef = useRef([]);
 
+    // 유효성 검증 변수 선언
     const [validId, setValidId] = useState('');
     const [validPwd, setValidPwd] = useState('');
-    const [chkId, setCheckId] = useState(0);
+    const [chkId, setCheckId] = useState(false);
+
+    // alert창 변수 선언
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [message, setMessage] = useState('');
+    const [severity, setSeverity] = useState('success');
+    const [duration, setDuration] = useState(500);
+    const [flag, setFlag] = useState(false);
 
     /** 초기화 부분 */
     useEffect(() => {
@@ -34,30 +43,21 @@ const CreateAccount = ({open, onClose}) => {
         setValidId(serviceProperties.login.validation.info.id)
     },[open])
 
-    /** 아이디 중복 체크 */
-    const handleDupChk = () => { 
-        
-        dispatch(serviceAction.chkdup({id: idRef.current.value}))
-    }
-
-    /** 중복체크 응답 */
+    /** 아이디 중복 체크 응답 */
     useEffect(() => {
-        chkdupInfo && setValidId(serviceProperties.login.validation.info.valid); 
+        chkdupInfo && setValidId(serviceProperties.login.validation.info.valid);
     }, [chkdupInfo]);
     useEffect(() => {
         chkdupError && setValidId(serviceProperties.login.validation.info.unvalid);
     }, [chkdupError]);
 
-    /** 전송 */
-    const onSubmit = () => {
-        // console.log(idRef.current.vlaue);
-        // console.log(pwd1Ref.current.value);
-        // console.log(pwd2Ref.current.value);
-        // console.log(streamRef.current.value);
-        // checkboxRef.current.map((check, index) => {
-        //     console.log(index, check.checked);
-        // })
+    /** 아이디 중복 체크 */
+    const handleDupChk = () => { 
+        dispatch(serviceAction.chkdup({id: idRef.current.value}))
+    }
 
+    /** 전송 유효성 검사 추가 중 */
+    const onSubmit = () => {
         let checkBox = [];
         checkboxRef.current.map((box, index) => {
             if(box.checked === true){
@@ -73,6 +73,14 @@ const CreateAccount = ({open, onClose}) => {
             functions: checkBox
         }))
     }
+ 
+    const handleAlertOpen = () => {
+        setAlertOpen(true);
+    };
+    const handleAlertClose = (event, reason) => {
+        setAlertOpen(false);
+    };
+
 
     return (
         <Dialog
@@ -228,6 +236,13 @@ const CreateAccount = ({open, onClose}) => {
             closeEvent={onClose}
             closeAction={onSubmit}
             buttonTitle="서비스 신청"
+        />
+        <CommonSnackbar
+            open={alertOpen}
+            onClose={handleAlertClose}
+            duration={duration}
+            severity={severity}
+            message={message}
         />
         </Dialog>
     )

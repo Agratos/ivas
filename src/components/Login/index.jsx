@@ -32,12 +32,8 @@ const Login = ({open, onClose, target}) => {
     const idRef = useRef();
     const pwdRef = useRef();
 
-    /** 로그인 오픈시 초기화 */
-    useEffect(() => {
-        target === 'user'
-        ?   dispatch(userAction.clear())
-        :   dispatch(adminAction.clear())
-        
+    /** 로그인 페이지시 alert 초기화 */
+    useEffect(() => {  
         setAlertOpen(false)
     },[open])
     

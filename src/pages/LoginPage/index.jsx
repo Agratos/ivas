@@ -4,6 +4,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { pink, deepPurple } from '@mui/material/colors';
 import styled from 'styled-components';
 
+import useLoginCheck from 'hooks/useLoginCheck';
+
 import LoginMenuButton from './LoginMenuButton';
 import Login from 'components/Login';
 import CreateAccount from 'components/service/CreateAccount';
@@ -22,6 +24,8 @@ const theme = createTheme({
 });
 
 const LoginPage = () => {
+    const isLogin = useLoginCheck();
+    
     const [userOpen, setUserOpen] = useState(false);
     const handleUserClickOpen = () => { setUserOpen(true); };
     const handleUserClose = () => { setUserOpen(false); };
@@ -33,7 +37,9 @@ const LoginPage = () => {
     const [adminOpen, setAdminOpen] = useState(false);
     const handleAdminClickOpen = () => { setAdminOpen(true); };
     const handleAdminClose = () => { setAdminOpen(false); };
-  
+    
+    
+
     const styles = {
         container: {
             height: '100vh',
@@ -45,6 +51,7 @@ const LoginPage = () => {
     };
   
     return (
+        !isLogin &&
         <Wrapper>
             <ThemeProvider theme={theme}>
             <Grid
