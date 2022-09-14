@@ -8,6 +8,7 @@ import {
 import { deepPurple } from '@mui/material/colors';
 import { serviceProperties } from 'assets/properties/serviceProperties';
 import serviceAction from 'store/actions/service';
+import validationPassword from 'utils/validationPassword';
 
 import ColorDialogTitle from 'components/modal/login/ColorDialogTitle';
 import ColorDialogAction from 'components/modal/login/ColorDialogAction';
@@ -45,11 +46,14 @@ const CreateAccount = ({open, onClose}) => {
 
     /** 아이디 중복 체크 응답 */
     useEffect(() => {
-        chkdupInfo && setValidId(serviceProperties.login.validation.info.valid);
+        if(chkdupInfo){
+            setValidId(serviceProperties.login.validation.info.valid);
+            setCheckId(true);
+        }else{
+            setValidId(serviceProperties.login.validation.info.unvalid);
+            setCheckId(false);
+        }
     }, [chkdupInfo]);
-    useEffect(() => {
-        chkdupError && setValidId(serviceProperties.login.validation.info.unvalid);
-    }, [chkdupError]);
 
     /** 아이디 중복 체크 */
     const handleDupChk = () => { 
@@ -58,6 +62,8 @@ const CreateAccount = ({open, onClose}) => {
 
     /** 전송 유효성 검사 추가 중 */
     const onSubmit = () => {
+        setValidPwd(validationPassword(pwd1Ref.current.value, pwd2Ref.current.value))
+
         let checkBox = [];
         checkboxRef.current.map((box, index) => {
             if(box.checked === true){
@@ -65,13 +71,20 @@ const CreateAccount = ({open, onClose}) => {
             }
         })
 
-        dispatch(serviceAction.register({
-            id: idRef.current.value,
-            password: pwd1Ref.current.value,
-            confirmPassword: pwd2Ref.current.value,
-            stream: streamRef.current.value,
-            functions: checkBox
-        }))
+        if(chkId && validPwd === ''){
+            dispatch(serviceAction.register({
+                id: idRef.current.value,
+                password: pwd1Ref.current.value,
+                confirmPassword: pwd2Ref.current.value,
+                stream: streamRef.current.value,
+                functions: checkBox
+            }))
+            console.log('전송 보냄');
+        }else{
+            console.log(chkId);
+            console.log(validPwd);
+            console.log('전송 안보냄');
+        }
     }
  
     const handleAlertOpen = () => {
