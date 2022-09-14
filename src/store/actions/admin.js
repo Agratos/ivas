@@ -38,7 +38,9 @@ const adminAction = {
     getUsageInfo: createAction(
         adminActionType.USAGE, 
         ( id ) => ( id )
-    )
+    ),
+
+    clear: createAction(adminActionType.CLEAR)
 }
 
 export default adminAction;

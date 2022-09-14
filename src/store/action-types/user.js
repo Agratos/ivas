@@ -14,3 +14,4 @@ export const [ALTER, ALTER_SUCCESS, ALTER_FAILURE] = createRequestActionTypes('u
 export const [SNAPSHOT, SNAPSHOT_SUCCESS, SNAPSHOT_FAILURE] = createRequestActionTypes('user/SNAPSHOT');
 export const [GET_SNAPSHOT, GET_SNAPSHOT_SUCCESS, GET_SNAPSHOT_FAILURE] = createRequestActionTypes('user/GET_SNAPSHOT');
 export const [SET_CTL_CONFIG, SET_CTL_CONFIG_SUCCESS, SET_CTL_CONFIG_FAILURE] = createRequestActionTypes('user/SET_CTL_CONFIG');
+export const CLEAR = 'user/CLEAR';

@@ -21,9 +21,7 @@ const serviceAction = {
         ({ id }) => ({ id }),
     ),
 
-    clear: createAction(
-        serviceActionType.CLEAR
-    )
+    clear: createAction(serviceActionType.CLEAR)
 }
 
 export default serviceAction;

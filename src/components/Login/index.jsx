@@ -3,29 +3,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Dialog, DialogContent, Grid, TextField, Typography, Divider } from '@mui/material';
-import { pink, blue } from '@mui/material/colors';
 import { serviceProperties } from 'assets/properties/serviceProperties';
 import userAction from 'store/actions/user';
 import adminAction from 'store/actions/admin';
+import { dialogProperties } from 'assets/properties/dialogProperties';
 
 import ColorDialogAction from 'components/modal/login/ColorDialogAction';
 import ColorDialogTitle from 'components/modal/login/ColorDialogTitle';
+import CommonSnackbar from 'components/common/CommonSnackbar';
 
 const Login = ({open, onClose, target}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const dialogProperties = {
-        admin: {
-            color1: blue[800],
-            color2: blue[100],
-            title: '시스템 관리자 로그인'
-        },
-        user: {
-            color1: pink[600],
-            color2: pink[100],
-            title: "서비스 사용자 로그인"
-        }
-    }
+    const { userLoginInfo, userLoginError } = useSelector(({user}) => ({
+        userLoginInfo: user.loginInfo,
+        userLoginError: user.loginError
+    }))
+    const { adminLoginInfo, adminLoginError } = useSelector(({admin}) => ({
+        adminLoginInfo: admin.loginInfo,
+        adminLoginError: admin.loginError
+    }))
     const [alertOpen, setAlertOpen] = useState(false);
     const [message, setMessage] = useState('');
     const [severity, setSeverity] = useState('success');
@@ -35,12 +32,48 @@ const Login = ({open, onClose, target}) => {
     const idRef = useRef();
     const pwdRef = useRef();
 
+    /** 로그인 오픈시 초기화 */
+    useEffect(() => {
+        target === 'user'
+        ?   dispatch(userAction.clear())
+        :   dispatch(adminAction.clear())
+        
+        setAlertOpen(false)
+    },[open])
+    
     useEffect(() => {
         target === 'user'  
         ?   dispatch(userAction.initializeForm('login')) 
         :   dispatch(adminAction.initializeForm('login'))
-  
     },[dispatch])
+
+    useEffect(() => {
+        userLoginInfo && loginSuccess(target)
+    },[userLoginInfo])
+    useEffect(() => {
+        adminLoginInfo && loginSuccess(target)
+    },[adminLoginInfo])
+    useEffect(() => {
+        userLoginError && loginError(target)
+    },[userLoginError])
+    useEffect(() => {
+        adminLoginError && loginError(target)
+    },[adminLoginError])
+
+    const loginSuccess = (target) => {
+        setSeverity('success');
+        setMessage(serviceProperties.login.success[`${target}`]);
+        setFlag(true);
+        setDuration(1000);
+        handleAlertOpen();
+    }
+    const loginError = (target) => {
+        setSeverity('error');
+        setMessage(serviceProperties.login.error.info[`${target}`]);
+        setFlag(false);
+        setDuration(1000);
+        handleAlertOpen();
+    }
 
     const handleAlertOpen = () => {
         setAlertOpen(true);
@@ -50,6 +83,7 @@ const Login = ({open, onClose, target}) => {
         if (flag) navigate(`/${target}/dashboard`); // 페이지 이동
     };
 
+
     const onLogin = () => {
         const id = idRef.current.value;
         const password = pwdRef.current.value;
@@ -58,15 +92,15 @@ const Login = ({open, onClose, target}) => {
         ?   dispatch(userAction.login({id, password}))
         :   dispatch(adminAction.login({id, password}))
     };
-
+    /** 뒷 배경 클릭시 모달 종료 막기 */
     const handleClose = (event, reason) => {
-        // 뒷배경 클릭시 모달 종료 막기
         if (reason === 'backdropClick') {
             return false;
         }
         onClose();
     }
     
+
     return (
         <Dialog
             open={open}
@@ -118,6 +152,13 @@ const Login = ({open, onClose, target}) => {
                 closeEvent={onClose}
                 closeAction={onLogin}
                 buttonTitle=""
+            />
+            <CommonSnackbar 
+                open={alertOpen}
+                onClose={handleAlertClose}
+                duration={duration}
+                severity={severity}
+                message={message}
             />
         </Dialog>
     )

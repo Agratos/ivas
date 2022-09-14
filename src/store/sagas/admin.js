@@ -144,7 +144,10 @@ const admin = handleActions(
         [adminActionType.USERDEL_FAILURE]: (state, { payload: message }) => ({
             ...state,
             userdelError: message,
-            }),    
+        }),
+        [adminActionType.CLEAR]: () => ({
+            initialState
+        })
     },
     initialState,
 );

@@ -292,7 +292,10 @@ const user = handleActions(
             ...state,
             setConfigError: error,
             setConfigInfo: null,
-        }),    
+        }),
+        [userActionType.CLEAR]: () => ({
+            initialState
+        })
 
     },
     initialState,

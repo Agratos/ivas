@@ -10,3 +10,4 @@ export const [APPROVAL, APPROVAL_SUCCESS, APPROVAL_FAILURE] = createRequestActio
 export const [USAGE_LIST, USAGE_LIST_SUCCESS, USAGE_LIST_FAILURE] = createRequestActionTypes('ADMIN/USAGE_LIST');
 export const [USAGE, USAGE_SUCCESS, USAGE_FAILURE] = createRequestActionTypes('ADMIN/USAGE');
 export const [USERDEL, USERDEL_SUCCESS, USERDEL_FAILURE] = createRequestActionTypes('ADMIN/USERDEL');
+export const CLEAR = 'admin/CLEAR';

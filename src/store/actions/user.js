@@ -69,8 +69,9 @@ const userAction = {
     setControlConfig: createAction(
         userActionType.SET_CTL_CONFIG, 
         ({ id, idx, detect, roi, line, alarm, overlay }) => ({id, idx, detect, roi, line, alarm, overlay })
-    )
+    ),
     
+    clear: createAction(userActionType.CLEAR)
 }
 
 export default userAction;
