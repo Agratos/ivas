@@ -43,7 +43,7 @@ const CreateAccount = ({open, onClose}) => {
     useEffect(() => {
         dispatch(serviceAction.clear());
         setValidId(serviceProperties.login.validation.info.id)
-    },[open])
+    },[open, dispatch])
 
     /** 아이디 중복 체크 응답 */
     useEffect(() => {
@@ -66,11 +66,9 @@ const CreateAccount = ({open, onClose}) => {
         setValidPwd(validationPassword(pwd1Ref.current.value, pwd2Ref.current.value))
 
         let checkBox = [];
-        checkboxRef.current.map((box, index) => {
-            if(box.checked === true){
-                checkBox.push(index + 1);
-            }
-        })
+        checkboxRef.current.map((box, index) => (
+            box.checked && checkBox.push(index + 1)
+        ))
 
         if(chkId && validPwd === ''){
             dispatch(serviceAction.register({

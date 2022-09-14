@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import { useRoutes, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React from 'react';
+import { useRoutes } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useLoginCheck from 'hooks/useLoginCheck';

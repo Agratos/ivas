@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 import { Dialog, DialogContent, Grid, TextField, Typography, Divider } from '@mui/material';
 import { serviceProperties } from 'assets/properties/serviceProperties';
@@ -14,7 +13,6 @@ import ColorDialogTitle from 'components/modal/login/ColorDialogTitle';
 import CommonSnackbar from 'components/common/CommonSnackbar';
 
 const Login = ({open, onClose, target}) => {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { userLoginInfo, userLoginError } = useSelector(({user}) => ({
         userLoginInfo: user.loginInfo,
@@ -38,20 +36,7 @@ const Login = ({open, onClose, target}) => {
         setAlertOpen(false)
     },[open])
 
-    useEffect(() => {
-        userLoginInfo && handleSnackbar(target,'success')
-    },[userLoginInfo])
-    useEffect(() => {
-        adminLoginInfo && handleSnackbar(target,'success')
-    },[adminLoginInfo])
-    useEffect(() => {
-        userLoginError && handleSnackbar(target,'error')
-    },[userLoginError])
-    useEffect(() => {
-        adminLoginError && handleSnackbar(target,'error')
-    },[adminLoginError])
-
-    const handleSnackbar = (target, result) => {
+    const handleSnackbar = useCallback((target, result) => {
         validationSnackbar({
             type: 'login',
             target,
@@ -62,7 +47,20 @@ const Login = ({open, onClose, target}) => {
             setDuration, 
             handleAlertOpen
         })
-    }
+    },[])
+
+    useEffect(() => {
+        userLoginInfo && handleSnackbar('user','success')
+    },[userLoginInfo, handleSnackbar])
+    useEffect(() => {
+        adminLoginInfo && handleSnackbar('admin','success')
+    },[adminLoginInfo, handleSnackbar])
+    useEffect(() => {
+        userLoginError && handleSnackbar('user','error')
+    },[userLoginError, handleSnackbar])
+    useEffect(() => {
+        adminLoginError && handleSnackbar('admin','error')
+    },[adminLoginError, handleSnackbar])
 
     const handleAlertOpen = () => {
         setAlertOpen(true);
