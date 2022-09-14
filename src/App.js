@@ -9,8 +9,7 @@ import routes from 'routes';
 
 const App = () => {
     const content = useRoutes(routes);
-    const isLogin = useLoginCheck()
-
+    useLoginCheck()
 
     return (
         <Wrapper>

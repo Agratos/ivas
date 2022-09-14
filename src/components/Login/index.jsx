@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 import { Dialog, DialogContent, Grid, TextField, Typography, Divider } from '@mui/material';
 import { serviceProperties } from 'assets/properties/serviceProperties';
+import { dialogProperties } from 'assets/properties/dialogProperties';
 import userAction from 'store/actions/user';
 import adminAction from 'store/actions/admin';
-import { dialogProperties } from 'assets/properties/dialogProperties';
+import validationSnackbar from 'utils/validationSnackbar';
 
 import ColorDialogAction from 'components/modal/login/ColorDialogAction';
 import ColorDialogTitle from 'components/modal/login/ColorDialogTitle';
@@ -36,47 +37,39 @@ const Login = ({open, onClose, target}) => {
     useEffect(() => {  
         setAlertOpen(false)
     },[open])
-    
-    useEffect(() => {
-        target === 'user'  
-        ?   dispatch(userAction.initializeForm('login')) 
-        :   dispatch(adminAction.initializeForm('login'))
-    },[dispatch])
 
     useEffect(() => {
-        userLoginInfo && loginSuccess(target)
+        userLoginInfo && handleSnackbar(target,'success')
     },[userLoginInfo])
     useEffect(() => {
-        adminLoginInfo && loginSuccess(target)
+        adminLoginInfo && handleSnackbar(target,'success')
     },[adminLoginInfo])
     useEffect(() => {
-        userLoginError && loginError(target)
+        userLoginError && handleSnackbar(target,'error')
     },[userLoginError])
     useEffect(() => {
-        adminLoginError && loginError(target)
+        adminLoginError && handleSnackbar(target,'error')
     },[adminLoginError])
 
-    const loginSuccess = (target) => {
-        setSeverity('success');
-        setMessage(serviceProperties.login.success[`${target}`]);
-        setFlag(true);
-        setDuration(1000);
-        handleAlertOpen();
-    }
-    const loginError = (target) => {
-        setSeverity('error');
-        setMessage(serviceProperties.login.error.info[`${target}`]);
-        setFlag(false);
-        setDuration(1000);
-        handleAlertOpen();
+    const handleSnackbar = (target, result) => {
+        validationSnackbar({
+            type: 'login',
+            target,
+            result,
+            setSeverity, 
+            setMessage, 
+            setFlag, 
+            setDuration, 
+            handleAlertOpen
+        })
     }
 
     const handleAlertOpen = () => {
         setAlertOpen(true);
     };
-    const handleAlertClose = (event, reason) => {
+    const handleAlertClose = () => {
         setAlertOpen(false);
-        if (flag) navigate(`/${target}/dashboard`); // 페이지 이동
+        // if (flag) navigate(`/${target}/dashboard`); // 페이지 이동
     };
 
 

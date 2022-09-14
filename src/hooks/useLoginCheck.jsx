@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Navigate, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 const useLoginCheck = () => {
     const navigate = useNavigate();
@@ -8,12 +8,14 @@ const useLoginCheck = () => {
     const adminLoginInfo = useSelector(({admin}) => admin.loginInfo);
 
     useEffect(() => {
-        console.log(`user: `,userLoginInfo);
-        console.log(`admin: `,adminLoginInfo);
         if(userLoginInfo){
-            navigate('/user/dashboard');
+            setTimeout(() => {
+                navigate('/user/dashboard');
+            }, 1000)
         }else if(adminLoginInfo){
-            navigate('/admin/dashboard');
+            setTimeout(() => {
+                navigate('/admin/dashboard');
+            }, 1000)
         }else{
             navigate('/');
         }

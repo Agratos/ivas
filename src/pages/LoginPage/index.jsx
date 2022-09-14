@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import useLoginCheck from 'hooks/useLoginCheck';
 
-import LoginMenuButton from './LoginMenuButton';
+import LoginMenuButton from '../../components/Login/LoginMenuButton';
 import Login from 'components/Login';
 import CreateAccount from 'components/service/CreateAccount';
 
@@ -23,9 +23,7 @@ const theme = createTheme({
     },
 });
 
-const LoginPage = () => {
-    const isLogin = useLoginCheck();
-    
+const LoginPage = () => { 
     const [userOpen, setUserOpen] = useState(false);
     const handleUserClickOpen = () => { setUserOpen(true); };
     const handleUserClose = () => { setUserOpen(false); };
@@ -38,8 +36,6 @@ const LoginPage = () => {
     const handleAdminClickOpen = () => { setAdminOpen(true); };
     const handleAdminClose = () => { setAdminOpen(false); };
     
-    
-
     const styles = {
         container: {
             height: '100vh',
@@ -49,9 +45,8 @@ const LoginPage = () => {
             backgroundImage: `url(${"/static/images/background.png"})`
         }
     };
-  
+    
     return (
-        !isLogin &&
         <Wrapper>
             <ThemeProvider theme={theme}>
             <Grid

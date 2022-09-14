@@ -9,6 +9,7 @@ import { deepPurple } from '@mui/material/colors';
 import { serviceProperties } from 'assets/properties/serviceProperties';
 import serviceAction from 'store/actions/service';
 import validationPassword from 'utils/validationPassword';
+import validationSnackbar from 'utils/validationSnackbar';
 
 import ColorDialogTitle from 'components/modal/login/ColorDialogTitle';
 import ColorDialogAction from 'components/modal/login/ColorDialogAction';
@@ -79,11 +80,9 @@ const CreateAccount = ({open, onClose}) => {
                 stream: streamRef.current.value,
                 functions: checkBox
             }))
-            console.log('전송 보냄');
+            handleSnackbar('service', 'success')
         }else{
-            console.log(chkId);
-            console.log(validPwd);
-            console.log('전송 안보냄');
+            handleSnackbar('service', 'error')
         }
     }
  
@@ -93,6 +92,20 @@ const CreateAccount = ({open, onClose}) => {
     const handleAlertClose = (event, reason) => {
         setAlertOpen(false);
     };
+
+    const handleSnackbar = (target, result) => {
+        validationSnackbar({
+            type: 'register',
+            target,
+            result,
+            setSeverity, 
+            setMessage, 
+            setFlag, 
+            setDuration, 
+            handleAlertOpen
+        })
+    }
+
 
 
     return (
