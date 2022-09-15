@@ -14,24 +14,21 @@ import adminAction from 'store/actions/admin';
 const UserBarChart = () => {
     const dispatch = useDispatch();
     const { resourceList } = useSelector(({ user }) => ({
-        form: user.dashboard,
         resourceList: user.resourceList,
     }));
     const [realTime, setRealTime] = useState(format(new Date(), 'yyyy-MM-dd HH:mm:ss'));
     
     useEffect(() => {
         dispatch(adminAction.initializeForm('dashboard'));
-    },[dispatch])
-    useEffect(() =>{
         dispatch(adminAction.getResourceList());
     },[dispatch])
 
     /** TODO: 데이터 조회 추가 */
     const handleUpdate = () => {
         setRealTime(format(new Date(), 'yyyy-MM-dd HH:mm:ss'));
+        dispatch(adminAction.initializeForm('dashboard'));
+        dispatch(adminAction.getResourceList());
     };
-
-    console.log(resourceList);
 
     return (
         <GridItem xs={12} sm={12} md={12}>

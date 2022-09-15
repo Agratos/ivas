@@ -293,9 +293,9 @@ const user = handleActions(
             setConfigError: error,
             setConfigInfo: null,
         }),
-        [userActionType.CLEAR]: () => ({
+        [userActionType.CLEAR]: () => (
             initialState
-        })
+        )
 
     },
     initialState,

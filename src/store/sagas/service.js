@@ -71,9 +71,9 @@ const service = handleActions(
             chkdupError: error,
             chkdupInfo: null,
         }),
-        [serviceActionType.CLEAR]: () => ({
+        [serviceActionType.CLEAR]: () => (
             initialState
-        })
+        )
     },
     initialState,
   );

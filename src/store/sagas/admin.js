@@ -145,9 +145,9 @@ const admin = handleActions(
             ...state,
             userdelError: message,
         }),
-        [adminActionType.CLEAR]: () => ({
+        [adminActionType.CLEAR]: () => (
             initialState
-        })
+        )
     },
     initialState,
 );
