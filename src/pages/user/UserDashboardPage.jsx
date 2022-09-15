@@ -15,7 +15,7 @@ const UserDashboardPage = () => {
             <GridItem xs={12} sm={12} md={12}>
                 <PathBox upper="사용자" current="대시보드" />
             </GridItem>
-            <UserBarChart />
+            
         </GridContainer>
     )
 }

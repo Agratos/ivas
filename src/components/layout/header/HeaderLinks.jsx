@@ -29,10 +29,9 @@ const HeaderLinks = ({ type }) => {
 
   // 로그 아웃
   const onLogOut = () => {
-    let id = localStorage.getItem('user');
-    dispatch(userAction.logout({id}));
-    //console.log('로그아웃 버튼 누름');
-    localStorage.setItem('logged', 'outing');
+    // let id = localStorage.getItem('user');
+    dispatch(userAction.clear());
+    navigate('/');
   };
 
   useEffect(() => {
