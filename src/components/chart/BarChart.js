@@ -47,10 +47,6 @@ const BarChart = ({ data }) => {
           },
         ]}
         role="application"
-        //ariaLabel="Nivo bar chart demo"
-        //barAriaLabel={function (e) {
-        //   return e.id + ': ' + e.formattedValue + ' in status: ' + e.indexValue;
-        //}}
       />
     </Card>
   );

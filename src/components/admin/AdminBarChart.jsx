@@ -9,25 +9,25 @@ import GridContainer from 'components/layout/container/GridContainer';
 import GridItem from 'components/layout/container/GridItem';
 import BarChart from 'components/chart/BarChart';
 
-import userAction from 'store/actions/admin';
+import adminAction from 'store/actions/admin';
 
-const UserBarChart = () => {
+const AdminBarChart = () => {
     const dispatch = useDispatch();
-    const { resourceList } = useSelector(({ user }) => ({
-        resourceList: user.resourceList,
+    const { resourceList } = useSelector(({ admin }) => ({
+        resourceList: admin.resourceList,
     }));
     const [realTime, setRealTime] = useState(format(new Date(), 'yyyy-MM-dd HH:mm:ss'));
     
     useEffect(() => {
-        dispatch(userAction.initializeForm('dashboard'));
-        dispatch(userAction.getResourceList());
+        dispatch(adminAction.initializeForm('dashboard'));
+        dispatch(adminAction.getResourceList());
     },[dispatch])
 
     /** TODO: 데이터 조회 추가 */
     const handleUpdate = () => {
         setRealTime(format(new Date(), 'yyyy-MM-dd HH:mm:ss'));
-        dispatch(userAction.initializeForm('dashboard'));
-        dispatch(userAction.getResourceList());
+        dispatch(adminAction.initializeForm('dashboard'));
+        dispatch(adminAction.getResourceList());
     };
 
     return (
@@ -46,4 +46,4 @@ const UserBarChart = () => {
     )
 }
 
-export default UserBarChart;
+export default AdminBarChart;

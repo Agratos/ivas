@@ -3,19 +3,17 @@ import React from 'react';
 import GridContainer from 'components/layout/container/GridContainer';
 import GridItem from 'components/layout/container/GridItem';
 import PathBox from 'components/common/PathBox';
-import UserBarChart from 'components/user/UserBarChart';
-import UserAlartTable from 'components/user/UserAlartTable';
+import AdminBarChart from 'components/admin/AdminBarChart';
 
-const UserDashboardPage = () => {
+const AdminDashboardPage = () => {
     return (
         <GridContainer justify="center" spacing={2}>
             <GridItem xs={12} sm={12} md={12}>
-                <PathBox upper="사용자" current="대시보드" />
+                <PathBox upper="시스템 관리자" current="대시보드" />
             </GridItem>
-            <UserBarChart />
-            <UserAlartTable />
+            <AdminBarChart />
         </GridContainer>
     )
 }
 
-export default UserDashboardPage;
+export default AdminDashboardPage;

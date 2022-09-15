@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import { List, ListItem } from '@mui/material';
 import userAction from 'store/actions/user';
+import adminAction from 'store/actions/admin';
 import Button from './CustomButton';
 import styles from 'styles/jss/headerLinkStyle';
 import {
@@ -19,8 +20,8 @@ const useStyles = makeStyles(styles);
 
 const HeaderLinks = ({ type }) => {
   const classes = useStyles();
-  let navigate = useNavigate();
-
+  const navigate = useNavigate();
+  const path = useLocation().pathname;
   const dispatch = useDispatch();
   const { logoutInfo, logoutError } = useSelector(({ user }) => ({
     logoutInfo: user.logoutInfo,
@@ -29,8 +30,11 @@ const HeaderLinks = ({ type }) => {
 
   // 로그 아웃
   const onLogOut = () => {
-    // let id = localStorage.getItem('user');
-    dispatch(userAction.clear());
+    if(path.includes('user')){
+      dispatch(userAction.clear());
+    }else if(path.includes('admin')){
+      dispatch(adminAction.clear());
+    }
     navigate('/');
   };
 

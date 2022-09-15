@@ -7,6 +7,8 @@ import NotFoundPage from 'pages/NotFoundPage';
 
 import UserDashboardPage from 'pages/user/UserDashboardPage';
 
+import AdminDashboardPage from 'pages/admin/AdminDashboardPage';
+
 const routes = [
     {
         path: 'user',
@@ -20,7 +22,7 @@ const routes = [
         path: 'admin',
         element: <Layout type={1} />,
         children: [
-        //   { path: 'dashboard', element: <AdminDashboardContainer /> },
+             { path: 'dashboard', element: <AdminDashboardPage /> },
         //   { path: 'approval', element: <AdminApprovalContainer /> },
         //   { path: 'usage', element: <AdminUsageContainer /> },
         //   { path: 'usage/detail/:id', element: <AdminUsageDetailContainer /> },

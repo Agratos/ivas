@@ -17,7 +17,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
-export function descendingComparator(a, b, orderBy) {
+export const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -27,13 +27,13 @@ export function descendingComparator(a, b, orderBy) {
   return 0;
 }
 
-export function getComparator(order, orderBy) {
+export const getComparator = (order, orderBy) => {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export function stableSort(array, comparator) {
+export const stableSort = (array, comparator) => {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -77,7 +77,7 @@ export const handleChangeRowsPerPage = (event, setRowsPerPage, setPage) => {
 };
 
 // checkbox 테이블 헤더 필요시 사용
-export function EnhancedTableHeadCheckbox(props) {
+export const EnhancedTableHeadCheckbox = (props) => {
   const {
     onSelectAllClick,
     order,
@@ -199,7 +199,7 @@ EnhancedTableCheckboxToolbar.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-export function EnhancedTableHead(props) {
+export const EnhancedTableHead = (props) => {
   const { order, orderBy, onRequestSort, headCells } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
