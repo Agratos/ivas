@@ -1,12 +1,8 @@
-import { Helmet } from 'react-helmet';
 import { Box, Container, Typography } from '@mui/material';
 import styled from 'styled-components';
 
 const NotFoundPage = () => (
     <Wrapper>
-        <Helmet>
-            <title>{`IVAS\u00a0 원하시는 페이지를 찾을 수가 없습니다`}</title>
-        </Helmet>
         <Box
             sx={{
                 backgroundColor: 'background.default',
@@ -30,7 +26,7 @@ const NotFoundPage = () => (
                     />
                 </Box>
                 <Typography align="center" color="textPrimary" variant="h1">
-                    페이지를 <span style={{color: 'red'}}>찾을 수 없습니다.</span>
+                    페이지를 찾을 수 없습니다.
                 </Typography>
                 <Typography align="center" color="textPrimary" variant="subtitle2" style={{marginTop:10}}>
                     <Atag href='/'>메인 페이지로 이동</Atag>

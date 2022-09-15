@@ -8,7 +8,6 @@ const useLoginCheck = () => {
     const userLoginInfo = useSelector(({user}) => user.loginInfo);
     const adminLoginInfo = useSelector(({admin}) => admin.loginInfo);
 
-
     useEffect(() => {
         if(path === '/'){
             if(userLoginInfo){
@@ -29,7 +28,7 @@ const useLoginCheck = () => {
                 alert('권한이 없습니다 로그인후 사용해주세요')
             }
         }
-    },[userLoginInfo, adminLoginInfo])
+    },[path, userLoginInfo, adminLoginInfo, navigate])
 
     return userLoginInfo ? 'user' : adminLoginInfo ? 'admin' : false
 }

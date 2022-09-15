@@ -5,12 +5,14 @@ import MainLayout from './components/layout/MainLayout';
 import LoginPage from 'pages/LoginPage';
 import NotFoundPage from 'pages/NotFoundPage';
 
+import UserDashboardPage from 'pages/user/UserDashboardPage';
+
 const routes = [
     {
         path: 'user',
         element: <Layout type={0} />,
         children: [
-        //   { path: 'dashboard', element: <UserDashboardContainer /> },
+            { path: 'dashboard', element: <UserDashboardPage /> },
         //   { path: 'video', element: <UserVideoContainer /> },
         //   { path: 'service', element: <UserServiceContainer /> },
         ],

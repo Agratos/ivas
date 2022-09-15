@@ -3,7 +3,10 @@ import { Breadcrumbs, Link, Typography } from '@mui/material';
 import { NavigateNext } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
-const CommonBreadcrumbs = ({ upper, current }) => {
+/** 
+ * 경로 표시 컴포넌트 props로는 upper, current
+ */
+const PathBox = ({ upper, current }) => {
   let navigate = useNavigate();
   return (
     <Breadcrumbs
@@ -26,4 +29,4 @@ const CommonBreadcrumbs = ({ upper, current }) => {
   );
 };
 
-export default CommonBreadcrumbs;
+export default PathBox;
