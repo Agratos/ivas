@@ -7,8 +7,9 @@ import styled from 'styled-components';
 import useLoginCheck from 'hooks/useLoginCheck';
 
 import LoginMenuButton from '../../components/modal/login/LoginMenuButton';
-import Login from 'components/modal/login/LoginModal';
-import CreateAccount from 'components/modal/service/CreateAccountModal';
+import LoginModal from 'components/modal/login/LoginModal';
+import CreateAccountModal from 'components/modal/service/CreateAccountModal';
+import LogoutModal from 'components/modal/logout/LogoutModal';
 
 const theme = createTheme({
     palette: {
@@ -72,11 +73,11 @@ const LoginPage = () => {
             </Grid>
             </ThemeProvider>
             <UserLoginWrapper>
-                <Login open={userOpen} onClose={handleUserClose} target={'user'}/>
+                <LoginModal open={userOpen} onClose={handleUserClose} target={'user'}/>
             </UserLoginWrapper>
-            <CreateAccount open={createAccountOpen} onClose={handleServiceClose}/>
+            <CreateAccountModal open={createAccountOpen} onClose={handleServiceClose}/>
             <AdminLoginWrapper>
-                <Login open={adminOpen} onClose={handleAdminClose} target={'admin'}/>
+                <LoginModal open={adminOpen} onClose={handleAdminClose} target={'admin'}/>
             </AdminLoginWrapper>
         </Wrapper>
     );

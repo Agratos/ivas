@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -17,6 +17,7 @@ import adminAction from 'store/actions/admin';
 import styles from 'styles/jss/headerLinkStyle';
 
 import Button from './CustomButton';
+import LogoutModal from 'components/modal/logout/LogoutModal';
 
 const HeaderLinks = ({ type }) => {
     const dispatch = useDispatch();
@@ -24,8 +25,12 @@ const HeaderLinks = ({ type }) => {
     const classes = makeStyles(styles)();
     const path = useLocation().pathname;
 
+    const [ modalOpen, setModalOpen] = useState(false);
+    const handleModalClickOpen = () => { setModalOpen(true); };
+    const handleModalClose = () => { setModalOpen(false); };
+    
     // 로그 아웃
-    const onLogOut = () => {
+    const onLogout = () => {
         if(path.includes('user')){
             dispatch(userAction.clear());
         }else if(path.includes('admin')){
@@ -69,7 +74,7 @@ const HeaderLinks = ({ type }) => {
                 </ListItem>
                 <ListItem className={classes.listItem}>
                     <Button
-                        onClick={() => onLogOut()}
+                        onClick={() => handleModalClickOpen()}
                         color="transparent" 
                         className={classes.navLink}
                         variant="contained" sx={{ mt: '2px' }}
@@ -103,7 +108,7 @@ const HeaderLinks = ({ type }) => {
                 </ListItem>
                 <ListItem className={classes.listItem}>
                     <Button
-                        onClick={() => onLogOut()}
+                        onClick={() => handleModalClickOpen()}
                         color="transparent" 
                         className={classes.navLink}
                         variant="contained" sx={{ mt: '2px' }}
@@ -114,9 +119,13 @@ const HeaderLinks = ({ type }) => {
                 </ListItem>
             </Wrapper>
         )}
+        <LogoutWrapper>
+            <LogoutModal open={modalOpen} onClose={handleModalClose} closeAction={onLogout}/>
+        </LogoutWrapper>
         </List>
     );
-};
+};//<Login open={adminOpen} onClose={handleAdminClose} target={'admin'}/>
 const Wrapper = styled.div``;
+const LogoutWrapper = styled.div``;
 
 export default HeaderLinks;
