@@ -11,11 +11,11 @@ import serviceAction from 'store/actions/service';
 import validationPassword from 'utils/validationPassword';
 import validationSnackbar from 'utils/validationSnackbar';
 
-import ColorDialogTitle from 'components/modal/login/ColorDialogTitle';
-import ColorDialogAction from 'components/modal/login/ColorDialogAction';
+import ColorDialogTitle from 'components/modal/ColorDialogTitle';
+import ColorDialogAction from 'components/modal/ColorDialogAction';
 import CommonSnackbar from 'components/common/CommonSnackbar';
 
-const CreateAccount = ({open, onClose}) => {
+const CreateAccountModal = ({open, onClose}) => {
     const { chkdupInfo, chkdupError } = useSelector(({service}) => ({
         chkdupInfo: service.chkdupInfo,
         chkdupError: service.chkdupError
@@ -271,4 +271,4 @@ const CreateAccount = ({open, onClose}) => {
         </Dialog>
     )
 }
-export default CreateAccount;
+export default CreateAccountModal;

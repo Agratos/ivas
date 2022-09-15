@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { format } from 'date-fns';
 
-import { Box, Divider, IconButton, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { IconButton, Stack, Typography } from '@mui/material';
 import UpdateIcon from '@mui/icons-material/Update';
 
-import GridContainer from 'components/layout/container/GridContainer';
 import GridItem from 'components/layout/container/GridItem';
 import BarChart from 'components/chart/BarChart';
 

@@ -7,13 +7,12 @@ import { dialogProperties } from 'assets/properties/dialogProperties';
 import userAction from 'store/actions/user';
 import adminAction from 'store/actions/admin';
 import validationSnackbar from 'utils/validationSnackbar';
-import useLoginCheck from 'hooks/useLoginCheck';
 
-import ColorDialogAction from 'components/modal/login/ColorDialogAction';
-import ColorDialogTitle from 'components/modal/login/ColorDialogTitle';
+import ColorDialogAction from 'components/modal/ColorDialogAction';
+import ColorDialogTitle from 'components/modal/ColorDialogTitle';
 import CommonSnackbar from 'components/common/CommonSnackbar';
 
-const Login = ({open, onClose, target}) => {
+const LoginModal = ({open, onClose, target}) => {
     const dispatch = useDispatch();
     const { userLoginInfo, userLoginError } = useSelector(({user}) => ({
         userLoginInfo: user.loginInfo,
@@ -151,4 +150,4 @@ const Login = ({open, onClose, target}) => {
     )
 }
 
-export default Login;
+export default LoginModal;
