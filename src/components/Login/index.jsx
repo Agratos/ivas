@@ -7,6 +7,7 @@ import { dialogProperties } from 'assets/properties/dialogProperties';
 import userAction from 'store/actions/user';
 import adminAction from 'store/actions/admin';
 import validationSnackbar from 'utils/validationSnackbar';
+import useLoginCheck from 'hooks/useLoginCheck';
 
 import ColorDialogAction from 'components/modal/login/ColorDialogAction';
 import ColorDialogTitle from 'components/modal/login/ColorDialogTitle';
@@ -86,7 +87,6 @@ const Login = ({open, onClose, target}) => {
         }
         onClose();
     }
-    
 
     return (
         <Dialog

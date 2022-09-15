@@ -24,6 +24,8 @@ const theme = createTheme({
 });
 
 const LoginPage = () => { 
+    const isLogin = useLoginCheck();
+
     const [userOpen, setUserOpen] = useState(false);
     const handleUserClickOpen = () => { setUserOpen(true); };
     const handleUserClose = () => { setUserOpen(false); };
@@ -47,6 +49,7 @@ const LoginPage = () => {
     };
     
     return (
+        isLogin ? <Loading />:
         <Wrapper>
             <ThemeProvider theme={theme}>
             <Grid
@@ -78,6 +81,12 @@ const LoginPage = () => {
         </Wrapper>
     );
 };
+/** 리다이렉트시 배경색 같게 표시 */
+const Loading = styled.div`
+    width: 100%;
+    height: 100%;
+    background-color: #f4f6f8;
+`;
 const Wrapper = styled.div``;
 const UserLoginWrapper = styled.div``;
 const AdminLoginWrapper = styled.div``;
