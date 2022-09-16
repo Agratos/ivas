@@ -1,7 +1,7 @@
 import React from 'react';
 import { Snackbar, Alert } from '@mui/material';
 
-const CommonSnackbar = ({ open, onClose, duration, severity, message }) => {
+const AlertSnackbar = ({ open, onClose, duration, severity, message }) => {
     return (
         <Snackbar open={open} autoHideDuration={duration} onClose={onClose}>
             <Alert
@@ -16,4 +16,4 @@ const CommonSnackbar = ({ open, onClose, duration, severity, message }) => {
     );
 };
 
-export default CommonSnackbar;
+export default AlertSnackbar;

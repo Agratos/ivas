@@ -10,7 +10,7 @@ import validationSnackbar from 'utils/validationSnackbar';
 
 import ColorDialogAction from 'components/modal/ColorDialogAction';
 import ColorDialogTitle from 'components/modal/ColorDialogTitle';
-import CommonSnackbar from 'components/common/CommonSnackbar';
+import AlertSnackbar from 'components/common/AlertSnackbar';
 
 const LoginModal = ({open, onClose, target}) => {
     const dispatch = useDispatch();
@@ -139,7 +139,7 @@ const LoginModal = ({open, onClose, target}) => {
                 closeAction={onLogin}
                 buttonTitle=""
             />
-            <CommonSnackbar 
+            <AlertSnackbar 
                 open={alertOpen}
                 onClose={handleAlertClose}
                 duration={duration}

@@ -13,7 +13,7 @@ import validationSnackbar from 'utils/validationSnackbar';
 
 import ColorDialogTitle from 'components/modal/ColorDialogTitle';
 import ColorDialogAction from 'components/modal/ColorDialogAction';
-import CommonSnackbar from 'components/common/CommonSnackbar';
+import AlertSnackbar from 'components/common/AlertSnackbar';
 
 const CreateAccountModal = ({open, onClose}) => {
     const { chkdupInfo, chkdupError } = useSelector(({service}) => ({
@@ -261,7 +261,7 @@ const CreateAccountModal = ({open, onClose}) => {
             closeAction={onSubmit}
             buttonTitle="서비스 신청"
         />
-        <CommonSnackbar
+        <AlertSnackbar
             open={alertOpen}
             onClose={handleAlertClose}
             duration={duration}
