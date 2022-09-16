@@ -10,7 +10,7 @@ const LogoutModal = ({open, onClose, closeAction}) => {
     return (
         <Dialog
             open={open}
-            onClose={(reason) => {
+            onClose={(event, reason) => {
                 if (reason === 'backdropClick') {
                     return false;
                 }
