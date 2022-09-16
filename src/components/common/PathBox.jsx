@@ -22,8 +22,36 @@ const PathBox = ({ upper, current, currentLink, detail }) => {
         }
     }
 
-    switch({currentLink, detail}){
-        
+    const renderType = () => {
+        if(currentLink && detail){
+            return (
+                <Breadcrumbs             
+                    separator={<NavigateNext fontSize="small" />}
+                    aria-label="breadcrumb"
+                >
+                <StyledLink
+                    key="3"
+                    component="button"
+                    color="steelblue"
+                    underline="hover"
+                    onClick={() => navigate(`${currentLink}`)}
+                    sx={{ fontSize: '1rem', paddingBottom: '3px' }}
+                >
+                    {current}
+                </StyledLink>
+                ,
+                <Typography key="4" color="navy" fontWeight="bold">
+                    {detail}
+                </Typography>
+                </Breadcrumbs>
+            )
+        }else{
+            return (
+                <Typography key="3" color="text.primary">
+                    {current}
+                </Typography>
+            )
+        }
     }
 
     return (
@@ -40,9 +68,7 @@ const PathBox = ({ upper, current, currentLink, detail }) => {
                 {upper}
             </Typography>
             ,
-            <Typography key="3" color="text.primary">
-                {current}
-            </Typography>
+            {renderType()}
         </Breadcrumbs>
     );
 };

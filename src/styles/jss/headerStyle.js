@@ -39,14 +39,11 @@ const headerStyle = {
         zIndex: '1100',
     },
     container: {
-        //...container,
-        minHeight: '50px',
-        //flex: '1',
-        minWidth: '99vw',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        ...container,
         display: 'flex',
-        flexWrap: 'nowrap',
+        justifyContent: 'space-between',
+        flex: '1',
+        minHeight: '50px',
     },
     flex: {
         flex: 1,

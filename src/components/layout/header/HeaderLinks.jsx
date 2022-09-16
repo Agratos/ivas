@@ -9,6 +9,7 @@ import {
     PlaylistAddCheckOutlined,
     VideoStable,
     BorderColorOutlined,
+    BarChart,
     Logout,
 } from '@mui/icons-material';
 
@@ -105,6 +106,16 @@ const HeaderLinks = ({ type }) => {
                         >
                         <PlaylistAddCheckOutlined className={classes.icon} /> 
                             서비스 승인 현황
+                        </Button>
+                    </ListItem>
+                    <ListItem className={classes.listItem}>
+                        <Button
+                            color="transparent"
+                            className={classes.navLink}
+                            onClick={() => navigate('/admin/usage')}
+                        >
+                        <BarChart className={classes.icon} /> 
+                            서비스 사용 현황
                         </Button>
                     </ListItem>
                     <ListItem className={classes.listItem}>

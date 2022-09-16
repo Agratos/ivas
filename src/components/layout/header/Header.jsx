@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import Menu from '@mui/icons-material/Menu';
 import styles from 'styles/jss/headerStyle';
+import styled from 'styled-components'
 
 const useStyles = makeStyles(styles);
 
@@ -68,32 +69,33 @@ const Header = ({color, rightLinks, leftLinks, brand, fixed, absolute, changeCol
 
     return (
         <AppBar className={appBarClasses}>
-            {/* 여기가 문제!!! */}
-            <Toolbar className={classes.container}>
-                {leftLinks !== undefined ? brandComponent : null}
-                <div className={classes.flex}>
-                    {leftLinks !== undefined ? (
-                        <Hidden smDown implementation="css">
-                            {leftLinks}
-                        </Hidden>
-                    ) : (
-                        brandComponent
-                    )}
-                </div>
-                {/* smDown mdDown */}
-                <Hidden smDown implementation="css"> 
-                    {rightLinks}
-                </Hidden>
-                <Hidden mdUp>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerToggle}
-                    >
-                        <Menu />
-                    </IconButton>
-                </Hidden>
-            </Toolbar>
+            <ToolbarWrapper>
+                <Toolbar className={classes.container}>
+                    {leftLinks !== undefined ? brandComponent : null}
+                    <div className={classes.flex}>
+                        {leftLinks !== undefined ? (
+                            <Hidden smDown implementation="css">
+                                {leftLinks}
+                            </Hidden>
+                        ) : (
+                            brandComponent
+                        )}
+                    </div>
+                    {/* smDown mdDown */}
+                    <Hidden smDown implementation="css"> 
+                        {rightLinks}
+                    </Hidden>
+                    <Hidden mdUp>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={handleDrawerToggle}
+                        >
+                            <Menu />
+                        </IconButton>
+                    </Hidden>
+                </Toolbar>
+            </ToolbarWrapper>
             <Hidden mdUp implementation="js">
                 <Drawer
                     variant="temporary"
@@ -150,5 +152,13 @@ Header.propTypes = {
         ]).isRequired,
     }),
 };
+
+const ToolbarWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    max-width: calc(100vw - 16px);
+    min-width: calc(100vw - 16px);
+`;
 
 export default Header;
