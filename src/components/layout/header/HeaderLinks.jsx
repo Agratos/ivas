@@ -19,6 +19,7 @@ import styles from 'styles/jss/headerLinkStyle';
 import Button from './CustomButton';
 import LogoutModal from 'components/modal/logout/LogoutModal';
 
+/** type: 0 or 1 */
 const HeaderLinks = ({ type }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -41,90 +42,91 @@ const HeaderLinks = ({ type }) => {
 
     return (
         <List className={classes.list}>
-        {type === 0 ? (
-            <Wrapper>
-                <ListItem className={classes.listItem}>
-                    <Button
-                        color="transparent"
-                        className={classes.navLink}
-                        onClick={() => navigate('/user/dashboard')}
-                    >
-                        <Dashboard className={classes.icons} /> 대시보드
-                    </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                    <Button
-                        color="transparent"
-                        className={classes.navLink}
-                        onClick={() => navigate('/user/video')}
-                    >
-                        <VideoStable className={classes.icons} /> 
-                        영상 설정
-                    </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                    <Button
-                        color="transparent"
-                        className={classes.navLink}
-                        onClick={() => navigate('/user/service')}
-                    >
-                    <BorderColorOutlined className={classes.icons} />
-                        서비스 변경 신청
-                    </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                    <Button
-                        onClick={() => handleModalClickOpen()}
-                        color="transparent" 
-                        className={classes.navLink}
-                        variant="contained" sx={{ mt: '2px' }}
-                    >
-                    <Logout className={classes.icons} />
-                        로그아웃
-                    </Button>
-                </ListItem>
-            </Wrapper>      
-        ) : (
-            <Wrapper>
-                <ListItem className={classes.listItem}>
-                    <Button
-                        color="transparent"
-                        className={classes.navLink}
-                        onClick={() => navigate('/admin/dashboard')}
-                    >
-                        <Dashboard className={classes.icons} /> 
-                        대시보드
-                    </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                    <Button
-                        color="transparent"
-                        className={classes.navLink}
-                        onClick={() => navigate('/admin/approval')}
-                    >
-                    <PlaylistAddCheckOutlined className={classes.icon} /> 
-                        서비스 승인 현황
-                    </Button>
-                </ListItem>
-                <ListItem className={classes.listItem}>
-                    <Button
-                        onClick={() => handleModalClickOpen()}
-                        color="transparent" 
-                        className={classes.navLink}
-                        variant="contained" sx={{ mt: '2px' }}
-                    >
-                    <Logout className={classes.icons} />
-                        로그아웃
-                    </Button>
-                </ListItem>
-            </Wrapper>
-        )}
-        <LogoutWrapper>
-            <LogoutModal open={modalOpen} onClose={handleModalClose} closeAction={onLogout}/>
-        </LogoutWrapper>
+            {type === 0 ? (
+                <Wrapper>
+                    <ListItem className={classes.listItem}>
+                        <Button
+                            color="transparent"
+                            className={classes.navLink}
+                            onClick={() => navigate('/user/dashboard')}
+                        >
+                            <Dashboard className={classes.icons} /> 대시보드
+                        </Button>
+                    </ListItem>
+                    <ListItem className={classes.listItem}>
+                        <Button
+                            color="transparent"
+                            className={classes.navLink}
+                            onClick={() => navigate('/user/video')}
+                        >
+                            <VideoStable className={classes.icons} /> 
+                            영상 설정
+                        </Button>
+                    </ListItem>
+                    <ListItem className={classes.listItem}>
+                        <Button
+                            color="transparent"
+                            className={classes.navLink}
+                            onClick={() => navigate('/user/service')}
+                        >
+                        <BorderColorOutlined className={classes.icons} />
+                            서비스 변경 신청
+                        </Button>
+                    </ListItem>
+                    <ListItem className={classes.listItem}>
+                        <Button
+                            onClick={() => handleModalClickOpen()}
+                            color="transparent" 
+                            className={classes.navLink}
+                            variant="contained" sx={{ mt: '2px' }}
+                        >
+                        <Logout className={classes.icons} />
+                            로그아웃
+                        </Button>
+                    </ListItem>
+                </Wrapper>      
+            ) : (
+                <Wrapper>
+                    <ListItem className={classes.listItem}>
+                        <Button
+                            color="transparent"
+                            className={classes.navLink}
+                            onClick={() => navigate('/admin/dashboard')}
+                        >
+                            <Dashboard className={classes.icons} /> 
+                            대시보드
+                        </Button>
+                    </ListItem>
+                    <ListItem className={classes.listItem}>
+                        <Button
+                            color="transparent"
+                            className={classes.navLink}
+                            onClick={() => navigate('/admin/approval')}
+                        >
+                        <PlaylistAddCheckOutlined className={classes.icon} /> 
+                            서비스 승인 현황
+                        </Button>
+                    </ListItem>
+                    <ListItem className={classes.listItem}>
+                        <Button
+                            onClick={() => handleModalClickOpen()}
+                            color="transparent" 
+                            className={classes.navLink}
+                            variant="contained" sx={{ mt: '2px' }}
+                        >
+                            <Logout className={classes.icons} />
+                            로그아웃
+                        </Button>
+                    </ListItem>
+
+                </Wrapper>
+            )}
+            <LogoutWrapper>
+                <LogoutModal open={modalOpen} onClose={handleModalClose} closeAction={onLogout}/>
+            </LogoutWrapper>
         </List>
     );
-};//<Login open={adminOpen} onClose={handleAdminClose} target={'admin'}/>
+};
 const Wrapper = styled.div``;
 const LogoutWrapper = styled.div``;
 

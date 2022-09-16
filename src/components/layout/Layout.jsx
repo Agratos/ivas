@@ -28,8 +28,8 @@ const Layout = ({ type }) => {
                 fixed
                 color="transparent"
                 changeColorOnScroll={{
-                height: 80,
-                color: 'white',
+                    height: 80,
+                    color: 'white',
                 }}
             />
             {/* <Parallax image={require('../../../lib/images/background.jpg').default}> */}

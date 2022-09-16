@@ -16,17 +16,17 @@ import styles from 'styles/jss/headerStyle';
 
 const useStyles = makeStyles(styles);
 
-const Header = (props) => {
+const Header = ({color, rightLinks, leftLinks, brand, fixed, absolute, changeColorOnScroll}) => {
     let navigate = useNavigate();
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = useState(false);
 
     useEffect(() => {
-        if (props.changeColorOnScroll) {
+        if (changeColorOnScroll) {
             window.addEventListener('scroll', headerColorChange);
         }
         return function cleanup() {
-            if (props.changeColorOnScroll) {
+            if (changeColorOnScroll) {
                 window.removeEventListener('scroll', headerColorChange);
             }
         };
@@ -36,7 +36,6 @@ const Header = (props) => {
         setMobileOpen(!mobileOpen);
     };
     const headerColorChange = () => {
-        const { color, changeColorOnScroll } = props;
         const windowsScrollTop = window.pageYOffset;
         if (windowsScrollTop > changeColorOnScroll.height) {
             document.body
@@ -55,7 +54,6 @@ const Header = (props) => {
         }
     };
 
-    const { color, rightLinks, leftLinks, brand, fixed, absolute } = props;
     const appBarClasses = classNames({
         [classes.appBar]: true,
         [classes[color]]: color,
@@ -70,18 +68,20 @@ const Header = (props) => {
 
     return (
         <AppBar className={appBarClasses}>
+            {/* 여기가 문제!!! */}
             <Toolbar className={classes.container}>
                 {leftLinks !== undefined ? brandComponent : null}
-                    <div className={classes.flex}>
-                {leftLinks !== undefined ? (
-                    <Hidden smDown implementation="css">
-                    {leftLinks}
-                    </Hidden>
-                ) : (
-                    brandComponent
-                )}
+                <div className={classes.flex}>
+                    {leftLinks !== undefined ? (
+                        <Hidden smDown implementation="css">
+                            {leftLinks}
+                        </Hidden>
+                    ) : (
+                        brandComponent
+                    )}
                 </div>
-                <Hidden smDown implementation="css">
+                {/* smDown mdDown */}
+                <Hidden smDown implementation="css"> 
                     {rightLinks}
                 </Hidden>
                 <Hidden mdUp>
