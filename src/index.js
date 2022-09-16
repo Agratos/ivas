@@ -23,17 +23,17 @@ const persistor = persistStore(store);
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
-  <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-          <BrowserRouter>
-              <StyledEngineProvider injectFirst>
-                  <ThemeProvider theme={theme}>
-                      <GlobalStyles />
-                      <App />
-                  </ThemeProvider>
-              </StyledEngineProvider>
-          </BrowserRouter>
-      </PersistGate>
-  </Provider>,
-  document.getElementById('root'),
+    <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+            <BrowserRouter>
+                <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={theme}>
+                        <GlobalStyles />
+                        <App />
+                    </ThemeProvider>
+                </StyledEngineProvider>
+            </BrowserRouter>
+        </PersistGate>
+    </Provider>,
+    document.getElementById('root'),
 );
