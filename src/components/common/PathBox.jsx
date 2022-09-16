@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Breadcrumbs, Link, Typography } from '@mui/material';
 import { NavigateNext } from '@mui/icons-material';
 
+import useHomeClick from 'hooks/useHomeClick';
 
 
 /** 
@@ -12,15 +13,8 @@ import { NavigateNext } from '@mui/icons-material';
  */
 const PathBox = ({ upper, current, currentLink, detail }) => {
     const navigate = useNavigate();
+    const homeClick = useHomeClick();
     const path = useLocation().pathname;
-
-    const homeClick = () => {
-        if(path.includes('user') && path !== '/user/dashboard'){
-            navigate('/user/dashboard');
-        }else if(path.includes('admin') && path !== '/admin/dashboard'){
-            navigate('/admin/dashboard');
-        }
-    }
 
     const renderType = () => {
         if(currentLink && detail){

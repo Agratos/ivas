@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components'
+
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@mui/styles';
@@ -12,13 +13,15 @@ import {
     Drawer,
 } from '@mui/material';
 import Menu from '@mui/icons-material/Menu';
+
 import styles from 'styles/jss/headerStyle';
-import styled from 'styled-components'
+import useHomeClick from 'hooks/useHomeClick';
+
 
 const useStyles = makeStyles(styles);
 
 const Header = ({color, rightLinks, leftLinks, brand, fixed, absolute, changeColorOnScroll}) => {
-    let navigate = useNavigate();
+    const homeClick = useHomeClick();
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -62,7 +65,7 @@ const Header = ({color, rightLinks, leftLinks, brand, fixed, absolute, changeCol
         [classes.fixed]: fixed,
     });
     const brandComponent = (
-        <Button className={classes.title} onClick={() => navigate('/')}>
+        <Button className={classes.title} onClick={() => homeClick()}>
             {brand}
         </Button>
     );
