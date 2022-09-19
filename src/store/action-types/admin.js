@@ -11,3 +11,4 @@ export const [USAGE_LIST, USAGE_LIST_SUCCESS, USAGE_LIST_FAILURE] = createReques
 export const [USAGE, USAGE_SUCCESS, USAGE_FAILURE] = createRequestActionTypes('ADMIN/USAGE');
 export const [USERDEL, USERDEL_SUCCESS, USERDEL_FAILURE] = createRequestActionTypes('ADMIN/USERDEL');
 export const CLEAR = 'admin/CLEAR';
+export const SET_ADMIN = 'admin/SET_ADMIN';

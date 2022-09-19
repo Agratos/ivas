@@ -36,6 +36,16 @@ const LoginModal = ({open, onClose, target}) => {
         setAlertOpen(false)
     },[open])
 
+    // 작동안됨 로그인후 바로 다른 page로 이동 하기 때문에 실행X
+    useEffect(() => {
+        if(userLoginInfo){
+            dispatch(userAction({
+                id: idRef.current.value,
+                password: pwdRef.current.value
+            }))
+        }
+    },[userLoginInfo])
+
     const handleSnackbar = useCallback((target, result) => {
         validationSnackbar({
             type: 'login',
@@ -50,24 +60,19 @@ const LoginModal = ({open, onClose, target}) => {
     },[])
 
     useEffect(() => {
-        userLoginInfo && handleSnackbar('user','success')
-    },[userLoginInfo, handleSnackbar])
-    useEffect(() => {
-        adminLoginInfo && handleSnackbar('admin','success')
-    },[adminLoginInfo, handleSnackbar])
-    useEffect(() => {
+        console.log('3: ', userLoginError);
         userLoginError && handleSnackbar('user','error')
-    },[userLoginError, handleSnackbar])
+    },[userLoginError])
     useEffect(() => {
+        console.log('4: ', adminLoginError);
         adminLoginError && handleSnackbar('admin','error')
-    },[adminLoginError, handleSnackbar])
+    },[adminLoginError])
 
     const handleAlertOpen = () => {
         setAlertOpen(true);
     };
     const handleAlertClose = () => {
         setAlertOpen(false);
-        // if (flag) navigate(`/${target}/dashboard`); // 페이지 이동
     };
 
 
@@ -75,10 +80,19 @@ const LoginModal = ({open, onClose, target}) => {
         const id = idRef.current.value;
         const password = pwdRef.current.value;
 
-        target === 'user'
-        ?   dispatch(userAction.login({id, password}))
-        :   dispatch(adminAction.login({id, password}))
+        if(target === 'user'){
+            dispatch(userAction.setUser({id, password}))
+            dispatch(userAction.login({id, password}))
+        }else{
+            dispatch(adminAction.login({id, password}))
+            dispatch(adminAction.setAdmin({id, password}))
+        }     
+
+        // target === 'user'
+        // ?   dispatch(userAction.login({id, password}))
+        // :   dispatch(adminAction.login({id, password}))
     };
+
     /** 뒷 배경 클릭시 모달 종료 막기 */
     const handleClose = (event, reason) => {
         if (reason === 'backdropClick') {

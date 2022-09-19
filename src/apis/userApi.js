@@ -5,6 +5,8 @@ const userApi = {
 
     logout: ({ id }) => api.post('/api/auth/logout', { id }), // 유저 로그아웃
 
+    // 유저 정보 조회 -> 로그인 성공시 store에 id passwd 저장
+
     getResourceList: () => api.get('/api/system/dashboard'), // 유저 대시보드 데이터 조회
     
     getVideoConfig: ({ id }) => api.post('/api/service/config', { id }), // 영상 설정 조회

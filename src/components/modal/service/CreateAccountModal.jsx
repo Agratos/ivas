@@ -63,7 +63,8 @@ const CreateAccountModal = ({open, onClose}) => {
 
     /** 전송 유효성 검사 추가 중 */
     const onSubmit = () => {
-        setValidPwd(validationPassword(pwd1Ref.current.value, pwd2Ref.current.value))
+        // 테스즈 중일 때 잠시 정지
+        //setValidPwd(validationPassword(pwd1Ref.current.value, pwd2Ref.current.value))
 
         let checkBox = [];
         checkboxRef.current.map((box, index) => (
@@ -78,9 +79,12 @@ const CreateAccountModal = ({open, onClose}) => {
                 stream: streamRef.current.value,
                 functions: checkBox
             }))
-            handleSnackbar('service', 'success')
+            handleSnackbar('service', 'success');
+            setTimeout(() => {
+                onClose();
+            }, 1000)
         }else{
-            handleSnackbar('service', 'error')
+            handleSnackbar('service', 'error');
         }
     }
  

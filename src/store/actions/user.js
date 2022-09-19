@@ -21,6 +21,11 @@ const userAction = {
         userActionType.LOGOUT, 
         ({ id }) => ({id})
     ),
+
+    setUser: createAction(
+        userActionType.SET_USER,
+        ({ id, password }) => ({ id, password })
+    ),
     
     getResourceList: createAction(
         userActionType.RESOURCE

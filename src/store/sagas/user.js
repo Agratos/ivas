@@ -118,6 +118,7 @@ const initialState = {
         count: 0,
     },
     
+    // 서비스 변경 신청 - 사용 기능 
     selectedCheckBox: {
         0: false,
         1: false,
@@ -295,8 +296,14 @@ const user = handleActions(
         }),
         [userActionType.CLEAR]: () => (
             initialState
-        )
-
+        ),
+        [userActionType.SET_USER]: (state, {payload : { id, password }}) => ({
+            ...state,
+            login:{
+                id: id,
+                password: password
+            }
+        })
     },
     initialState,
 );

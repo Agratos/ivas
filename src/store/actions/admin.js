@@ -17,6 +17,11 @@ const adminAction = {
         ({ id, password }) => ({ id ,password })
     ),
 
+    setAdmin: createAction(
+        adminActionType.SET_ADMIN,
+        ({ id, password }) => ({ id, password })
+    ),
+
     getResourceList: createAction(adminActionType.RESOURCE),
 
     getAlarmList: createAction(adminActionType.ALARM),

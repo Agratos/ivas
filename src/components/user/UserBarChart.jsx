@@ -8,7 +8,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 import GridItem from 'components/layout/container/GridItem';
 import BarChart from 'components/chart/BarChart';
 
-import userAction from 'store/actions/admin';
+import userAction from 'store/actions/user';
 
 const UserBarChart = () => {
     const dispatch = useDispatch();
