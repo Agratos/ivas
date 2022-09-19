@@ -14,20 +14,16 @@ import { serviceProperties } from 'assets/properties/serviceProperties';
  * setDuration: 지속 시간: 1000, 1초
  * handleAlertOpen: alert 오픈
  */
-const validationSnackbar = ({type, target, result, setSeverity, setMessage, setFlag, setDuration, handleAlertOpen}) => {
+const validationSnackbar = ({type, target, result, setSeverity, setMessage, handleAlertOpen}) => {
     switch(result){
         case 'success' :
             setSeverity('success');
             setMessage(serviceProperties[`${type}`].success[`${target}`]);
-            setFlag(true);
-            setDuration(1000);
             handleAlertOpen();
             break;
         case 'error' :
             setSeverity('error');
-            setMessage(serviceProperties[`${type}`].error.info[`${target}`]);
-            setFlag(false);
-            setDuration(1000);
+            setMessage(serviceProperties[`${type}`].error[`${target}`]);
             handleAlertOpen();
             break;
         default:

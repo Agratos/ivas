@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import styled from 'styled-components';
 import {
     Card,
     CardContent,
@@ -16,19 +18,56 @@ import {
 } from '@mui/material';
 
 import GridItem from 'components/layout/container/GridItem';
+import ConfirmModal from 'components/modal/ConfirmModal';
+import AlertSnackbar from 'components/common/AlertSnackbar';
 
 import { serviceProperties } from 'assets/properties/serviceProperties';
+import userAction from 'store/actions/user';
 
 const UserServiceForm = () => {
+    const { defaultId, defaultPassword } = useSelector(({user}) => ({
+        defaultId: user.login.id,
+        defaultPassword: user.login.password,
+    }))
+    const dispatch = useDispatch();
+
+    //snackbar
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [message, setMessage] = useState('');
+    const [severity, setSeverity] = useState('success');
+
+    const [ modalOpen, setModalOpen] = useState(false);
+    const handleModalClickOpen = () => { 
+        if(defaultPassword === originPwdRef.current.value){
+            setModalOpen(true);
+        }else{
+
+        }
+    };
+    const handleModalClose = () => { setModalOpen(false); };
+
+    const originPwdRef = useRef();
+    const changePwdRef = useRef();
+    const confirmPwdRef = useRef();
+    const streamRef = useRef();
+    const checkboxRef = useRef([]);
+
+    const onResign = () => {
+        dispatch(userAction.resign(defaultId))
+    }
+
+    const onSubmit = () => {
+
+    }
+
     return (
         <Paper
-            sx={{ width: '100%', m: 2, mt: 4, p: 3, backgroundColor: 'white' }}
+            sx={{ width: '100%', m: 0, mt: 2, p: 3, backgroundColor: 'white' }}
             elevation={10}
         >
             <GridItem md={12} xs={12}>
                 <Typography color="navy" fontWeight="bold" sx={{ pb: '10px' }}>
-                    {/* 서비스 변경 신청 ID: [ {loginId} ] */}
-                    서비스 변경 신청 ID: [ {'테스트중'} ]
+                    서비스 변경 신청 ID: [ {`${defaultId}`} ]
                 </Typography>
             </GridItem>
             <Divider />
@@ -40,8 +79,7 @@ const UserServiceForm = () => {
                         label="기존 비밀번호"
                         helperText={serviceProperties.service.validation.info}
                         name="oldPassword"
-                        //value={form.oldPassword}
-                        //onChange={onChange}
+                        ref={originPwdRef}
                         variant="outlined"
                         size="small"
                         type="password"
@@ -52,8 +90,7 @@ const UserServiceForm = () => {
                         label="새 비밀번호"
                         helperText={serviceProperties.login.validation.info.password}
                         name="password"
-                        //value={form.password}
-                        //onChange={onChange}
+                        ref={changePwdRef}
                         variant="outlined"
                         size="small"
                         type="password" 
@@ -63,8 +100,7 @@ const UserServiceForm = () => {
                         required
                         label="새 비밀번호 확인"
                         name="confirmPassword"
-                        //value={form.confirmPassword}
-                        //onChange={onChange}
+                        ref={confirmPwdRef}
                         variant="outlined"
                         size="small"
                         type="password"
@@ -103,9 +139,9 @@ const UserServiceForm = () => {
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
-                                    name="count"
-                                    //value={form.count}
-                                    //onChange={onChange}
+                                    name="stream"
+                                    inputRef={streamRef}
+                                    defaultValue={0}
                                     size="small"
                                 />
                             </FormControl>
@@ -121,13 +157,12 @@ const UserServiceForm = () => {
                                     사용 기능
                                 </FormLabel>
                                 <FormGroup aria-label="position" row>
-                                    {serviceProperties.service.types.map((type) => (
+                                    {serviceProperties.service.types.map((type, index) => (
                                         <FormControlLabel
                                             key={type}
                                             control={
                                                 <Checkbox
-                                                    //checked={selectedCheckBox.type}
-                                                    //onChange={(e) => handleCheckChange(e, type)}
+                                                    inputRef={(e) => checkboxRef.current[index] = e}
                                                 />
                                             }
                                             label={
@@ -150,7 +185,7 @@ const UserServiceForm = () => {
                     sx={{ pt: 3 }}
                 >
                     <Button
-                        //onClick={() => onResign(loginId)}
+                        onClick={() => handleModalClickOpen()}
                         variant="outlined" color="error" size="large"
                     >
                         서비스 탈퇴 신청
@@ -163,8 +198,27 @@ const UserServiceForm = () => {
                     </Button>
                 </Stack>
             </GridItem>
+            <ConfirmModalWrapper>
+                <ConfirmModal 
+                    text={'탈퇴 확인'} 
+                    open={modalOpen} 
+                    onClose={handleModalClose} 
+                    closeAction={onResign}
+                />
+            </ConfirmModalWrapper>
+            <AlertSnackbarWrapper>
+                <AlertSnackbar 
+                    open={alertOpen}
+                    //onClose={handleAlertClose}
+                    duration={1000}
+                    severity={severity}
+                    message={message}
+                />
+            </AlertSnackbarWrapper>
         </Paper>
     )
 }
+const ConfirmModalWrapper = styled.div``;
+const AlertSnackbarWrapper = styled.div``;
 
 export default UserServiceForm;

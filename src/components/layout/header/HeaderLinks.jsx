@@ -18,7 +18,7 @@ import adminAction from 'store/actions/admin';
 import styles from 'styles/jss/headerLinkStyle';
 
 import Button from './CustomButton';
-import LogoutModal from 'components/modal/logout/LogoutModal';
+import ConfirmModal from 'components/modal/ConfirmModal';
 
 /** type: 0 or 1 */
 const HeaderLinks = ({ type }) => {
@@ -133,7 +133,12 @@ const HeaderLinks = ({ type }) => {
                 </Wrapper>
             )}
             <LogoutWrapper>
-                <LogoutModal open={modalOpen} onClose={handleModalClose} closeAction={onLogout}/>
+                <ConfirmModal 
+                    text={'로그아웃'} 
+                    open={modalOpen} 
+                    onClose={handleModalClose} 
+                    closeAction={onLogout}
+                />
             </LogoutWrapper>
         </List>
     );

@@ -25,8 +25,6 @@ const LoginModal = ({open, onClose, target}) => {
     const [alertOpen, setAlertOpen] = useState(false);
     const [message, setMessage] = useState('');
     const [severity, setSeverity] = useState('success');
-    const [duration, setDuration] = useState(500);
-    const [flag, setFlag] = useState(false);
 
     const idRef = useRef();
     const pwdRef = useRef();
@@ -36,16 +34,6 @@ const LoginModal = ({open, onClose, target}) => {
         setAlertOpen(false)
     },[open])
 
-    // 작동안됨 로그인후 바로 다른 page로 이동 하기 때문에 실행X
-    useEffect(() => {
-        if(userLoginInfo){
-            dispatch(userAction({
-                id: idRef.current.value,
-                password: pwdRef.current.value
-            }))
-        }
-    },[userLoginInfo])
-
     const handleSnackbar = useCallback((target, result) => {
         validationSnackbar({
             type: 'login',
@@ -53,18 +41,14 @@ const LoginModal = ({open, onClose, target}) => {
             result,
             setSeverity, 
             setMessage, 
-            setFlag, 
-            setDuration, 
             handleAlertOpen
         })
     },[])
 
     useEffect(() => {
-        console.log('3: ', userLoginError);
         userLoginError && handleSnackbar('user','error')
     },[userLoginError])
     useEffect(() => {
-        console.log('4: ', adminLoginError);
         adminLoginError && handleSnackbar('admin','error')
     },[adminLoginError])
 
@@ -88,9 +72,6 @@ const LoginModal = ({open, onClose, target}) => {
             dispatch(adminAction.setAdmin({id, password}))
         }     
 
-        // target === 'user'
-        // ?   dispatch(userAction.login({id, password}))
-        // :   dispatch(adminAction.login({id, password}))
     };
 
     /** 뒷 배경 클릭시 모달 종료 막기 */
@@ -156,7 +137,7 @@ const LoginModal = ({open, onClose, target}) => {
             <AlertSnackbar 
                 open={alertOpen}
                 onClose={handleAlertClose}
-                duration={duration}
+                duration={500}
                 severity={severity}
                 message={message}
             />

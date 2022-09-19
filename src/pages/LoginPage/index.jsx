@@ -9,7 +9,6 @@ import useLoginCheck from 'hooks/useLoginCheck';
 import LoginMenuButton from '../../components/modal/login/LoginMenuButton';
 import LoginModal from 'components/modal/login/LoginModal';
 import CreateAccountModal from 'components/modal/service/CreateAccountModal';
-import LogoutModal from 'components/modal/logout/LogoutModal';
 
 const theme = createTheme({
     palette: {

@@ -4,7 +4,10 @@ import {
     Dialog, DialogContent, Card, CardContent, Divider,
     Grid, TextField, Typography, Checkbox, 
     FormControl, FormLabel, FormControlLabel, FormGroup, Button,
+    OutlinedInput, InputAdornment, InputLabel, IconButton,
+    FormHelperText
 } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { deepPurple } from '@mui/material/colors';
 import { serviceProperties } from 'assets/properties/serviceProperties';
 import serviceAction from 'store/actions/service';
@@ -28,31 +31,33 @@ const CreateAccountModal = ({open, onClose}) => {
     const checkboxRef = useRef([]);
 
     // 유효성 검증 변수 선언
-    const [validId, setValidId] = useState('');
-    const [validPwd, setValidPwd] = useState('');
-    const [chkId, setCheckId] = useState(false);
+    const [helperTextConfirmPwd2, setHelperTextConfirmPwd2] = useState('');
+    const [validPwd1, setValidPwd1] = useState(false);
+    const [validPwd2, setValidPwd2] = useState(false);
+    const [helperTextId, setHelperTextId] = useState('');
+    const [validId, setValidId] = useState(false);
 
     // alert창 변수 선언
     const [alertOpen, setAlertOpen] = useState(false);
     const [message, setMessage] = useState('');
     const [severity, setSeverity] = useState('success');
-    const [duration, setDuration] = useState(500);
-    const [flag, setFlag] = useState(false);
+
+    const [showPassword, setShowPassword] = useState(false);
 
     /** 초기화 부분 */
     useEffect(() => {
         dispatch(serviceAction.clear());
-        setValidId(serviceProperties.login.validation.info.id)
-    },[open, dispatch])
+        setHelperTextId(serviceProperties.login.validation.info.id)
+    },[open])
 
     /** 아이디 중복 체크 응답 */
     useEffect(() => {
         if(chkdupInfo){
-            setValidId(serviceProperties.login.validation.info.valid);
-            setCheckId(true);
+            setHelperTextId(serviceProperties.login.validation.info.valid);
+            setValidId(true);
         }else{
-            setValidId(serviceProperties.login.validation.info.unvalid);
-            setCheckId(false);
+            setHelperTextId(serviceProperties.login.validation.info.unvalid);
+            setValidId(false);
         }
     }, [chkdupInfo]);
 
@@ -61,33 +66,6 @@ const CreateAccountModal = ({open, onClose}) => {
         dispatch(serviceAction.chkdup({id: idRef.current.value}))
     }
 
-    /** 전송 유효성 검사 추가 중 */
-    const onSubmit = () => {
-        // 테스즈 중일 때 잠시 정지
-        //setValidPwd(validationPassword(pwd1Ref.current.value, pwd2Ref.current.value))
-
-        let checkBox = [];
-        checkboxRef.current.map((box, index) => (
-            box.checked && checkBox.push(index + 1)
-        ))
-
-        if(chkId && validPwd === ''){
-            dispatch(serviceAction.register({
-                id: idRef.current.value,
-                password: pwd1Ref.current.value,
-                confirmPassword: pwd2Ref.current.value,
-                stream: streamRef.current.value,
-                functions: checkBox
-            }))
-            handleSnackbar('service', 'success');
-            setTimeout(() => {
-                onClose();
-            }, 1000)
-        }else{
-            handleSnackbar('service', 'error');
-        }
-    }
- 
     const handleAlertOpen = () => {
         setAlertOpen(true);
     };
@@ -102,13 +80,38 @@ const CreateAccountModal = ({open, onClose}) => {
             result,
             setSeverity, 
             setMessage, 
-            setFlag, 
-            setDuration, 
             handleAlertOpen
         })
     }
 
+    const handleShowPassword = () => {
+        setShowPassword(!showPassword);
+    }
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
 
+    /** 전송 유효성 검사 추가 중 */
+    const onSubmit = () => {
+        let checkBox = [];
+        checkboxRef.current.map((box, index) => (
+            box.checked && checkBox.push(index + 1)
+        )) 
+
+        console.log(pwd1Ref.current.value)
+
+        // dispatch(serviceAction.register({
+        //     id: idRef.current.value,
+        //     password: pwd1Ref.current.value,
+        //     confirmPassword: pwd2Ref.current.value,
+        //     stream: streamRef.current.value,
+        //     functions: checkBox
+        // }))
+        // handleSnackbar('service', 'success');
+        // setTimeout(() => {
+        //     onClose();
+        // }, 1000)
+    }
 
     return (
         <Dialog
@@ -141,7 +144,7 @@ const CreateAccountModal = ({open, onClose}) => {
                     <TextField
                         fullWidth
                         required
-                        helperText={validId}
+                        helperText={helperTextId}
                         label="아이디"
                         name="id"
                         inputRef={idRef}
@@ -160,30 +163,64 @@ const CreateAccountModal = ({open, onClose}) => {
                 </Grid>
                 <Grid item md={6} xs={12} />
                 <Grid item md={6} xs={12}>
-                    <TextField
-                        fullWidth
-                        required
-                        helperText={serviceProperties.login.validation.info.password}
-                        label="비밀번호"
-                        name="password"
-                        inputRef={pwd1Ref}
+                    <FormControl 
+                        fullWidth 
+                        size='small' 
                         variant="outlined"
-                        size="small"
-                        type="password"
-                    />
+                        required
+                    >
+                        <InputLabel htmlFor='display-name'>비밀번호</InputLabel>
+                        <OutlinedInput
+                            label='비밀번호'
+                            variant="outlined"
+                            size="small"
+                            type={showPassword ? 'text' : 'password'}
+                            inputRef={pwd1Ref}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                              </InputAdornment>
+                            }
+                        />
+                        <FormHelperText>{serviceProperties.login.validation.info.password}</FormHelperText>
+                    </FormControl>
                 </Grid>
                 <Grid item md={6} xs={12}>
-                    <TextField
-                        fullWidth
-                        required
-                        helperText={validPwd}
-                        label="비밀번호 확인"
-                        name="confirmPassword"
-                        inputRef={pwd2Ref}
+                    <FormControl 
+                        fullWidth 
+                        size='small' 
                         variant="outlined"
-                        size="small"
-                        type="password"
-                    />
+                        required
+                    >
+                        <InputLabel htmlFor='display-name'>비밀번호 확인</InputLabel>
+                        <OutlinedInput
+                            label='비밀번호  확인'
+                            variant="outlined"
+                            size="small"
+                            type={showPassword ? 'text' : 'password'}
+                            inputRef={pwd2Ref}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                              </InputAdornment>
+                            }
+                        />
+                        <FormHelperText>{helperTextConfirmPwd2}</FormHelperText>
+                    </FormControl>
                 </Grid>
                 <Grid item md={12} xs={12}>
                 <Card elevation={3}>
@@ -226,31 +263,31 @@ const CreateAccountModal = ({open, onClose}) => {
                         </FormControl>
                         </Grid>
                         <Grid item md={12} xs={12} sx={{ display: 'flex' }}>
-                        <FormControl
-                            required
-                            sx={{ m: 2 }}
-                            component="fieldset"
-                            variant="standard"
-                        >
-                            <FormLabel component="legend">사용 기능</FormLabel>
-                            <FormGroup aria-label="position" row>
-                            {serviceProperties.service.types.map((type, index) => (
-                                <FormControlLabel
-                                    key={type}
-                                    control={
-                                        <Checkbox
-                                            inputRef={(e) => checkboxRef.current[index] = e}
-                                        />
-                                    }
-                                    label={
-                                        <Typography variant="h5">
-                                        {serviceProperties.service[type]}
-                                        </Typography>
-                                    }
-                                />
-                            ))}
-                            </FormGroup>
-                        </FormControl>
+                            <FormControl
+                                required
+                                sx={{ m: 2 }}
+                                component="fieldset"
+                                variant="standard"
+                            >
+                                <FormLabel component="legend">사용 기능</FormLabel>
+                                <FormGroup aria-label="position" row>
+                                {serviceProperties.service.types.map((type, index) => (
+                                    <FormControlLabel
+                                        key={type}
+                                        control={
+                                            <Checkbox
+                                                inputRef={(e) => checkboxRef.current[index] = e}
+                                            />
+                                        }
+                                        label={
+                                            <Typography variant="h5">
+                                            {serviceProperties.service[type]}
+                                            </Typography>
+                                        }
+                                    />
+                                ))}
+                                </FormGroup>
+                            </FormControl>
                         </Grid>
                     </Grid>
                     </CardContent>
@@ -268,7 +305,7 @@ const CreateAccountModal = ({open, onClose}) => {
         <AlertSnackbar
             open={alertOpen}
             onClose={handleAlertClose}
-            duration={duration}
+            duration={1000}
             severity={severity}
             message={message}
         />

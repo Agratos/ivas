@@ -147,7 +147,14 @@ const admin = handleActions(
         }),
         [adminActionType.CLEAR]: () => (
             initialState
-        )
+        ),
+        [adminActionType.SET_ADMIN]: (state, {payload : { id, password }}) => ({
+            ...state,
+            login:{
+                id: id,
+                password: password
+            }
+        })
     },
     initialState,
 );

@@ -1,11 +1,11 @@
 import React, { useEffect} from 'react';
 
 import { Dialog } from '@mui/material';
-import { deepPurple } from '@mui/material/colors';
+//import { deepPurple } from '@mui/material/colors';
 
 import ColorDialogAction from 'components/modal/ColorDialogAction';
 
-const LogoutModal = ({open, onClose, closeAction}) => {
+const LogoutModal = ({text ,open, onClose, closeAction}) => {
     
     useEffect(() => {
         document.body.style.overflowY = 'scroll';
@@ -29,7 +29,7 @@ const LogoutModal = ({open, onClose, closeAction}) => {
                 gradientColor2={'grey'}
                 closeEvent={onClose}
                 closeAction={closeAction}
-                buttonTitle="로그아웃"
+                buttonTitle={text}
             />
         </Dialog>
     )
