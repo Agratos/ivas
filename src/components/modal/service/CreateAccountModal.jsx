@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import {
     Dialog, DialogContent, Card, CardContent, Divider,
     Grid, TextField, Typography, Checkbox, 
@@ -7,7 +8,7 @@ import {
     OutlinedInput, InputAdornment, InputLabel, IconButton,
     FormHelperText
 } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { Visibility, VisibilityOff, Done } from '@mui/icons-material'
 import { deepPurple } from '@mui/material/colors';
 import { serviceProperties } from 'assets/properties/serviceProperties';
 import serviceAction from 'store/actions/service';
@@ -164,10 +165,10 @@ const CreateAccountModal = ({open, onClose}) => {
                 <Grid item md={6} xs={12} />
                 <Grid item md={6} xs={12}>
                     <FormControl 
-                        fullWidth 
                         size='small' 
                         variant="outlined"
                         required
+                        style={{width: '90%'}}
                     >
                         <InputLabel htmlFor='display-name'>비밀번호</InputLabel>
                         <OutlinedInput
@@ -194,14 +195,16 @@ const CreateAccountModal = ({open, onClose}) => {
                 </Grid>
                 <Grid item md={6} xs={12}>
                     <FormControl 
-                        fullWidth 
                         size='small' 
                         variant="outlined"
                         required
+                        style={{width: '90%'}}
                     >
-                        <InputLabel htmlFor='display-name'>비밀번호 확인</InputLabel>
+                        <InputLabel htmlFor='display-name'>
+                            비밀번호 확인
+                        </InputLabel>
                         <OutlinedInput
-                            label='비밀번호  확인'
+                            label='비밀번호  확인  '
                             variant="outlined"
                             size="small"
                             type={showPassword ? 'text' : 'password'}
@@ -312,4 +315,5 @@ const CreateAccountModal = ({open, onClose}) => {
         </Dialog>
     )
 }
+
 export default CreateAccountModal;
