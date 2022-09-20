@@ -18,9 +18,10 @@ import { serviceProperties } from 'assets/properties/serviceProperties';
 import userAction from 'store/actions/user';
 
 const testDummy = {
+    id: 'test',
     password: 'wo8146131!',
-    streamCount: 0,
-    function: [],
+    stream: 0,
+    functions: [],
 }
 
 const UserServiceForm = () => {
@@ -140,15 +141,36 @@ const UserServiceForm = () => {
         // testDummy.streamCount == streamRef.current.value && console.log('변경한 영상 스트림 갯수가 같다');
         // JSON.stringify(testDummy.function) === JSON.stringify(checkBox) && console.log('변경한 사용 기능이 같습니다.');
         const checkBox = [];
+        checkboxRef.current.map((box, index) => (
+            box.checked && checkBox.push(index + 1)
+        )) 
 
-        const result = (
-            !(testDummy.streamCount == streamRef.current.value) ||
-            !(JSON.stringify(testDummy.function) === JSON.stringify(checkBox)) ||
-            !((changePwdValidation === true && confirmPwdValidation === true) && 
-                !(testDummy.password === changePwdRef.current.value))
-        )
+        // const result = (
+        //     !(testDummy.stream == streamRef.current.value) 
+        //     || !(JSON.stringify(testDummy.function) === JSON.stringify(checkBox))
+        //     || (!(testDummy.password === changePwdRef.current.value) && (changePwdValidation && confirmPwdValidation))
+        // )
 
-        console.log(result);
+        let data = {
+            id: defaultId,
+            password: defaultPassword,
+            stream: testDummy.stream,
+            functions: testDummy.functions
+        }
+
+        //console.log(JSON.stringify(testDummy) === JSON.stringify(data))
+        // 새 비밀 번호를 입력 했을 때
+        if(changePwdRef.current.value !== null){
+            if(changePwdValidation && confirmPwdValidation){
+                if(testDummy.password === changePwdRef.current.value){
+                    console.log('변경 전과 후가 같습니다. 다른 비밀번호를 설정해 주세요')
+                }else{
+                    data.password = changePwdRef.current.value;
+                }
+            }
+        }
+
+        console.log(data);
     }
 
 
@@ -282,17 +304,17 @@ const UserServiceForm = () => {
                                 variant="standard"
                             >
                                 <FormLabel component="legend" sx={{ py: 1 }}>
-                                    분석대상 영상스트림 갯수
+                                    분석대상 영상스트림 갯수(0~10)
                                 </FormLabel>
                                 <TextField
                                     id="outlined-number"
                                     hiddenLabel
                                     type="number"
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
                                     name="stream"
                                     inputRef={streamRef}
+                                    InputProps={{ inputProps: { min: 0, max: 10}}}                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                     defaultValue={0}
                                     size="small"
                                 />
