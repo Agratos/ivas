@@ -34,6 +34,13 @@ const LoginModal = ({open, onClose, target}) => {
         setAlertOpen(false)
     },[open])
 
+    useEffect(() => {
+        userLoginError && handleSnackbar('user','error')
+    },[userLoginError])
+    useEffect(() => {
+        adminLoginError && handleSnackbar('admin','error')
+    },[adminLoginError])
+
     const handleSnackbar = useCallback((target, result) => {
         validationSnackbar({
             type: 'login',
@@ -45,20 +52,12 @@ const LoginModal = ({open, onClose, target}) => {
         })
     },[])
 
-    useEffect(() => {
-        userLoginError && handleSnackbar('user','error')
-    },[userLoginError])
-    useEffect(() => {
-        adminLoginError && handleSnackbar('admin','error')
-    },[adminLoginError])
-
     const handleAlertOpen = () => {
         setAlertOpen(true);
     };
     const handleAlertClose = () => {
         setAlertOpen(false);
     };
-
 
     const onLogin = () => {
         const id = idRef.current.value;
@@ -82,10 +81,17 @@ const LoginModal = ({open, onClose, target}) => {
         onClose();
     }
 
+    const preventCopyPast = (e) => {
+        e.preventDefault();
+        return false;
+    }
+
     return (
         <Dialog
             open={open}
             onClose={(event, reason) => {handleClose(event,reason)}}
+            onCopy={preventCopyPast}
+            onPaste={preventCopyPast}
             maxWidth="xs"
         >
             <ColorDialogTitle
