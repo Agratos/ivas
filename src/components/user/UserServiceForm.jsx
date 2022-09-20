@@ -17,6 +17,12 @@ import AlertSnackbar from 'components/common/AlertSnackbar';
 import { serviceProperties } from 'assets/properties/serviceProperties';
 import userAction from 'store/actions/user';
 
+const testDummy = {
+    password: 'wo8146131!',
+    streamCount: 0,
+    function: [],
+}
+
 const UserServiceForm = () => {
     const { defaultId, defaultPassword } = useSelector(({user}) => ({
         defaultId: user.login.id,
@@ -64,7 +70,7 @@ const UserServiceForm = () => {
 
     const onAlter = () => {
         const compare = compareOriginPassword();
-        compare && console.log('작동중');
+        compare && alterValidation()
     }
 
     /** 기존 비밀 번호 유효성 검사 */
@@ -119,6 +125,31 @@ const UserServiceForm = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+
+    /** 서비스 변경 신청 유효성 검사 */
+    const alterValidation = () => {
+        // const changePwdRef = useRef();
+        // const confirmPwdRef = useRef();
+        // const streamRef = useRef();
+        // const checkboxRef = useRef([]);
+        
+        // 기존의 데이터와 비교해서 달라진것이 없다면 서비스 변경 신청 작동 x
+        
+        // changePwdValidation && !confirmPwdValidation && console.log('작성한 비밀 번호가 다르다'); 
+        // testDummy.password === changePwdRef.current.value && console.log('변경한 비밀 번호가 같다');
+        // testDummy.streamCount == streamRef.current.value && console.log('변경한 영상 스트림 갯수가 같다');
+        // JSON.stringify(testDummy.function) === JSON.stringify(checkBox) && console.log('변경한 사용 기능이 같습니다.');
+        const checkBox = [];
+
+        const result = (
+            !(testDummy.streamCount == streamRef.current.value) ||
+            !(JSON.stringify(testDummy.function) === JSON.stringify(checkBox)) ||
+            !((changePwdValidation === true && confirmPwdValidation === true) && 
+                !(testDummy.password === changePwdRef.current.value))
+        )
+
+        console.log(result);
+    }
 
 
     return (
