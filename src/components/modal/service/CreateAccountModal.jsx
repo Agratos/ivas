@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
 import {
     Dialog, DialogContent, Card, CardContent, Divider,
     Grid, TextField, Typography, Checkbox, 
@@ -8,11 +7,10 @@ import {
     OutlinedInput, InputAdornment, InputLabel, IconButton,
     FormHelperText
 } from '@mui/material';
-import { Visibility, VisibilityOff, Done } from '@mui/icons-material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { deepPurple } from '@mui/material/colors';
 import { serviceProperties } from 'assets/properties/serviceProperties';
 import serviceAction from 'store/actions/service';
-import validationPassword from 'utils/validationPassword';
 import validationSnackbar from 'utils/validationSnackbar';
 
 import ColorDialogTitle from 'components/modal/ColorDialogTitle';
@@ -53,16 +51,14 @@ const CreateAccountModal = ({open, onClose}) => {
 
     /** 아이디 유효성 응답 처리 */
     useEffect(() => {
-        if(chkdupInfo !== null){
-            if(chkdupInfo){
-                setHelperTextId(serviceProperties.login.validation.info.valid);
-                setValidId(true);
-            }else{
-                setHelperTextId(serviceProperties.login.validation.info.unvalid);
-                setValidId(false);
-            }
+        if(chkdupInfo){
+            setHelperTextId(serviceProperties.login.validation.info.valid);
+            setValidId(true);
+        }else if(chkdupError){
+            setHelperTextId(serviceProperties.login.validation.info.unvalid);
+            setValidId(false)
         }
-    },[chkdupInfo])
+    },[chkdupInfo, chkdupError])
 
     const handleAlertOpen = () => {
         setAlertOpen(true);
@@ -107,7 +103,7 @@ const CreateAccountModal = ({open, onClose}) => {
     /** 비밀번호 유효성 검사 */
     const hanldePasswordValidation = ({type, ref}) => {
         clearTimeout(ref.current.setTimeout);
-        if(ref.current.value !== null){
+        if(ref.current.value !== ''){
             ref.current.setTimeout = setTimeout(() => {
                 switch(type){
                     case 'pwd1':
@@ -120,6 +116,15 @@ const CreateAccountModal = ({open, onClose}) => {
                         break;
                 }
             }, 500)
+        }else{
+            switch(type){
+                case 'pwd1':
+                    setValidPwd1(null)
+                    break;
+                case 'pwd2':
+                    setValidPwd2(null)
+                    break;
+            }
         }
     }
 
@@ -245,7 +250,9 @@ const CreateAccountModal = ({open, onClose}) => {
                               </InputAdornment>
                             }
                             style={
-                                validPwd1 === null ? {} : validPwd1 ? {
+                                validPwd1 === null ? {
+                                    backgroundColor: 'white'
+                                } : validPwd1 ? {
                                     backgroundColor: '#00ff2243'
                                 } : {
                                     backgroundColor: '#ff000043'
@@ -287,7 +294,9 @@ const CreateAccountModal = ({open, onClose}) => {
                               </InputAdornment>
                             }
                             style={
-                                validPwd2 === null ? {} : validPwd2 ? {
+                                validPwd2 === null ? {
+                                    backgroundColor: 'white'
+                                } : validPwd2 ? {
                                     backgroundColor: '#00ff2243'
                                 } : {
                                     backgroundColor: '#ff000043'

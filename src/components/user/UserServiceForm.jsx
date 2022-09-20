@@ -1,21 +1,14 @@
 import React, { useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import {
-    Card,
-    CardContent,
-    Divider,
-    TextField,
-    Typography,
-    Checkbox,
-    FormControl,
-    FormLabel,
-    FormControlLabel,
-    FormGroup,
-    Paper,
-    Stack,
-    Button,
+    Card, CardContent, Divider, TextField, Typography,
+    Checkbox, FormControl, FormLabel, FormControlLabel, 
+    FormGroup, Paper, Stack, Button, InputLabel, OutlinedInput,
+    FormHelperText, InputAdornment, IconButton
 } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
 import GridItem from 'components/layout/container/GridItem';
 import ConfirmModal from 'components/modal/ConfirmModal';
@@ -30,21 +23,16 @@ const UserServiceForm = () => {
         defaultPassword: user.login.password,
     }))
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    //snackbar
-    const [alertOpen, setAlertOpen] = useState(false);
-    const [message, setMessage] = useState('');
+    const [modalOpen, setModalOpen] = useState(false);
+    const [alertModal, setAlertModal] = useState(false);
     const [severity, setSeverity] = useState('success');
+    const [message, setMessage] = useState(null);
 
-    const [ modalOpen, setModalOpen] = useState(false);
-    const handleModalClickOpen = () => { 
-        if(defaultPassword === originPwdRef.current.value){
-            setModalOpen(true);
-        }else{
-
-        }
-    };
-    const handleModalClose = () => { setModalOpen(false); };
+    const [changePwdValidation, setChangePwdValidation] = useState(null);
+    const [confirmPwdValidation, setConfirmPwdValidation] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     const originPwdRef = useRef();
     const changePwdRef = useRef();
@@ -52,13 +40,86 @@ const UserServiceForm = () => {
     const streamRef = useRef();
     const checkboxRef = useRef([]);
 
+    /** 서비스 탈퇴 신청시 확인 모달을 띄우는 로직 */
+    const handleModalClickOpen = () => { 
+        const compare = compareOriginPassword()
+        compare && setModalOpen(true);
+    };
+    const handleModalClose = () => { setModalOpen(false) };
+    const handleAlertClose = () => { setAlertModal(false) };
+
     const onResign = () => {
-        dispatch(userAction.resign(defaultId))
+        //dispatch(userAction.resign({id: defaultId}))
+
+        handleModalClose()
+        setAlertModal(true);
+        setSeverity('success');
+        setMessage(serviceProperties.service.success.alter)
+        
+        setTimeout(() => {
+            dispatch(userAction.clear());
+            navigate('/');
+        }, 2000)
     }
 
-    const onSubmit = () => {
-
+    const onAlter = () => {
+        const compare = compareOriginPassword();
+        compare && console.log('작동중');
     }
+
+    /** 기존 비밀 번호 유효성 검사 */
+    const compareOriginPassword = () => {
+        if(defaultPassword === originPwdRef.current.value){
+            return true
+        }else if(originPwdRef.current.value === ''){
+            setAlertModal(true);
+            setSeverity('error');
+            setMessage(serviceProperties.service.error.info)
+        }else{
+            setAlertModal(true);
+            setSeverity('error');
+            setMessage(serviceProperties.service.error.oldpwd)
+        }
+        return false;
+    }
+
+    /** 새로운 비밀 번호 유효성 확인 */
+    const hanldePasswordValidation = ({type, ref}) => {
+        clearTimeout(ref.current.setTimeout);
+
+        if(ref.current.value !== ''){
+            ref.current.setTimeout = setTimeout(() => {
+                switch(type){
+                    case 'changePwd':
+                        const resultPwd1 = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,}$/.test(changePwdRef.current.value);
+                        resultPwd1 !== changePwdValidation && setChangePwdValidation(resultPwd1);
+                        break;
+                    case 'confirmPwd':
+                        const resultPwd2 = changePwdRef.current.value === confirmPwdRef.current.value
+                        resultPwd2 !== confirmPwdValidation && setConfirmPwdValidation(resultPwd2);
+                        break;
+                }
+            }, 500)
+        }else if(ref.current.value === ''){
+            console.log('여기 작동중');
+            switch(type){
+                case 'changePwd':
+                    setChangePwdValidation(null);
+                    break;
+                case 'confirmPwd':
+                    setConfirmPwdValidation(null);
+            }
+        }
+    }
+
+    /** 비밀 번호 눈 모양 버튼 다루는 로직 */
+    const handleShowPassword = () => {
+        setShowPassword(!showPassword);
+    }
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
 
     return (
         <Paper
@@ -77,34 +138,94 @@ const UserServiceForm = () => {
                         fullWidth
                         required
                         label="기존 비밀번호"
-                        helperText={serviceProperties.service.validation.info}
+                        inputRef={originPwdRef}
+                        helperText={serviceProperties.service.error.info}
                         name="oldPassword"
-                        ref={originPwdRef}
                         variant="outlined"
                         size="small"
                         type="password"
                     />
-                    <TextField
+                    <FormControl 
                         fullWidth
-                        required
-                        label="새 비밀번호"
-                        helperText={serviceProperties.login.validation.info.password}
-                        name="password"
-                        ref={changePwdRef}
+                        size='small' 
                         variant="outlined"
-                        size="small"
-                        type="password" 
-                    />
-                    <TextField
+                        required
+                    >
+                        <InputLabel htmlFor='display-name'>새 비밀번호</InputLabel>
+                        <OutlinedInput
+                            label='새 비밀번호'
+                            variant="outlined"
+                            size="small"
+                            type={showPassword ? 'text' : 'password'}
+                            autoComplete='off'
+                            inputRef={changePwdRef}
+                            onChange={() => hanldePasswordValidation({type:'changePwd', ref:changePwdRef})}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                              </InputAdornment>
+                            }
+                            style={
+                                changePwdValidation === null ? {
+                                    backgroundColor: 'white'
+                                } : changePwdValidation ? {
+                                    backgroundColor: '#00ff2243'
+                                } : {
+                                    backgroundColor: '#ff000043'
+                                }
+                            }
+                        />
+                        <FormHelperText>{serviceProperties.login.validation.info.password}</FormHelperText>
+                    </FormControl>
+                    <FormControl 
                         fullWidth
-                        required
-                        label="새 비밀번호 확인"
-                        name="confirmPassword"
-                        ref={confirmPwdRef}
+                        size='small' 
                         variant="outlined"
-                        size="small"
-                        type="password"
-                    />
+                        required
+                        disabled={!changePwdValidation}
+                    >
+                        <InputLabel htmlFor='display-name'>
+                            새 비밀번호  확인
+                        </InputLabel>
+                        <OutlinedInput
+                            label='새 비밀번호  확인'
+                            variant="outlined"
+                            size="small"
+                            type={showPassword ? 'text' : 'password'}
+                            inputRef={confirmPwdRef}
+                            onChange={() => hanldePasswordValidation({type:'confirmPwd', ref:confirmPwdRef})}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        disabled={!changePwdValidation}
+                                        edge="end" 
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                              </InputAdornment>
+                            }
+                            style={
+                                confirmPwdValidation === null ? {
+                                    backgroundColor: 'white'
+                                } : confirmPwdValidation ? {
+                                    backgroundColor: '#00ff2243'
+                                } : {
+                                    backgroundColor: '#ff000043'
+                                }
+                            }
+                        />
+                        {/* <FormHelperText>{helperTextConfirmPwd2}</FormHelperText> */}
+                    </FormControl>
                 </Stack>
             </GridItem>
             <GridItem md={12} xs={12} sx={{ py: 1 }}>
@@ -191,7 +312,7 @@ const UserServiceForm = () => {
                         서비스 탈퇴 신청
                     </Button>
                     <Button 
-                        //onClick={() => onAlter(loginId) }              
+                        onClick={() => onAlter() }              
                         variant="contained" size="large"
                     >
                         서비스 변경 신청
@@ -207,10 +328,10 @@ const UserServiceForm = () => {
                 />
             </ConfirmModalWrapper>
             <AlertSnackbarWrapper>
-                <AlertSnackbar 
-                    open={alertOpen}
-                    //onClose={handleAlertClose}
-                    duration={1000}
+                <AlertSnackbar
+                    open={alertModal}
+                    onClose={handleAlertClose}
+                    duration={2000}
                     severity={severity}
                     message={message}
                 />
