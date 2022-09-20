@@ -33,10 +33,10 @@ const CreateAccountModal = ({open, onClose}) => {
 
     // 유효성 검증 변수 선언
     const [helperTextConfirmPwd2, setHelperTextConfirmPwd2] = useState('');
-    const [validPwd1, setValidPwd1] = useState(false);
-    const [validPwd2, setValidPwd2] = useState(false);
+    const [validPwd1, setValidPwd1] = useState(null);
+    const [validPwd2, setValidPwd2] = useState(null);
     const [helperTextId, setHelperTextId] = useState('');
-    const [validId, setValidId] = useState(false);
+    const [validId, setValidId] = useState(null);
 
     // alert창 변수 선언
     const [alertOpen, setAlertOpen] = useState(false);
@@ -50,22 +50,6 @@ const CreateAccountModal = ({open, onClose}) => {
         dispatch(serviceAction.clear());
         setHelperTextId(serviceProperties.login.validation.info.id)
     },[open])
-
-    /** 아이디 중복 체크 응답 */
-    useEffect(() => {
-        if(chkdupInfo){
-            setHelperTextId(serviceProperties.login.validation.info.valid);
-            setValidId(true);
-        }else{
-            setHelperTextId(serviceProperties.login.validation.info.unvalid);
-            setValidId(false);
-        }
-    }, [chkdupInfo]);
-
-    /** 아이디 중복 체크 */
-    const handleDupChk = () => { 
-        dispatch(serviceAction.chkdup({id: idRef.current.value}))
-    }
 
     const handleAlertOpen = () => {
         setAlertOpen(true);
@@ -92,26 +76,69 @@ const CreateAccountModal = ({open, onClose}) => {
         event.preventDefault();
     };
 
+    /** 아이디 유효성 검사 */
+    const handleIdValidation = () => { 
+        if(idRef.current.value.length > 3){
+            dispatch(serviceAction.chkdup({id: idRef.current.value}))
+            setTimeout(() => {
+                if(chkdupInfo){
+                    setHelperTextId(serviceProperties.login.validation.info.valid);
+                    setValidId(true);
+                }else{
+                    setHelperTextId(serviceProperties.login.validation.info.unvalid);
+                    setValidId(false);
+                }
+            }, 500)
+        }else {
+            setHelperTextId('아이디는 4글자 이상 이어야 합니다.');
+            setValidId(false);
+        }
+    }
+
+    /** 비밀번호 유효성 검사 */
+    const hanldePasswordValidation = ({type, ref}) => {
+        clearTimeout(ref.current.setTimeout);
+        
+        ref.current.setTimeout = setTimeout(() => {
+            switch(type){
+                case 'pwd1':
+                    const resultPwd1 = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,}$/.test(pwd1Ref.current.value);
+                    resultPwd1 !== validPwd1 && setValidPwd1(resultPwd1);
+                    break;
+                case 'pwd2':
+                    const resultPwd2 = pwd1Ref.current.value === pwd2Ref.current.value
+                    resultPwd2 !== validPwd2 && setValidPwd2(resultPwd2);
+                    break;
+            }
+        }, 500)
+    }
+
     /** 전송 유효성 검사 추가 중 */
     const onSubmit = () => {
-        let checkBox = [];
-        checkboxRef.current.map((box, index) => (
-            box.checked && checkBox.push(index + 1)
-        )) 
-
-        console.log(pwd1Ref.current.value)
-
-        // dispatch(serviceAction.register({
-        //     id: idRef.current.value,
-        //     password: pwd1Ref.current.value,
-        //     confirmPassword: pwd2Ref.current.value,
-        //     stream: streamRef.current.value,
-        //     functions: checkBox
-        // }))
-        // handleSnackbar('service', 'success');
-        // setTimeout(() => {
-        //     onClose();
-        // }, 1000)
+        if(validId && validPwd1 && validPwd2){
+            let checkBox = [];
+            checkboxRef.current.map((box, index) => (
+                box.checked && checkBox.push(index + 1)
+            )) 
+    
+            dispatch(serviceAction.register({
+                id: idRef.current.value,
+                password: pwd1Ref.current.value,
+                confirmPassword: pwd2Ref.current.value,
+                stream: streamRef.current.value,
+                functions: checkBox
+            }))
+            handleSnackbar('service', 'success');
+            setTimeout(() => {
+                onClose();
+            }, 1000)
+        }else if(!validId){
+            idRef.current.focus();
+        }else if(!validPwd1){
+            pwd1Ref.current.focus();
+        }else if(!validPwd2){
+            pwd2Ref.current.focus();
+        }
     }
 
     return (
@@ -142,22 +169,36 @@ const CreateAccountModal = ({open, onClose}) => {
                     <Divider />
                 </Grid>
                 <Grid item md={4} xs={9}>
-                    <TextField
+                    <FormControl 
                         fullWidth
-                        required
-                        helperText={helperTextId}
-                        label="아이디"
-                        name="id"
-                        inputRef={idRef}
+                        size='small' 
                         variant="outlined"
-                        size="small"
-                    />
+                        required
+                        //style={{width: '90%'}}
+                    >
+                        <InputLabel htmlFor='display-name'>아이디</InputLabel>
+                        <OutlinedInput
+                            label='아이디'
+                            variant="outlined"
+                            size="small"
+                            autoComplete='off'
+                            inputRef={idRef}
+                            style={
+                                validId === null ? {} : validId ? {
+                                    backgroundColor: '#00ff2243'
+                                } : {
+                                    backgroundColor: '#ff000043'
+                                }
+                            }
+                        />
+                        <FormHelperText>{helperTextId}</FormHelperText>
+                    </FormControl>
                 </Grid>
                 <Grid item md={2} xs={2}>
                     <Button 
                         variant="contained" 
                         sx={{ mt: '2px' }}
-                        onClick={() => handleDupChk() }
+                        onClick={() => handleIdValidation() }
                     >
                         중복확인
                     </Button>
@@ -165,10 +206,10 @@ const CreateAccountModal = ({open, onClose}) => {
                 <Grid item md={6} xs={12} />
                 <Grid item md={6} xs={12}>
                     <FormControl 
+                        fullWidth
                         size='small' 
                         variant="outlined"
                         required
-                        style={{width: '90%'}}
                     >
                         <InputLabel htmlFor='display-name'>비밀번호</InputLabel>
                         <OutlinedInput
@@ -176,7 +217,9 @@ const CreateAccountModal = ({open, onClose}) => {
                             variant="outlined"
                             size="small"
                             type={showPassword ? 'text' : 'password'}
+                            autoComplete='off'
                             inputRef={pwd1Ref}
+                            onChange={() => hanldePasswordValidation({type:'pwd1', ref:pwd1Ref})}
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
@@ -189,16 +232,24 @@ const CreateAccountModal = ({open, onClose}) => {
                                     </IconButton>
                               </InputAdornment>
                             }
+                            style={
+                                validPwd1 === null ? {} : validPwd1 ? {
+                                    backgroundColor: '#00ff2243'
+                                } : {
+                                    backgroundColor: '#ff000043'
+                                }
+                            }
                         />
                         <FormHelperText>{serviceProperties.login.validation.info.password}</FormHelperText>
                     </FormControl>
                 </Grid>
                 <Grid item md={6} xs={12}>
                     <FormControl 
+                        fullWidth
                         size='small' 
                         variant="outlined"
+                        disabled={!validPwd1}
                         required
-                        style={{width: '90%'}}
                     >
                         <InputLabel htmlFor='display-name'>
                             비밀번호 확인
@@ -209,17 +260,26 @@ const CreateAccountModal = ({open, onClose}) => {
                             size="small"
                             type={showPassword ? 'text' : 'password'}
                             inputRef={pwd2Ref}
+                            onChange={() => hanldePasswordValidation({type:'pwd2', ref:pwd2Ref})}
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
                                         aria-label="toggle password visibility"
                                         onClick={handleShowPassword}
                                         onMouseDown={handleMouseDownPassword}
-                                        edge="end"
+                                        disabled={!validPwd1}
+                                        edge="end" 
                                     >
                                         {showPassword ? <VisibilityOff /> : <Visibility />}
                                     </IconButton>
                               </InputAdornment>
+                            }
+                            style={
+                                validPwd2 === null ? {} : validPwd2 ? {
+                                    backgroundColor: '#00ff2243'
+                                } : {
+                                    backgroundColor: '#ff000043'
+                                }
                             }
                         />
                         <FormHelperText>{helperTextConfirmPwd2}</FormHelperText>

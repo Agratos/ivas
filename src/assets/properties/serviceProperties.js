@@ -9,7 +9,7 @@ export const serviceProperties = {
     login: {
         validation: {
             info: {
-                id: '아이디 중복 확인을 해주세요.',
+                id: '아이디 중복 확인을 해주세요. (4글자 이상)',
                 valid: '사용할 수 있는 아이디입니다.',
                 unvalid: '사용 중인 아이디입니다.',
                 password: '숫자, 특수문자, 영문 대소문자 조합 6~12자리',
