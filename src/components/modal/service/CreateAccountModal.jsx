@@ -51,6 +51,19 @@ const CreateAccountModal = ({open, onClose}) => {
         setHelperTextId(serviceProperties.login.validation.info.id)
     },[open])
 
+    /** 아이디 유효성 응답 처리 */
+    useEffect(() => {
+        if(chkdupInfo !== null){
+            if(chkdupInfo){
+                setHelperTextId(serviceProperties.login.validation.info.valid);
+                setValidId(true);
+            }else{
+                setHelperTextId(serviceProperties.login.validation.info.unvalid);
+                setValidId(false);
+            }
+        }
+    },[chkdupInfo])
+
     const handleAlertOpen = () => {
         setAlertOpen(true);
     };
@@ -76,23 +89,19 @@ const CreateAccountModal = ({open, onClose}) => {
         event.preventDefault();
     };
 
+    const preventCopyPast = (e) => {
+        e.preventDefault();
+        return false;
+    }
+
     /** 아이디 유효성 검사 */
     const handleIdValidation = () => { 
         if(idRef.current.value.length > 3){
             dispatch(serviceAction.chkdup({id: idRef.current.value}))
-            setTimeout(() => {
-                if(chkdupInfo){
-                    setHelperTextId(serviceProperties.login.validation.info.valid);
-                    setValidId(true);
-                }else{
-                    setHelperTextId(serviceProperties.login.validation.info.unvalid);
-                    setValidId(false);
-                }
-            }, 500)
-        }else {
+        }else{
             setHelperTextId('아이디는 4글자 이상 이어야 합니다.');
             setValidId(false);
-        }
+        }  
     }
 
     /** 비밀번호 유효성 검사 */
@@ -150,6 +159,8 @@ const CreateAccountModal = ({open, onClose}) => {
                 }
                 onClose();
             }}
+            onCopy={preventCopyPast}
+            onPaste={preventCopyPast}
             maxWidth="md"
         >
         <ColorDialogTitle
