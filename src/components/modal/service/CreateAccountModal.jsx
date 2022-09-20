@@ -107,19 +107,20 @@ const CreateAccountModal = ({open, onClose}) => {
     /** 비밀번호 유효성 검사 */
     const hanldePasswordValidation = ({type, ref}) => {
         clearTimeout(ref.current.setTimeout);
-        
-        ref.current.setTimeout = setTimeout(() => {
-            switch(type){
-                case 'pwd1':
-                    const resultPwd1 = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,}$/.test(pwd1Ref.current.value);
-                    resultPwd1 !== validPwd1 && setValidPwd1(resultPwd1);
-                    break;
-                case 'pwd2':
-                    const resultPwd2 = pwd1Ref.current.value === pwd2Ref.current.value
-                    resultPwd2 !== validPwd2 && setValidPwd2(resultPwd2);
-                    break;
-            }
-        }, 500)
+        if(ref.current.value !== null){
+            ref.current.setTimeout = setTimeout(() => {
+                switch(type){
+                    case 'pwd1':
+                        const resultPwd1 = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,}$/.test(pwd1Ref.current.value);
+                        resultPwd1 !== validPwd1 && setValidPwd1(resultPwd1);
+                        break;
+                    case 'pwd2':
+                        const resultPwd2 = pwd1Ref.current.value === pwd2Ref.current.value
+                        resultPwd2 !== validPwd2 && setValidPwd2(resultPwd2);
+                        break;
+                }
+            }, 500)
+        }
     }
 
     /** 전송 유효성 검사 추가 중 */
