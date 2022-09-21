@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { DialogActions, Button } from '@mui/material';
 import { indigo } from '@mui/material/colors';
 
 
 const ColorDialogAction = ({  gradientColor1,gradientColor2,closeEvent,closeAction,buttonTitle,}) => {
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    },[])
+
+    const handleKeyDown = (e) => {
+        if(e.key === 'Enter'){
+            closeAction();
+        }
+    }
+
     return (
         <DialogActions
             sx={{

@@ -63,6 +63,20 @@ const LoginModal = ({open, onClose, target}) => {
         const id = idRef.current.value;
         const password = pwdRef.current.value;
 
+        if(id === ''){
+            idRef.current.focus();
+            handleAlertOpen();
+            setSeverity('error');
+            setMessage('아이디를 입력해주세요');
+            return null;
+        }else if(password === ''){
+            pwdRef.current.focus();
+            handleAlertOpen();
+            setSeverity('error');
+            setMessage('비밀번호를 입력해주세요');
+            return null;
+        }
+
         if(target === 'user'){
             dispatch(userAction.setUser({id, password}))
             dispatch(userAction.login({id, password}))
@@ -81,6 +95,7 @@ const LoginModal = ({open, onClose, target}) => {
         onClose();
     }
 
+    /** 사용자 복사 붙여넣기 막기 */
     const preventCopyPast = (e) => {
         e.preventDefault();
         return false;
@@ -143,7 +158,7 @@ const LoginModal = ({open, onClose, target}) => {
             <AlertSnackbar 
                 open={alertOpen}
                 onClose={handleAlertClose}
-                duration={500}
+                duration={1000}
                 severity={severity}
                 message={message}
             />
