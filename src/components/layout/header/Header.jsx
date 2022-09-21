@@ -41,20 +41,23 @@ const Header = ({color, rightLinks, leftLinks, brand, fixed, absolute, changeCol
     };
     const headerColorChange = () => {
         const windowsScrollTop = window.pageYOffset;
-        if (windowsScrollTop > changeColorOnScroll.height) {
-            document.body
-                .getElementsByTagName('header')[0]
-                .classList.remove(classes[color]);
-            document.body
-                .getElementsByTagName('header')[0]
-                .classList.add(classes[changeColorOnScroll.color]);
-        } else {
-            document.body
-                .getElementsByTagName('header')[0]
-                .classList.add(classes[color]);
-            document.body
-                .getElementsByTagName('header')[0]
-                .classList.remove(classes[changeColorOnScroll.color]);
+
+        if(document.body.getElementsByTagName('header')[0] !== undefined){
+            if (windowsScrollTop > changeColorOnScroll.height) {
+                document.body
+                    .getElementsByTagName('header')[0]
+                    .classList.remove(classes[color]);
+                document.body
+                    .getElementsByTagName('header')[0]
+                    .classList.add(classes[changeColorOnScroll.color]);
+            } else {
+                document.body
+                    .getElementsByTagName('header')[0]
+                    .classList.add(classes[color]);
+                document.body
+                    .getElementsByTagName('header')[0]
+                    .classList.remove(classes[changeColorOnScroll.color]);
+            }
         }
     };
 
@@ -164,4 +167,4 @@ const ToolbarWrapper = styled.div`
     min-width: calc(100vw - 16px);
 `;
 
-export default Header;
+export default React.memo(Header);

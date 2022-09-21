@@ -10,13 +10,14 @@ import {
     getComparator, stableSort, emptyRows, handleChangeRowsPerPage, EnhancedTableHead
 } from 'components/table/Table';
 import GridItem from 'components/layout/container/GridItem';
+import AlertSnackbar from 'components/common/AlertSnackbar';
 
 import realTimeFormat from 'utils/realTimeFormat';
 import adminAction from 'store/actions/admin';
 import { serviceProperties } from 'assets/properties/serviceProperties';
 import { headCells } from 'assets/properties/adminApprovalTableProperties';
 
-const AdminApprovalTable = ({setApprovalData}) => {
+const AdminApprovalTable = ({setApprovalData , setAlertSnackbar, alertSnackbar}) => {
     const dispatch = useDispatch();
     const { form, approvalList, userdelInfo, userdelError, approvalInfo, approvalError } = useSelector(({ admin }) => ({ // approvalList 추가함
       form: admin.approval,
@@ -63,6 +64,16 @@ const AdminApprovalTable = ({setApprovalData}) => {
             stream,
         })
     };
+
+    const onDelete = (idx) => {
+        dispatch(adminAction.serviceUserDel({idx}));
+        setAlertSnackbar({
+            ...alertSnackbar,
+            open: true,
+            severity: 'success',
+            message: serviceProperties.approval.delete
+        })
+    }
 
     return (
         <GridItem xs={12} sm={12} md={12}>
@@ -123,9 +134,9 @@ const AdminApprovalTable = ({setApprovalData}) => {
                                                     <Button 
                                                         variant="outlined"
                                                         color="error"
-                                                        // onClick={() =>
-                                                        //     onDelete(idx,)                               
-                                                        // }
+                                                        onClick={() =>
+                                                            onDelete(idx,)                               
+                                                        }
                                                     >
                                                         삭제
                                                     </Button>
@@ -162,4 +173,4 @@ const AdminApprovalTable = ({setApprovalData}) => {
     );
 }
 
-export default AdminApprovalTable;
+export default React.memo(AdminApprovalTable);

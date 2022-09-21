@@ -50,16 +50,16 @@ const UserServiceForm = () => {
 
     /** 서비스 탈퇴 신청 로직 */
     const onResign = () => {
-        dispatch(userAction.resign({id: defaultId}))
+        //dispatch(userAction.resign({id: defaultId}))
 
         handleModalClose()
         setAlertModal(true);
         setSeverity('success');
-        setMessage(serviceProperties.service.success.alter)
+        setMessage(serviceProperties.service.success.delete)
         
         setTimeout(() => {
-            dispatch(userAction.clear());
             navigate('/');
+            dispatch(userAction.clear());
         }, 2000)
     }
 

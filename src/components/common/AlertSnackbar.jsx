@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Snackbar, Alert } from '@mui/material';
 
 const AlertSnackbar = ({ open, onClose, duration, severity, message }) => {
+    
     return (
         <Snackbar open={open} autoHideDuration={duration} onClose={onClose}>
             <Alert

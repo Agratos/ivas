@@ -63,6 +63,7 @@ export const serviceProperties = {
         
         success: {
             alter: '서비스 변경 신청이 완료되었습니다.',
+            delete: '서비스 탈퇴 신청이 완료 되었습니다.'
         },
 
         error: {
@@ -109,6 +110,7 @@ export const serviceProperties = {
     approval: {
         refuse: {
             validation: '거절 시 사유는 필수 입력입니다.',
+            success: '거절 하였습니다.',
         },
         success: '승인 처리 되었습니다.',
         delete: '삭제되었습니다.'

@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import {
     Typography, Checkbox, Button, Card, CardContent, Divider, FormControl,
     FormLabel, FormControlLabel, FormGroup, TextField, Stack,
@@ -6,9 +7,12 @@ import {
 
 import GridItem from 'components/layout/container/GridItem';
 
+import adminAction from 'store/actions/admin';
 import { serviceProperties } from 'assets/properties/serviceProperties';
 
-const AdminApproval = ({id, stream, functions}) => {
+const AdminApproval = ({idx , id, stream, functions, setAlertSnackbar, alertSnackbar}) => {
+    const dispatch = useDispatch();
+    const refuseReasonRef = useRef();
 
     const handleCheckbox = (type) => {
         let checked = false;
@@ -23,6 +27,46 @@ const AdminApproval = ({id, stream, functions}) => {
             return <Checkbox checked={checked} disabled />;
         }
     };
+
+    const onRefuse = () => {
+        const reason = refuseReasonRef.current.value;
+        const permit = 2;
+        
+        if(reason === ''){
+            setAlertSnackbar({
+                ...alertSnackbar,
+                open: true,
+                duration: 1500,
+                severity: 'error',
+                message: serviceProperties.approval.refuse.validation
+            })
+
+            return null;
+        }
+
+        dispatch(adminAction.serviceApproval({id, idx, permit, reason}));
+        setAlertSnackbar({
+            ...alertSnackbar,
+            open: true,
+            duration: 1500,
+            severity: 'success',
+            message: serviceProperties.approval.refuse.success
+        })
+    }
+
+    const onConfirm = () => {
+        const reason = refuseReasonRef.current.value;
+        const permit = 1;
+
+        dispatch(adminAction.serviceApproval({id, idx, permit, reason}));
+        setAlertSnackbar({
+            ...alertSnackbar,
+            open: true,
+            duration: 1500,
+            severity: 'success',
+            message: serviceProperties.approval.success
+        })
+    }; 
 
     return (
         <GridItem xs={12} sm={12} md={12}>
@@ -131,9 +175,8 @@ const AdminApproval = ({id, stream, functions}) => {
                             fullWidth
                             label="거절 시 사유"
                             name="reason"
+                            inputRef={refuseReasonRef}
                             variant="outlined"
-                            //value={form.reason}
-                            //onChange={onChange}
                             sx={{ pb: 3 }}
                         />
                     </GridItem>
@@ -146,7 +189,7 @@ const AdminApproval = ({id, stream, functions}) => {
                             sx={{ pt: 2 }}
                         >
                             <Button
-                                //onClick={onRefuse}
+                                onClick={onRefuse}
                                 variant="contained"
                                 color="error"
                                 size="large"
@@ -154,7 +197,7 @@ const AdminApproval = ({id, stream, functions}) => {
                                 거절
                             </Button>
                             <Button
-                                //onClick={onConfirm}
+                                onClick={onConfirm}
                                 variant="contained"
                                 color="success"
                                 size="large"
@@ -169,4 +212,4 @@ const AdminApproval = ({id, stream, functions}) => {
     )
 }
 
-export default AdminApproval;
+export default React.memo(AdminApproval);
