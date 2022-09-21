@@ -17,13 +17,6 @@ import AlertSnackbar from 'components/common/AlertSnackbar';
 import { serviceProperties } from 'assets/properties/serviceProperties';
 import userAction from 'store/actions/user';
 
-const testDummy = {
-    id: 'test',
-    password: 'wo8146131!',
-    stream: 0,
-    functions: [],
-}
-
 const UserServiceForm = () => {
     const { defaultId, defaultPassword } = useSelector(({user}) => ({
         defaultId: user.login.id,
@@ -108,7 +101,6 @@ const UserServiceForm = () => {
                 }
             }, 500)
         }else if(ref.current.value === ''){
-            console.log('여기 작동중');
             switch(type){
                 case 'changePwd':
                     setChangePwdValidation(null);
@@ -129,48 +121,61 @@ const UserServiceForm = () => {
 
     /** 서비스 변경 신청 유효성 검사 */
     const alterValidation = () => {
-        // const changePwdRef = useRef();
-        // const confirmPwdRef = useRef();
-        // const streamRef = useRef();
-        // const checkboxRef = useRef([]);
-        
-        // 기존의 데이터와 비교해서 달라진것이 없다면 서비스 변경 신청 작동 x
-        
-        // changePwdValidation && !confirmPwdValidation && console.log('작성한 비밀 번호가 다르다'); 
-        // testDummy.password === changePwdRef.current.value && console.log('변경한 비밀 번호가 같다');
-        // testDummy.streamCount == streamRef.current.value && console.log('변경한 영상 스트림 갯수가 같다');
-        // JSON.stringify(testDummy.function) === JSON.stringify(checkBox) && console.log('변경한 사용 기능이 같습니다.');
         const checkBox = [];
         checkboxRef.current.map((box, index) => (
             box.checked && checkBox.push(index + 1)
         )) 
 
-        // const result = (
-        //     !(testDummy.stream == streamRef.current.value) 
-        //     || !(JSON.stringify(testDummy.function) === JSON.stringify(checkBox))
-        //     || (!(testDummy.password === changePwdRef.current.value) && (changePwdValidation && confirmPwdValidation))
-        // )
-
-        let data = {
+        let preData = {
             id: defaultId,
             password: defaultPassword,
-            stream: testDummy.stream,
-            functions: testDummy.functions
+            stream: 0,
+            functions: []
         }
 
-        //console.log(JSON.stringify(testDummy) === JSON.stringify(data))
-        // 새 비밀 번호를 입력 했을 때
-        if(changePwdRef.current.value !== null){
+        const nextData = {
+            id: defaultId,
+            password: preData.password,
+            stream: Number(streamRef.current.value),
+            functions: checkBox
+        }
+
+        if(changePwdRef.current.value !== ''){
             if(changePwdValidation && confirmPwdValidation){
-                if(testDummy.password === changePwdRef.current.value){
-                    console.log('변경 전과 후가 같습니다. 다른 비밀번호를 설정해 주세요')
+                if(preData.password === changePwdRef.current.value){
+                    setAlertModal(true);
+                    setSeverity('error');
+                    setMessage(serviceProperties.service.error.samePwd);
+                    return null;
                 }else{
-                    data.password = changePwdRef.current.value;
+                    nextData.password = changePwdRef.current.value;
+                }
+            }else{
+                if(!changePwdValidation){
+                    setAlertModal(true);
+                    setSeverity('error');
+                    setMessage(serviceProperties.service.error.validPwd);
+                    return null;
+                }else{
+                    setAlertModal(true);
+                    setSeverity('error');
+                    setMessage(serviceProperties.service.error.newpwd);
+                    return null; 
                 }
             }
         }
 
-        console.log(data);
+        if(JSON.stringify(preData) === JSON.stringify(nextData)){
+            setAlertModal(true);
+            setSeverity('error');
+            setMessage(serviceProperties.service.error.sameData);
+        }else{
+            dispatch(userAction.alter(nextData))
+
+            setAlertModal(true);
+            setSeverity('success');
+            setMessage(serviceProperties.service.success.alter);
+        }
     }
 
 
