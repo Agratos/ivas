@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { Stack, Divider, Typography, Checkbox, TextField, Button, Card, CardContent,} from '@mui/material';
 
@@ -7,17 +7,16 @@ import userAction from 'store/actions/user';
 
 const UserVideoAlarm = ({ id }) => {
     const dispatch = useDispatch();
-    const [alarmData, setAlarmData] = useState(useSelector(({user}) => user.getVideoConfigInfo.sys_alarm));
+    const alarmData = useSelector(({user}) => user.getVideoConfigInfo.sys_alarm);
 
-    useEffect(() => {
-        console.log(alarmData);
-    },[alarmData])
+    const addresRef = useRef();
+    const enableRef = useRef();
 
     const onApplyAlarm = () => {
         dispatch(userAction.setAlarmConfig({
             id,
-            enable: true,
-            address: 'agratos'
+            enable: enableRef.current.checked,
+            address: addresRef.current.value
         }))
     }
 
@@ -38,7 +37,8 @@ const UserVideoAlarm = ({ id }) => {
                     <Checkbox
                         name='alarmCheck'
                         defaultChecked={alarmData.enable}
-                        //onChange={(e) => onChange(e, 'video')} 
+                        key={alarmData.enable}
+                        inputRef={enableRef}
                         size="small"
                     />
                     <Typography
@@ -52,8 +52,9 @@ const UserVideoAlarm = ({ id }) => {
                     <TextField
                         label="Addr"
                         name="almRestAddr"
-                        //value={alarmData.address}
-                        //onChange={(e) => onChange(e, 'video')}
+                        defaultValue={alarmData.address}
+                        key={alarmData.address}
+                        inputRef={addresRef}
                         variant="outlined"
                         size="small"
                         sx={{ ml: 2, width: '30%' }}
