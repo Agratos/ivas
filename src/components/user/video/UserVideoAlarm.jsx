@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Stack, Divider, Typography, Checkbox, TextField, Button, Card, CardContent,} from '@mui/material';
@@ -11,6 +11,12 @@ const UserVideoAlarm = ({ id }) => {
 
     const addresRef = useRef();
     const enableRef = useRef();
+
+    const [enable, setEnable] = useState(alarmData.enable);
+    
+    const handleEnable = (e) => {
+        setEnable(e.target.checked);
+    }
 
     const onApplyAlarm = () => {
         dispatch(userAction.setAlarmConfig({
@@ -39,6 +45,7 @@ const UserVideoAlarm = ({ id }) => {
                         defaultChecked={alarmData.enable}
                         key={alarmData.enable}
                         inputRef={enableRef}
+                        onChange={handleEnable}
                         size="small"
                     />
                     <Typography
@@ -55,6 +62,7 @@ const UserVideoAlarm = ({ id }) => {
                         defaultValue={alarmData.address}
                         key={alarmData.address}
                         inputRef={addresRef}
+                        disabled={!enable}
                         variant="outlined"
                         size="small"
                         sx={{ ml: 2, width: '30%' }}

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stack, Typography, Checkbox, TextField, Button, Avatar,} from '@mui/material';
   
@@ -16,6 +16,12 @@ const UserVideoStreamInput = ({streamNumber}) => {
     const enableRef = useRef();
     const authIdRef = useRef();
     const authPwdRef = useRef();
+
+    const [enable, setEneable] = useState(inputData.auth.enable)
+
+    const handleEnable = (e) => {
+        setEneable(e.target.checked);
+    }
 
     const onApplyRTSP = () => {
         dispatch(userAction.setInputConfig({
@@ -66,6 +72,7 @@ const UserVideoStreamInput = ({streamNumber}) => {
                             defaultChecked={inputData.auth.enable}
                             key={`inputData.auth.enable` + inputData.auth.enable}
                             inputRef={enableRef}
+                            onChange={handleEnable}
                             size="small"
                             sx={{ marginTop: '30px' }}
                         />
@@ -86,9 +93,10 @@ const UserVideoStreamInput = ({streamNumber}) => {
                         defaultValue={inputData.auth.id}
                         key={'inputData.auth.id' + inputData.auth.id}
                         inputRef={authIdRef}
+                        disabled={!enable}
                         variant="outlined"
                         size="small"
-                        sx={{ mb: 1 }}
+                        sx={{ mb: 1 }}   
                     />
                     <TextField
                         fullWidth
@@ -97,6 +105,7 @@ const UserVideoStreamInput = ({streamNumber}) => {
                         defaultValue={inputData.auth.password}
                         key={'inputData.auth.password' + inputData.auth.password}
                         inputRef={authPwdRef}
+                        disabled={!enable}
                         variant="outlined"
                         size="small"
                         type="password"

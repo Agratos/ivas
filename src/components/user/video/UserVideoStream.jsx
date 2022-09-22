@@ -70,7 +70,6 @@ const TabPanel = (props) => {
         </div>
     );
 };
-
 TabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.number.isRequired,
