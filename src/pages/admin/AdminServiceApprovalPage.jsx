@@ -22,6 +22,11 @@ const AdminServiceApprovalPage = () => {
         message: ''
     })
 
+    const [dataUpdate, setDataUpdate] = useState(false);
+    const handleDataUpdate = () => {
+        setDataUpdate(!dataUpdate);
+    }
+
     return (
         <GridContainer justify="center" spacing={2}>
             <GridItem xs={12} sm={12} md={12}>
@@ -31,14 +36,18 @@ const AdminServiceApprovalPage = () => {
                 setApprovalData={setApprovalData}
                 setAlertSnackbar={setAlertSnackbar}
                 alertSnackbar={alertSnackbar}
+                dataUpdate={dataUpdate}
+                handleDataUpdate={handleDataUpdate}
             />
             <AdminApproval 
                 idx={approvalData.idx}
                 id={approvalData.id} 
                 stream={approvalData.stream}
                 functions={approvalData.functions}
+                setApprovalData={setApprovalData}
                 setAlertSnackbar={setAlertSnackbar}
                 alertSnackbar={alertSnackbar}
+                handleDataUpdate={handleDataUpdate}
             />
             <AlertSnackbar 
                 open={alertSnackbar.open}

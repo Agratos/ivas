@@ -10,7 +10,9 @@ import GridItem from 'components/layout/container/GridItem';
 import adminAction from 'store/actions/admin';
 import { serviceProperties } from 'assets/properties/serviceProperties';
 
-const AdminApproval = ({idx , id, stream, functions, setAlertSnackbar, alertSnackbar}) => {
+const AdminApproval = ({
+    idx , id, stream, functions, setAlertSnackbar, alertSnackbar, handleDataUpdate, setApprovalData
+}) => {
     const dispatch = useDispatch();
     const refuseReasonRef = useRef();
 
@@ -27,8 +29,6 @@ const AdminApproval = ({idx , id, stream, functions, setAlertSnackbar, alertSnac
             return <Checkbox checked={checked} disabled />;
         }
     };
-
-    console.log(id);
     
     const onRefuse = () => {
         const reason = refuseReasonRef.current.value;
@@ -54,9 +54,9 @@ const AdminApproval = ({idx , id, stream, functions, setAlertSnackbar, alertSnac
             severity: 'success',
             message: serviceProperties.approval.refuse.success
         })
+        resetData();
     }
 
-    // 아무 데이터도 없을시 버튼 클릭 비활성화 추가 필요
     const onConfirm = () => {
         const reason = refuseReasonRef.current.value;
         const permit = 1;
@@ -69,7 +69,19 @@ const AdminApproval = ({idx , id, stream, functions, setAlertSnackbar, alertSnac
             severity: 'success',
             message: serviceProperties.approval.success
         })
+        resetData();
     }; 
+
+    const resetData = () => {
+        handleDataUpdate();
+        setApprovalData({
+            idx: 0,
+            id: '',
+            stream: 0,
+            functions: []
+        });
+        refuseReasonRef.current.value = ''
+    }
 
     return (
         <GridItem xs={12} sm={12} md={12}>

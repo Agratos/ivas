@@ -17,7 +17,7 @@ import adminAction from 'store/actions/admin';
 import { serviceProperties } from 'assets/properties/serviceProperties';
 import { headCells } from 'assets/properties/adminApprovalTableProperties';
 
-const AdminApprovalTable = ({setApprovalData , setAlertSnackbar, alertSnackbar}) => {
+const AdminApprovalTable = ({setApprovalData , setAlertSnackbar, alertSnackbar, dataUpdate, handleDataUpdate}) => {
     const dispatch = useDispatch();
     const { form, approvalList, userdelInfo, userdelError, approvalInfo, approvalError } = useSelector(({ admin }) => ({ // approvalList 추가함
       form: admin.approval,
@@ -38,9 +38,10 @@ const AdminApprovalTable = ({setApprovalData , setAlertSnackbar, alertSnackbar})
 
     const eptRows = emptyRows(page, rowsPerPage, approvalList.length);
 
+    /** 승인 데이터 조회 */
     useEffect(() => {
         dispatch(adminAction.getApprovalList());
-    },[])
+    },[dataUpdate])
     
     const handleUpdate = () => {
         setRealTime(realTimeFormat());
@@ -73,6 +74,7 @@ const AdminApprovalTable = ({setApprovalData , setAlertSnackbar, alertSnackbar})
             severity: 'success',
             message: serviceProperties.approval.delete
         })
+        handleDataUpdate();
     }
 
     return (
