@@ -1,21 +1,24 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Stack, Divider, Typography, Checkbox, TextField, Button, Card, CardContent,} from '@mui/material';
 
 import userAction from 'store/actions/user';
 
-const UserVideoAlarm = () => {
+const UserVideoAlarm = ({ id }) => {
     const dispatch = useDispatch();
+    const [alarmData, setAlarmData] = useState(useSelector(({user}) => user.getVideoConfigInfo.sys_alarm));
+
+    useEffect(() => {
+        console.log(alarmData);
+    },[alarmData])
 
     const onApplyAlarm = () => {
-        //
-
-        // dispatch(userAction.setAlarmConfig({
-        //     id,
-        //     enable,
-        //     address
-        // }))
+        dispatch(userAction.setAlarmConfig({
+            id,
+            enable: true,
+            address: 'agratos'
+        }))
     }
 
     return(
@@ -34,7 +37,7 @@ const UserVideoAlarm = () => {
                 <Stack direction={{ xs: 'row', sm: 'row' }} sx={{ pt: 2 }}>
                     <Checkbox
                         name='alarmCheck'
-                        //checked={alarmData.enable}
+                        defaultChecked={alarmData.enable}
                         //onChange={(e) => onChange(e, 'video')} 
                         size="small"
                     />

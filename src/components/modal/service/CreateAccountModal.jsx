@@ -339,10 +339,7 @@ const CreateAccountModal = ({open, onClose}) => {
                                 id="outlined-number"
                                 hiddenLabel
                                 type="number"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                InputProps={{ inputProps: { min: 0, max: 9}}}                                    InputLabelProps={{
+                                InputProps={{ inputProps: { min: 0, max: 9} }}                                    InputLabelProps={{
                                     shrink: true,
                                 }}
                                 name="stream"

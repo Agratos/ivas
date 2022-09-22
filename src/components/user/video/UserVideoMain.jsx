@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Paper, Stack, Divider, Typography } from '@mui/material';
 
@@ -11,36 +11,11 @@ import userAction from 'store/actions/user';
 const UserVideoMain = () => {
     const dispacth = useDispatch();
     const id = useSelector(({user}) => user.login.id)
-    const {
-        getVideoConfigInfo,
-        getVideoConfigError,
-        setConfigInfo,
-        setConfigError,
-        snapshotInfo,
-        snapshotError,
-        getSnapshotInfo,
-        getSnapshotError,
-        
-      } = useSelector(({ user }) => ({
-        getVideoConfigInfo: user.getVideoConfigInfo,
-        getVideoConfigError: user.getVideoConfigError,
-        setConfigInfo: user.setConfigInfo,
-        setConfigError: user.setConfigError,
-        snapshotInfo: user.snapshotInfo,
-        snapshotError: user.snapshotError,
-        getSnapshotInfo: user.getSnapshotInfo,
-        getSnapshotError: user.getSnapshotError,
-      }));
 
     useEffect(() => {
-        dispacth(userAction.initializeForm('getVideoConfigInFo')); // 영상 데이터 조회
-        dispacth(userAction.getVideoConfig(id)); // 설정 정보 조회
+        dispacth(userAction.getVideoConfig({id})); // 데이터 호출
     },[])
 
-    useEffect(() => {
-        console.log(getVideoConfigInfo);
-    },[getVideoConfigInfo])
-    
     return (
         <Paper
             sx={{ width: '100%', m: 2, mt: 4, p: 3, backgroundColor: 'white' }}

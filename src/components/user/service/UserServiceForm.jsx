@@ -318,7 +318,7 @@ const UserServiceForm = () => {
                                     type="number"
                                     name="stream"
                                     inputRef={streamRef}
-                                    InputProps={{ inputProps: { min: 0, max: 10}}}                                    InputLabelProps={{
+                                    InputProps={{ inputProps: { min: 0, max: 9}}}                                    InputLabelProps={{
                                         shrink: true,
                                     }}
                                     defaultValue={0}
