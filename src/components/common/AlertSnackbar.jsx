@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Snackbar, Alert } from '@mui/material';
 
 const AlertSnackbar = ({ open, onClose, duration, severity, message }) => {
-    
     return (
         <Snackbar open={open} autoHideDuration={duration} onClose={onClose}>
             <Alert
@@ -17,4 +16,4 @@ const AlertSnackbar = ({ open, onClose, duration, severity, message }) => {
     );
 };
 
-export default AlertSnackbar;
+export default React.memo(AlertSnackbar);

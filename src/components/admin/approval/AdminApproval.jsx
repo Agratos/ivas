@@ -28,6 +28,8 @@ const AdminApproval = ({idx , id, stream, functions, setAlertSnackbar, alertSnac
         }
     };
 
+    console.log(id);
+    
     const onRefuse = () => {
         const reason = refuseReasonRef.current.value;
         const permit = 2;
@@ -54,6 +56,7 @@ const AdminApproval = ({idx , id, stream, functions, setAlertSnackbar, alertSnac
         })
     }
 
+    // 아무 데이터도 없을시 버튼 클릭 비활성화 추가 필요
     const onConfirm = () => {
         const reason = refuseReasonRef.current.value;
         const permit = 1;
@@ -181,7 +184,7 @@ const AdminApproval = ({idx , id, stream, functions, setAlertSnackbar, alertSnac
                         />
                     </GridItem>
                     <Divider />
-                    {id !== '-' && (
+                    {id !== '' && (
                         <Stack
                             direction={{ xs: 'column', sm: 'row' }}
                             spacing={{ xs: 1, sm: 2, md: 4 }}
