@@ -46,7 +46,10 @@ const CreateAccountModal = ({open, onClose}) => {
     /** 초기화 부분 */
     useEffect(() => {
         dispatch(serviceAction.clear());
-        setHelperTextId(serviceProperties.login.validation.info.id)
+        setHelperTextId(serviceProperties.login.validation.info.id);
+        setValidId(null);
+        setValidPwd1(null);
+        setValidPwd2(null);
     },[open])
 
     /** 아이디 유효성 응답 처리 */
@@ -330,13 +333,16 @@ const CreateAccountModal = ({open, onClose}) => {
                             variant="standard"
                         >
                             <FormLabel component="legend" sx={{ py: 1 }}>
-                            분석대상 영상스트림 갯수
+                                분석대상 영상스트림 갯수
                             </FormLabel>
                             <TextField
                                 id="outlined-number"
                                 hiddenLabel
                                 type="number"
                                 InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                InputProps={{ inputProps: { min: 0, max: 9}}}                                    InputLabelProps={{
                                     shrink: true,
                                 }}
                                 name="stream"
