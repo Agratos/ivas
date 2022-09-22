@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import GridContainer from 'components/layout/container/GridContainer';
 import GridItem from 'components/layout/container/GridItem';
 import PathBox from 'components/common/PathBox';
-import AdminApprovalTable from 'components/admin/AdminApprovalTable';
-import AdminApproval from 'components/admin/AdminApproval';
+import AdminApprovalTable from 'components/admin/approval/AdminApprovalTable';
+import AdminApproval from 'components/admin/approval/AdminApproval';
 import AlertSnackbar from 'components/common/AlertSnackbar';
 
 const AdminServiceApprovalPage = () => {

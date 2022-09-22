@@ -3,8 +3,8 @@ import React from 'react';
 import GridContainer from 'components/layout/container/GridContainer';
 import GridItem from 'components/layout/container/GridItem';
 import PathBox from 'components/common/PathBox';
-import UserBarChart from 'components/user/UserBarChart';
-import UserAlartTable from 'components/user/UserAlartTable';
+import UserBarChart from 'components/user/dashboard/UserBarChart';
+import UserAlartTable from 'components/user/dashboard/UserAlartTable';
 
 const UserDashboardPage = () => {
     return (

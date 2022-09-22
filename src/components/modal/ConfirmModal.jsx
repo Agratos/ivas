@@ -1,11 +1,11 @@
-import React, { useEffect} from 'react';
+import React from 'react';
 
 import { Dialog } from '@mui/material';
 //import { deepPurple } from '@mui/material/colors';
 
 import ColorDialogAction from 'components/modal/ColorDialogAction';
 
-const LogoutModal = ({text ,open, onClose, closeAction}) => {
+const ConfirmModal = ({text ,open, onClose, closeAction}) => {
     return (
         <Dialog
             open={open}
@@ -28,4 +28,4 @@ const LogoutModal = ({text ,open, onClose, closeAction}) => {
     )
 }
 
-export default LogoutModal;
+export default ConfirmModal;

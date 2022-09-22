@@ -3,7 +3,7 @@ import React from 'react';
 import GridContainer from 'components/layout/container/GridContainer';
 import GridItem from 'components/layout/container/GridItem';
 import PathBox from 'components/common/PathBox';
-import UserServiceForm from 'components/user/UserServiceForm';
+import UserServiceForm from 'components/user/service/UserServiceForm';
 
 const UserChangeServicePage = () => {
     return (

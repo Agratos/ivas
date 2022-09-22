@@ -3,7 +3,7 @@ import React from 'react';
 import GridContainer from 'components/layout/container/GridContainer';
 import GridItem from 'components/layout/container/GridItem';
 import PathBox from 'components/common/PathBox';
-import AdminBarChart from 'components/admin/AdminBarChart';
+import AdminBarChart from 'components/admin/dashboard/AdminBarChart';
 
 const AdminDashboardPage = () => {
     return (
