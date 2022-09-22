@@ -50,7 +50,7 @@ const UserServiceForm = () => {
 
     /** 서비스 탈퇴 신청 로직 */
     const onResign = () => {
-        //dispatch(userAction.resign({id: defaultId}))
+        dispatch(userAction.resign({id: defaultId}))
 
         handleModalClose()
         setAlertModal(true);

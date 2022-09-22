@@ -6,13 +6,6 @@ import { Dialog } from '@mui/material';
 import ColorDialogAction from 'components/modal/ColorDialogAction';
 
 const LogoutModal = ({text ,open, onClose, closeAction}) => {
-    
-    useEffect(() => {
-        document.body.style.overflowY = 'scroll';
-
-        return () => document.body.overflowY = 'auto';
-    },[])
-
     return (
         <Dialog
             open={open}
