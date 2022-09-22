@@ -1,10 +1,35 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Stack, Typography, Checkbox, TextField, Button, Avatar,} from '@mui/material';
   
 import GridContainer from 'components/layout/container/GridContainer';
 import GridItem from 'components/layout/container/GridItem';
 
-const UserVideoStreamInput = () => {
+import userAction from 'store/actions/user';
+
+const UserVideoStreamInput = ({streamNumber}) => {
+    const dispatch = useDispatch();
+    const inputData = useSelector(({user}) => user.getVideoConfigInfo.List[0].input);
+    const id = useSelector(({user}) => user.login.id)
+
+    const addressRef = useRef();
+    const enableRef = useRef();
+    const authIdRef = useRef();
+    const authPwdRef = useRef();
+
+    const onApplyRTSP = () => {
+        dispatch(userAction.setInputConfig({
+            id,
+            idx: streamNumber,
+            address: addressRef.current.value,
+            auth: {
+                enable: enableRef.current.checked,
+                id: authIdRef.current.value,
+                password: authPwdRef.current.value
+            }
+        }))
+    }
+
     return (
         <GridContainer justifyContent="center">
             <GridItem md={4} xs={12}>
@@ -29,16 +54,18 @@ const UserVideoStreamInput = () => {
                         fullWidth
                         label="RTSP addr"
                         name="inRtspAddr"
-                        //value={configData.input.address}
-                        //onChange={(e) => handleChange(e)}
+                        defaultValue={inputData.address}
+                        key={`inputData.address` + inputData.address}
+                        inputRef={addressRef}
                         variant="outlined"
                         size="small"
                     />
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
                         <Checkbox
                             name="inCheck"
-                            //checked={configData.input.auth.enable}
-                            //onChange={(e) => handleChange(e)}
+                            defaultChecked={inputData.auth.enable}
+                            key={`inputData.auth.enable` + inputData.auth.enable}
+                            inputRef={enableRef}
                             size="small"
                             sx={{ marginTop: '30px' }}
                         />
@@ -52,32 +79,30 @@ const UserVideoStreamInput = () => {
                             다이제스트 인증
                         </Typography>
                     </Stack>
-            
                     <TextField
                         fullWidth
                         label="ID"
                         name="inID"
-                        //value={configData.input.auth.id}
-                        //onChange={(e) => handleChange(e)}
+                        defaultValue={inputData.auth.id}
+                        key={'inputData.auth.id' + inputData.auth.id}
+                        inputRef={authIdRef}
                         variant="outlined"
                         size="small"
                         sx={{ mb: 1 }}
-                        //disabled={!checked}
                     />
-    
                     <TextField
                         fullWidth
                         label="Password"
                         name="inPassword"
-                        //value={configData.input.auth.password}
-                        //onChange={(e) => handleChange(e)}
+                        defaultValue={inputData.auth.password}
+                        key={'inputData.auth.password' + inputData.auth.password}
+                        inputRef={authPwdRef}
                         variant="outlined"
                         size="small"
-                        //disabled={!checked}
                         type="password"
                     />
                     <Button
-                        //onClick={() => onApplyRTSP(streamNum)}
+                        onClick={onApplyRTSP}
                         variant="contained" 
                         sx={{ mt: 4, alignSelf: 'center' }}
                     >

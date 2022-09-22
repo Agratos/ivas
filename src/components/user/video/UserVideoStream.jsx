@@ -8,7 +8,7 @@ import UserVideoStreamInput from './UserVideoStreamInput';
 import UserVideoStreamProccess from './UserVideoStreamProccess';
 import UserVideoStreamOutput from './UserVideoStreamOutput';
 
-const UserVideoStream = () => {
+const UserVideoStream = ({streamNumber}) => {
     const [ value, setValue ] = useState(0);
 
     const handleTabChange = (event, newValue) => {
@@ -18,7 +18,7 @@ const UserVideoStream = () => {
     return (
         <Wrapper>
             <Typography color="palevioletred" fontWeight="bold" mt={5} ml={1}>
-                영상 스트림 # {/* 숫자 들어갈 예정 */}
+                영상 스트림 # {streamNumber}
             </Typography>
             <Box
                 sx={{
@@ -42,7 +42,7 @@ const UserVideoStream = () => {
                     <Tab label="출력 영상" id={2} sx={{ fontWeight: 700 }} />
                 </Tabs>
                 <TabPanel value={value} index={0}>
-                    <UserVideoStreamInput />
+                    <UserVideoStreamInput streamNumber={streamNumber}/>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <UserVideoStreamProccess />

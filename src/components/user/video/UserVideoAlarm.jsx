@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Stack, Divider, Typography, Checkbox, TextField, Button, Card, CardContent,} from '@mui/material';
 
@@ -60,7 +60,7 @@ const UserVideoAlarm = ({ id }) => {
                         sx={{ ml: 2, width: '30%' }}
                     />
                     <Button
-                        onClick={() => onApplyAlarm()}
+                        onClick={onApplyAlarm}
                         variant="contained" 
                         sx={{ alignSelf: 'center', ml: 1 }}
                     >

@@ -40,13 +40,12 @@ const UserVideoMain = () => {
                 </Stack>
             </GridItem>
             <Divider />
+            {/* stream 갯수가 늘어나면 map으로 변경 예정 */}
             <GridItem md={12} xs={12}>
-                <UserVideoAlarm 
-                    id={id}
-                />
+                <UserVideoAlarm id={id} />
             </GridItem>
             <GridItem md={12} xs={12}>
-                <UserVideoStream />
+                <UserVideoStream streamNumber={1} />
             </GridItem>
         </Paper>
     )
