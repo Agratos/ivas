@@ -18,12 +18,26 @@ import userAction from 'store/actions/user';
 
 const UserVideoStreamProccess = ({id, streamNumber}) => {
     const dispatch = useDispatch();
-    const proccessData = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber - 1])
+    const snapshotInfo = useSelector(({user}) => user.snapshotInfo);
+    const getSnapshotInfo = useSelector(({user}) => user.getSnapshotInfo);
+    const getVideoConfigInfo = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber - 1])
 
-    const [restFullCheck, setRestFullCheck] = useState(proccessData.alarm.enable);
-    const [overlayCheck, setOverlayCheck] = useState(proccessData.overlay.enable);
+    const [image, setImage] = useState('/static/images/background.jpg')
+    const [restFullCheck, setRestFullCheck] = useState(getVideoConfigInfo.alarm.enable);
+    const [overlayCheck, setOverlayCheck] = useState(getVideoConfigInfo.overlay.enable);
 
-    console.log(proccessData)
+    /** 처음 로딩시 스냅샷 가져오기 */
+    useEffect(() => {
+        onGetSnapShot();
+    },[])
+    useEffect(() => {
+        if(getSnapshotInfo){
+            const blob = new Blob( [ getSnapshotInfo ] );
+            const url = URL.createObjectURL( blob );
+
+            setImage(url);
+        }
+    },[getSnapshotInfo])
 
     const handleRestFullCheck = () => { setRestFullCheck(!restFullCheck) }
     const handleOverlayCheck = () => { setOverlayCheck(!overlayCheck) }
@@ -32,6 +46,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
         dispatch(userAction.snapshot({id, idx: streamNumber}));
     }
     const onGetSnapShot = useCallback(() => {
+        console.log(id, streamNumber);
         dispatch(userAction.getSnapshot({id, idx: streamNumber}));
     },[])
     // 영상 처리 설정 function 
@@ -44,7 +59,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                     //width={`${width}px`}
                     //height={`${height}px`}
                     sx={{
-                        //backgroundImage: `url(${image})`,
+                        backgroundImage: `url(${image})`,
                         backgroundRepeat: 'no-repeat',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
@@ -101,8 +116,8 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
                         <Checkbox
                             name="rest"
-                            defaultChecked={proccessData.alarm.enable}
-                            key={proccessData.alarm.enable + 'rest'}
+                            defaultChecked={getVideoConfigInfo.alarm.enable}
+                            key={getVideoConfigInfo.alarm.enable + 'rest'}
                             onChange={handleRestFullCheck}
                             size="small"
                             sx={{ marginTop: '30px' }}
@@ -121,8 +136,8 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                         fullWidth
                         label="Addr"
                         name="ctlRestAddr"
-                        defaultValue={proccessData.alarm.address}
-                        key={proccessData.alarm.address + 'rest-textfield'}
+                        defaultValue={getVideoConfigInfo.alarm.address}
+                        key={getVideoConfigInfo.alarm.address + 'rest-textfield'}
                         disabled={!restFullCheck}
                         variant="outlined"
                         size="small"
@@ -133,8 +148,8 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                     >
                         <Checkbox
                             name="alarm"
-                            defaultChecked={proccessData.alarm.alarm}
-                            key={proccessData.alarm.alarm + 'alarm'}
+                            defaultChecked={getVideoConfigInfo.alarm.alarm}
+                            key={getVideoConfigInfo.alarm.alarm + 'alarm'}
                             disabled={!restFullCheck}
                             size="small"
                         />
@@ -148,8 +163,8 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                         </Typography>
                         <Checkbox
                             name="noti"
-                            defaultChecked={proccessData.alarm.noti}
-                            key={proccessData.alarm.noti + 'noti'}
+                            defaultChecked={getVideoConfigInfo.alarm.noti}
+                            key={getVideoConfigInfo.alarm.noti + 'noti'}
                             disabled={!restFullCheck}
                             size="small"
                         />
@@ -165,8 +180,8 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
                         <Checkbox
                             name="overlay"
-                            defaultChecked={proccessData.overlay.enable}
-                            key={proccessData.overlay.enable + 'overlay'}
+                            defaultChecked={getVideoConfigInfo.overlay.enable}
+                            key={getVideoConfigInfo.overlay.enable + 'overlay'}
                             onChange={handleOverlayCheck}
                             size="small"
                             sx={{ marginTop: '30px' }}
@@ -193,8 +208,8 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                                     key={type}
                                     control={
                                         <Checkbox
-                                            defaultChecked={proccessData.overlay.functions[type]}
-                                            key={proccessData.overlay.functions[type] + 'checkbox'}
+                                            defaultChecked={getVideoConfigInfo.overlay.functions[type]}
+                                            key={getVideoConfigInfo.overlay.functions[type] + 'checkbox'}
                                             name={`over_${type}`}
                                             size="small"
                                             disabled={!overlayCheck}
