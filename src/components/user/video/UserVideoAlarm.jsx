@@ -26,8 +26,6 @@ const UserVideoAlarm = ({ id }) => {
         }))
     }
 
-    console.log('3333333333333');
-
     return(
         <Card elevation={3} sx={{ mt: 3 }}>
             <CardContent>

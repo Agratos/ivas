@@ -9,11 +9,12 @@ import UserVideoStream from './UserVideoStream';
 import userAction from 'store/actions/user';
 
 const UserVideoMain = () => {
-    const dispacth = useDispatch();
-    const id = useSelector(({user}) => user.login.id)
+    const dispatch = useDispatch();
+    const id = useSelector(({user}) => user.login.id);
+    const data = useSelector(({user}) => user.getVideoConfigInfo);
 
     useEffect(() => {
-        dispacth(userAction.getVideoConfig({id})); // 데이터 호출
+        dispatch(userAction.getVideoConfig({id})); // 데이터 호출
     },[])
 
     return (
@@ -41,12 +42,17 @@ const UserVideoMain = () => {
             </GridItem>
             <Divider />
             {/* stream 갯수가 늘어나면 map으로 변경 예정 */}
-            <GridItem md={12} xs={12}>
-                <UserVideoAlarm id={id} />
-            </GridItem>
-            <GridItem md={12} xs={12}>
-                <UserVideoStream streamNumber={1} />
-            </GridItem>
+            {data !== null &&
+                <>
+                    <GridItem md={12} xs={12}>
+                        <UserVideoAlarm id={id} />
+                    </GridItem>
+                    <GridItem md={12} xs={12}>
+                        <UserVideoStream streamNumber={1} />
+                    </GridItem>
+                </>
+            }
+
         </Paper>
     )
 }
