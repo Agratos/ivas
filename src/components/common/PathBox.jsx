@@ -14,7 +14,6 @@ import useHomeClick from 'hooks/useHomeClick';
 const PathBox = ({ upper, current, currentLink, detail }) => {
     const navigate = useNavigate();
     const homeClick = useHomeClick();
-    const path = useLocation().pathname;
 
     const renderType = () => {
         if(currentLink && detail){
