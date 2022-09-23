@@ -45,7 +45,7 @@ const UserVideoStream = ({id ,streamNumber}) => {
                     <UserVideoStreamInput id={id} streamNumber={streamNumber}/>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    <UserVideoStreamProccess />
+                    <UserVideoStreamProccess id={id} streamNumber={streamNumber} />
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                     <UserVideoStreamOutput id={id} streamNumber={streamNumber} />

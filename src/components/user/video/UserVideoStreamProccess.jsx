@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
     Box, Stack, MenuItem, Select, Typography, Checkbox, TextField,
@@ -13,8 +14,29 @@ import GridContainer from 'components/layout/container/GridContainer';
 import GridItem from 'components/layout/container/GridItem';
 
 import { serviceProperties } from 'assets/properties/serviceProperties';
+import userAction from 'store/actions/user';
 
-const UserVideoStreamProccess = () => {
+const UserVideoStreamProccess = ({id, streamNumber}) => {
+    const dispatch = useDispatch();
+    const proccessData = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber - 1])
+
+    const [restFullCheck, setRestFullCheck] = useState(proccessData.alarm.enable);
+    const [overlayCheck, setOverlayCheck] = useState(proccessData.overlay.enable);
+
+    console.log(proccessData)
+
+    const handleRestFullCheck = () => { setRestFullCheck(!restFullCheck) }
+    const handleOverlayCheck = () => { setOverlayCheck(!overlayCheck) }
+
+    const onSnapShot = () => {
+        dispatch(userAction.snapshot({id, idx: streamNumber}));
+    }
+    const onGetSnapShot = useCallback(() => {
+        dispatch(userAction.getSnapshot({id, idx: streamNumber}));
+    },[])
+    // 영상 처리 설정 function 
+
+
     return(
         <GridContainer justifyContent="center">
             <GridItem lg={8} md={12} xs={12}>
@@ -39,7 +61,7 @@ const UserVideoStreamProccess = () => {
             <GridItem lg={4} md={12} xs={12}>
                 <div>
                     <Button
-                        //onClick={() => onSnapShot(streamNum)}          
+                        onClick={onSnapShot}          
                         variant="contained"
                         startIcon={<AddAPhotoIcon />}
                         sx={{ mt: 4, alignSelf: 'center' }}           
@@ -48,7 +70,7 @@ const UserVideoStreamProccess = () => {
                     </Button>
                     {`\u00a0\u00a0`}
                     <Button
-                        //onClick={() => onGetSnapShot(streamNum)}          
+                        onClick={onGetSnapShot}          
                         variant="contained" 
                         startIcon={<ArchiveIcon />}
                         sx={{ mt: 4, alignSelf: 'center' }}
@@ -79,8 +101,9 @@ const UserVideoStreamProccess = () => {
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
                         <Checkbox
                             name="rest"
-                            //checked={configData.alarm.enable}
-                            //onChange={(e) => handleFormChange(e)}
+                            defaultChecked={proccessData.alarm.enable}
+                            key={proccessData.alarm.enable + 'rest'}
+                            onChange={handleRestFullCheck}
                             size="small"
                             sx={{ marginTop: '30px' }}
                         />
@@ -98,8 +121,9 @@ const UserVideoStreamProccess = () => {
                         fullWidth
                         label="Addr"
                         name="ctlRestAddr"
-                        //value={configData.alarm.address}
-                        //onChange={(e) => handleFormChange(e)}
+                        defaultValue={proccessData.alarm.address}
+                        key={proccessData.alarm.address + 'rest-textfield'}
+                        disabled={!restFullCheck}
                         variant="outlined"
                         size="small"
                     />
@@ -109,8 +133,9 @@ const UserVideoStreamProccess = () => {
                     >
                         <Checkbox
                             name="alarm"
-                            //checked={configData.alarm.alarm}
-                            //onChange={(e) => handleFormChange(e)}
+                            defaultChecked={proccessData.alarm.alarm}
+                            key={proccessData.alarm.alarm + 'alarm'}
+                            disabled={!restFullCheck}
                             size="small"
                         />
                         <Typography
@@ -123,8 +148,9 @@ const UserVideoStreamProccess = () => {
                         </Typography>
                         <Checkbox
                             name="noti"
-                            //checked={configData.alarm.noti}
-                            //onChange={(e) => handleFormChange(e)}
+                            defaultChecked={proccessData.alarm.noti}
+                            key={proccessData.alarm.noti + 'noti'}
+                            disabled={!restFullCheck}
                             size="small"
                         />
                         <Typography
@@ -139,9 +165,9 @@ const UserVideoStreamProccess = () => {
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
                         <Checkbox
                             name="overlay"
-                            //checked={checked.overlay}
-                            //checked={configData.overlay.enable}
-                            //onChange={(e) => handleFormChange(e)}
+                            defaultChecked={proccessData.overlay.enable}
+                            key={proccessData.overlay.enable + 'overlay'}
+                            onChange={handleOverlayCheck}
                             size="small"
                             sx={{ marginTop: '30px' }}
                         />
@@ -167,11 +193,11 @@ const UserVideoStreamProccess = () => {
                                     key={type}
                                     control={
                                         <Checkbox
-                                            //checked={overlayData[type] || false}
+                                            defaultChecked={proccessData.overlay.functions[type]}
+                                            key={proccessData.overlay.functions[type] + 'checkbox'}
                                             name={`over_${type}`}
-                                            //onChange={(e) => handleFormChange(e)}
                                             size="small"
-                                            //disabled={!configData.overlay.enable}
+                                            disabled={!overlayCheck}
                                         />
                                     }
                                     label={
