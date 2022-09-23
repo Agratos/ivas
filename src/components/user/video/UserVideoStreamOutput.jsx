@@ -1,10 +1,43 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Stack, Typography, Checkbox, TextField, Button, Avatar,} from '@mui/material';
   
 import GridContainer from 'components/layout/container/GridContainer';
 import GridItem from 'components/layout/container/GridItem';
 
-const UserVideoStreamOutput = () => {
+import userAction from 'store/actions/user';
+
+const UserVideoStreamOutput = ({id, streamNumber}) => {
+    const dispatch = useDispatch();
+    const outputData = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber - 1].output);
+
+    const addressRef = useRef();
+    const enableRef = useRef();
+    const authIdRef = useRef();
+    const authPwdRef = useRef();
+    const rtcRef = useRef();
+
+    const [enable, setEneable] = useState(outputData.rtsp.auth.enable)
+
+    const handleEnable = (e) => {
+        setEneable(e.target.checked);
+    }
+
+    /** RTSP 서버와 Web RTC 설정이 없다..? API도 이상하게 되어 있음 */
+    const onApplyWebRTC = () => {
+        dispatch(userAction.setOutputConfig({
+            id,
+            idx: streamNumber,
+            //address: addressRef.current.value,
+            auth: {
+                enable: enableRef.current.checked,
+                id: authIdRef.current.value,
+                password: authPwdRef.current.value
+            }
+        }))
+    }
+
+
     return (
         <GridContainer justifyContent="center">
             <GridItem md={4} xs={12}>
@@ -41,17 +74,19 @@ const UserVideoStreamOutput = () => {
                         fullWidth
                         label="RTSP addr"
                         name="outRtspAddr"
-                        //value={configData.output.rtsp.address}
-                        //onChange={(e) => handleChange(e)}
+                        defaultValue={outputData.rtsp.address}
+                        key={outputData.rtsp.address + 'outRtspAddr'}
+                        inputRef={addressRef}
                         variant="outlined"
                         size="small"
-                        //disabled={!checked.rtsp}
                     />
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
                         <Checkbox
                             name="checkOut"
-                            //checked={configData.output.rtsp.auth.enable}
-                            //onChange={(e) => handleChange(e)} 
+                            defaultChecked={outputData.rtsp.auth.enable}
+                            key={outputData.rtsp.auth.enable + 'enable'}
+                            inputRef={enableRef}
+                            onChange={handleEnable}
                             size="small"
                             sx={{ marginTop: '10px' }}
                         />
@@ -69,22 +104,24 @@ const UserVideoStreamOutput = () => {
                         fullWidth
                         label="ID"
                         name="outID"
-                        //value={configData.output.rtsp.auth.id}
-                        //onChange={(e) => handleChange(e)}
+                        defaultValue={outputData.rtsp.auth.id}
+                        key={outputData.rtsp.auth.id + 'outID'}
+                        inputRef={authIdRef}
+                        disabled={!enable}
                         variant="outlined"
                         size="small"
                         sx={{ mb: 1 }}
-                        //disabled={!checked.digest}
                     />
                     <TextField
                         fullWidth
                         label="Password"
                         name="outPassword"
-                        //value={configData.output.rtsp.auth.password}
-                        //onChange={(e) => handleChange(e)}
+                        defaultValue={outputData.rtsp.auth.password}
+                        key={outputData.rtsp.auth.password + 'outPassword'}
+                        inputRef={authPwdRef}
+                        disabled={!enable}
                         variant="outlined"
                         size="small"
-                        //disabled={!checked.digest}
                         type="password"
                     />
                     <Stack direction={{ xs: 'row', sm: 'row' }}>
@@ -102,14 +139,14 @@ const UserVideoStreamOutput = () => {
                         fullWidth
                         label="Web RTC"
                         name="outRtcAddr"
-                        //value={configData.output.webrtc}
-                        //onChange={(e) => handleChange(e)}
+                        defaultValue={outputData.webrtc}
+                        key={outputData.webrtc + 'outRtcAddr'}
+                        inputRef={rtcRef}
                         variant="outlined"
                         size="small"
-                        //disabled={!checked.rtc}
                     />
                     <Button
-                        //onClick={() => onApplyWebRTC(streamNum)}
+                        onClick={onApplyWebRTC}
                         variant="contained" 
                         sx={{ mt: 4, alignSelf: 'center' }}
                     >

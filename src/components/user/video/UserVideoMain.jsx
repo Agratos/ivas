@@ -42,17 +42,22 @@ const UserVideoMain = () => {
             </GridItem>
             <Divider />
             {/* stream 갯수가 늘어나면 map으로 변경 예정 */}
-            {data !== null &&
+            {data !== null && 
                 <>
                     <GridItem md={12} xs={12}>
                         <UserVideoAlarm id={id} />
                     </GridItem>
                     <GridItem md={12} xs={12}>
-                        <UserVideoStream streamNumber={1} />
+                        <UserVideoStream id={id} streamNumber={1} />
                     </GridItem>
                 </>
             }
-
+            {/* <GridItem md={12} xs={12}>
+                <UserVideoAlarm id={id} />
+            </GridItem>
+            <GridItem md={12} xs={12}>
+                <UserVideoStream streamNumber={1} />
+            </GridItem> */}
         </Paper>
     )
 }

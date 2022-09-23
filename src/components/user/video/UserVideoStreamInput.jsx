@@ -7,10 +7,9 @@ import GridItem from 'components/layout/container/GridItem';
 
 import userAction from 'store/actions/user';
 
-const UserVideoStreamInput = ({streamNumber}) => {
+const UserVideoStreamInput = ({id, streamNumber}) => {
     const dispatch = useDispatch();
-    const inputData = useSelector(({user}) => user.getVideoConfigInfo.List[0].input);
-    const id = useSelector(({user}) => user.login.id)
+    const inputData = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber - 1].input);
 
     const addressRef = useRef();
     const enableRef = useRef();

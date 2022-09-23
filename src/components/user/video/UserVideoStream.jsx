@@ -8,7 +8,7 @@ import UserVideoStreamInput from './UserVideoStreamInput';
 import UserVideoStreamProccess from './UserVideoStreamProccess';
 import UserVideoStreamOutput from './UserVideoStreamOutput';
 
-const UserVideoStream = ({streamNumber}) => {
+const UserVideoStream = ({id ,streamNumber}) => {
     const [ value, setValue ] = useState(0);
 
     const handleTabChange = (event, newValue) => {
@@ -42,13 +42,13 @@ const UserVideoStream = ({streamNumber}) => {
                     <Tab label="출력 영상" id={2} sx={{ fontWeight: 700 }} />
                 </Tabs>
                 <TabPanel value={value} index={0}>
-                    <UserVideoStreamInput streamNumber={streamNumber}/>
+                    <UserVideoStreamInput id={id} streamNumber={streamNumber}/>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <UserVideoStreamProccess />
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                    <UserVideoStreamOutput />
+                    <UserVideoStreamOutput id={id} streamNumber={streamNumber} />
                 </TabPanel>
             </Box>
         </Wrapper>
