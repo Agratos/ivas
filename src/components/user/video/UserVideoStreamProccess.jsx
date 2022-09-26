@@ -28,9 +28,11 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
     const [restFullCheck, setRestFullCheck] = useState(getVideoConfigInfo.alarm.enable);
     const [overlayCheck, setOverlayCheck] = useState(getVideoConfigInfo.overlay.enable);
 
+    const [type, setType] = useState(1);
+
     /** 사진 크기 설정 */
-    const width = '840px';
-    const height = '470px';
+    const width = 840;
+    const height = 470;
 
     /** 처음 로딩시 스냅샷 가져오기 */
     useEffect(() => {
@@ -47,6 +49,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
 
     const handleRestFullCheck = () => { setRestFullCheck(!restFullCheck) }
     const handleOverlayCheck = () => { setOverlayCheck(!overlayCheck) }
+    const handleChange = (e) => { setType(e.target.value) }
 
     const onSnapShot = () => {
         dispatch(userAction.snapshot({id, idx: streamNumber}));
@@ -55,15 +58,13 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
         console.log(id, streamNumber);
         dispatch(userAction.getSnapshot({id, idx: streamNumber}));
     },[])
-    // 영상 처리 설정 function 
-
 
     return(
         <GridContainer justifyContent="center">
             <GridItem lg={8} md={12} xs={12}>
                 <Box
-                    width={`${width}`}
-                    height={`${height}`}
+                    width={`${width}px`}
+                    height={`${height}px`}
                     sx={{
                         backgroundImage: `url(${image})`,
                         backgroundRepeat: 'no-repeat',
@@ -74,7 +75,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                     }}
                 >
                     {/* 다른 component로 분리 예정 */}
-                    <UserVideoCanvas width={840} height={470}/>
+                    <UserVideoCanvas width={width} height={height} type={type} />
                 </Box>
             </GridItem>
             <GridItem lg={4} md={12} xs={12}>
@@ -102,10 +103,10 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                     alignItems="flex-start"
                     justifyContent="center"
                 >
-                    <Select id="type" value={1} /*onChange={handleChange}*/ sx={{ mt: 2 }}>
+                    <Select id="type" defaultValue={1} onChange={handleChange} sx={{ mt: 2 }}>
                         <MenuItem value={1}>탐지 영역 설정</MenuItem>
                         <MenuItem value={2}>ROI 설정</MenuItem>
-                        <MenuItem value={0}>Line ROI 설정</MenuItem>
+                        <MenuItem value={3}>Line ROI 설정</MenuItem>
                     </Select>
                     <Button /*</Stack>onClick={handleAllReset}*/>모두 지우기</Button>
                     <Typography
