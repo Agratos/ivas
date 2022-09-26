@@ -12,19 +12,25 @@ import { cyan, indigo, yellow } from '@mui/material/colors';
 
 import GridContainer from 'components/layout/container/GridContainer';
 import GridItem from 'components/layout/container/GridItem';
+import UserVideoCanvas from './UserVideoCanvas';
 
 import { serviceProperties } from 'assets/properties/serviceProperties';
+import { userVideoProperties } from 'assets/properties/userVideoProperties';
 import userAction from 'store/actions/user';
 
 const UserVideoStreamProccess = ({id, streamNumber}) => {
     const dispatch = useDispatch();
-    const snapshotInfo = useSelector(({user}) => user.snapshotInfo);
+
     const getSnapshotInfo = useSelector(({user}) => user.getSnapshotInfo);
     const getVideoConfigInfo = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber - 1])
 
     const [image, setImage] = useState('/static/images/background.jpg')
     const [restFullCheck, setRestFullCheck] = useState(getVideoConfigInfo.alarm.enable);
     const [overlayCheck, setOverlayCheck] = useState(getVideoConfigInfo.overlay.enable);
+
+    /** 사진 크기 설정 */
+    const width = '840px';
+    const height = '470px';
 
     /** 처음 로딩시 스냅샷 가져오기 */
     useEffect(() => {
@@ -56,21 +62,19 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
         <GridContainer justifyContent="center">
             <GridItem lg={8} md={12} xs={12}>
                 <Box
-                    //width={`${width}px`}
-                    //height={`${height}px`}
+                    width={`${width}`}
+                    height={`${height}`}
                     sx={{
                         backgroundImage: `url(${image})`,
                         backgroundRepeat: 'no-repeat',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         my: 2,
+                        marginTop: '32px'
                     }}
                 >
-                    <canvas
-                        //ref={canvasRef}
-                        //onMouseDown={startDrawing}
-                        //onMouseUp={type === 0 ? finishLineDrawing : () => finishBoxDrawing(type)}
-                    />
+                    {/* 다른 component로 분리 예정 */}
+                    <UserVideoCanvas width={840} height={470}/>
                 </Box>
             </GridItem>
             <GridItem lg={4} md={12} xs={12}>
