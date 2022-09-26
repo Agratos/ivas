@@ -1,22 +1,39 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
+import { useSelector } from 'react-redux';
 
 import { cyan, indigo, yellow } from '@mui/material/colors';
 
-const UserVideoCanvas = ({width, height, type}) => {
+import userAction from 'store/actions/user';
+
+
+/** type:
+ *  1 - 탐지 영역 설정
+ *  2 - ROI 설정
+ *  3 - Line ROI 설정
+ */
+const UserVideoCanvas = forwardRef(({width, height, type, areaPosition, setAreaPosition}, ref) => {
     const canvasRef = useRef();
     const [ctx, setCtx] = useState();
 
     const [startPosition, setStartPosition] = useState([]);
     const [isDraw, setIsDraw] = useState(false);
 
-    const [areaPosition, setAreaPosition] = useState([]);
-    
     useEffect(() => {
         const canvas = canvasRef.current;
         canvas.width = width;
         canvas.height = height;
         setCtx(canvas.getContext('2d'));
+
+        drawAll();
     },[])
+    useEffect(() => {
+        drawAll();
+    },[areaPosition])
+
+    /** 부모 컴포넌트에서 사용할 초기화 함수 */
+    useImperativeHandle(ref, () => ({
+        clearArea
+    }))
 
     const hanldeType = (type) => {
         ctx.lineWidth = 2.5;
@@ -104,7 +121,7 @@ const UserVideoCanvas = ({width, height, type}) => {
         hanldeType(type);
         switch(type){
             case 3:
-                ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+                clearArea();
                 ctx.beginPath();
                 ctx.moveTo(startPosition[0], startPosition[1])
                 ctx.lineTo(offsetX, offsetY)
@@ -112,7 +129,7 @@ const UserVideoCanvas = ({width, height, type}) => {
                 ctx.stroke();
                 break;
             default:
-                ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+                clearArea();
                 ctx.strokeRect(
                     startPosition[0], 
                     startPosition[1], 
@@ -122,6 +139,10 @@ const UserVideoCanvas = ({width, height, type}) => {
         }
 
         drawAll();
+    }
+
+    const clearArea = () => {
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     }
 
 
@@ -134,6 +155,6 @@ const UserVideoCanvas = ({width, height, type}) => {
             onMouseUp={drawEnd}
         />
     )
-}
+});
 
 export default React.memo(UserVideoCanvas);

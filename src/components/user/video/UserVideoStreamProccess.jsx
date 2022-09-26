@@ -8,8 +8,6 @@ import {
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import ArchiveIcon from '@mui/icons-material/Archive';
 
-import { cyan, indigo, yellow } from '@mui/material/colors';
-
 import GridContainer from 'components/layout/container/GridContainer';
 import GridItem from 'components/layout/container/GridItem';
 import UserVideoCanvas from './UserVideoCanvas';
@@ -20,6 +18,7 @@ import userAction from 'store/actions/user';
 
 const UserVideoStreamProccess = ({id, streamNumber}) => {
     const dispatch = useDispatch();
+    const childCompoentRef = useRef();
 
     const getSnapshotInfo = useSelector(({user}) => user.getSnapshotInfo);
     const getVideoConfigInfo = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber - 1])
@@ -29,14 +28,15 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
     const [overlayCheck, setOverlayCheck] = useState(getVideoConfigInfo.overlay.enable);
 
     const [type, setType] = useState(1);
+    const [areaPosition, setAreaPosition] = useState([]);
 
     /** 사진 크기 설정 */
     const width = 840;
     const height = 470;
 
-    /** 처음 로딩시 스냅샷 가져오기 */
+    
     useEffect(() => {
-        onGetSnapShot();
+        onGetSnapShot(); // 스냅샷 가져오기 
     },[])
     useEffect(() => {
         if(getSnapshotInfo){
@@ -50,6 +50,10 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
     const handleRestFullCheck = () => { setRestFullCheck(!restFullCheck) }
     const handleOverlayCheck = () => { setOverlayCheck(!overlayCheck) }
     const handleChange = (e) => { setType(e.target.value) }
+    const handleReset = () => {
+        setAreaPosition([]);
+        childCompoentRef.current.clearArea();
+    }
 
     const onSnapShot = () => {
         dispatch(userAction.snapshot({id, idx: streamNumber}));
@@ -75,7 +79,14 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                     }}
                 >
                     {/* 다른 component로 분리 예정 */}
-                    <UserVideoCanvas width={width} height={height} type={type} />
+                    <UserVideoCanvas 
+                        ref={childCompoentRef}
+                        width={width} 
+                        height={height} 
+                        type={type} 
+                        setAreaPosition={setAreaPosition}
+                        areaPosition={areaPosition}
+                    />
                 </Box>
             </GridItem>
             <GridItem lg={4} md={12} xs={12}>
@@ -108,7 +119,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                         <MenuItem value={2}>ROI 설정</MenuItem>
                         <MenuItem value={3}>Line ROI 설정</MenuItem>
                     </Select>
-                    <Button /*</Stack>onClick={handleAllReset}*/>모두 지우기</Button>
+                    <Button onClick={handleReset}>모두 지우기</Button>
                     <Typography
                         gutterBottom
                         variant="h5"
