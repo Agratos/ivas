@@ -1,6 +1,6 @@
 import React from 'react';
 import GridItem from 'components/layout/container/GridItem';
-import AlarmTable from 'components/table/AlarmTable';
+import AlarmTable from 'components/common/table/AlarmTable';
 
 import alarmList from 'assets/dummies/alarmList';
 

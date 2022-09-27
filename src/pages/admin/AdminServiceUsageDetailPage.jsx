@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 import GridContainer from 'components/layout/container/GridContainer';
 import GridItem from 'components/layout/container/GridItem';
 import PathBox from 'components/common/PathBox';
+import AdminServiceUsageDetail from 'components/admin/usage/AdminServiceUsageDetail';
 
 const AdminServiceUsageDetailPage = () => {
     const { id } = useParams();
@@ -16,6 +17,7 @@ const AdminServiceUsageDetailPage = () => {
                     currentLink="/admin/usage"
                     detail={id}/>
             </GridItem>
+            <AdminServiceUsageDetail />
         </GridContainer>
     )
 }

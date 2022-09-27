@@ -6,7 +6,7 @@ import { IconButton, Stack, Typography } from '@mui/material';
 import UpdateIcon from '@mui/icons-material/Update';
 
 import GridItem from 'components/layout/container/GridItem';
-import BarChart from 'components/chart/BarChart';
+import BarChart from 'components/common/BarChart';
 
 import userAction from 'store/actions/user';
 

@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { format } from 'date-fns';
 
 import {
     Box,Table,TableHead,TableBody,TableCell,TableContainer,TablePagination,TableRow,
-    TableSortLabel,Typography,Paper,Button,IconButton,Stack,
+    Typography,Paper,Button,IconButton,Stack,
 } from '@mui/material';
 import UpdateIcon from '@mui/icons-material/Update';
 
 import { makeStyles } from '@mui/styles';
-import { visuallyHidden } from '@mui/utils';
 import { indigo } from '@mui/material/colors';
 
-import GridContainer from 'components/layout/container/GridContainer';
 import GridItem from 'components/layout/container/GridItem';
+import TableHeadCell from 'components/common/table/TableHeadCell';
 
-import { getComparator, stableSort, emptyRows, handleChangeRowsPerPage } from 'components/table/Table';
+import { getComparator, stableSort, emptyRows, handleChangeRowsPerPage } from 'components/common/table/Table';
+import { headCells, styles } from 'assets/properties/usageTableProperties';
 import realTimeFormat from 'utils/realTimeFormat';
 import usageList from 'assets/dummies/usageList';
-import { headCells, styles } from 'assets/properties/usageTableProperties';
 
-const AdminServiceUsage = () => {
+
+const AdminServiceUsageStatus = () => {
+    const navigate = useNavigate();
     const useStyles = makeStyles(styles);
     const classes = useStyles();
 
@@ -40,50 +40,6 @@ const AdminServiceUsage = () => {
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
-    };
-
-    const handleRequestSort = (event, property) => {
-        const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
-        setOrderBy(property);
-    };
-    
-
-    const createSortHandler = (property) => (event) => {
-        handleRequestSort(event, property);
-    };
-
-    const TableHeadCell = ({ headCell }) => {
-        return (
-            <TableCell
-                sortDirection={orderBy === headCell.id ? order : false}
-                sx={{
-                    borderRight: headCell.seperation === true && '1px solid',
-                    borderRightColor: headCell.seperation === true && 'white',
-                }}
-            >
-                {headCell.label === 'ID' ? (
-                    <TableSortLabel
-                        active={orderBy === headCell.id}
-                        direction={orderBy === headCell.id ? order : 'asc'}
-                        onClick={createSortHandler(headCell.id)}
-                    >
-                        <Typography variant="h6" color="white" align="left">
-                            {headCell.label}
-                        </Typography>
-                            {orderBy === headCell.id ? (
-                                <Box component="span" sx={visuallyHidden}>
-                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                </Box>
-                            ) : null}
-                    </TableSortLabel>
-                ) : (
-                    <Typography variant="h6" color="white" align="center">
-                        {headCell.label}
-                    </Typography>
-                )}
-          </TableCell>
-        );
     };
 
     return (
@@ -114,7 +70,14 @@ const AdminServiceUsage = () => {
                                 </TableRow>
                                 <TableRow sx={{ background: `${indigo[700]}` }}>
                                     {headCells.map((headCell) => (
-                                        <TableHeadCell key={headCell.id} headCell={headCell} />
+                                        <TableHeadCell 
+                                            key={headCell.id} 
+                                            headCell={headCell} 
+                                            orderBy={orderBy}
+                                            order={order}
+                                            setOrder={setOrder}
+                                            setOrderBy={setOrderBy}
+                                        />
                                     ))}
                                 </TableRow>
                             </TableHead>
@@ -142,7 +105,7 @@ const AdminServiceUsage = () => {
                                                 <TableCell padding="none" align="center" width="15%">
                                                     <Button
                                                         variant="outlined"
-                                                        //onClick={() =>navigate(`/admin/usage/detail/${row.id}`)}
+                                                        onClick={() =>navigate(`/admin/usage/detail/${row.id}`)}
                                                     >
                                                         개별 상세
                                                     </Button>
@@ -197,4 +160,4 @@ const StatusCell = ({ status }) => {
     }
 };
 
-export default AdminServiceUsage;
+export default AdminServiceUsageStatus;

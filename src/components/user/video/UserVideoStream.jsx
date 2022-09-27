@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+
 import { Box, Typography, Tabs, Tab } from '@mui/material';
 import { indigo } from '@mui/material/colors';
-import PropTypes from 'prop-types';
 
 import UserVideoStreamInput from './UserVideoStreamInput';
 import UserVideoStreamProccess from './UserVideoStreamProccess';
 import UserVideoStreamOutput from './UserVideoStreamOutput';
+import TabPanel from 'components/common/panel/TabPanel';
 
 const UserVideoStream = ({id ,streamNumber}) => {
     const [ value, setValue ] = useState(0);
@@ -55,25 +56,5 @@ const UserVideoStream = ({id ,streamNumber}) => {
     )
 }
 const Wrapper = styled.div``;
-const TabPanel = (props) => {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`tabpanel-${index}`}
-            aria-labelledby={`tab-${index}`}
-            {...other}
-        >
-            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-        </div>
-    );
-};
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-};
 
 export default UserVideoStream;

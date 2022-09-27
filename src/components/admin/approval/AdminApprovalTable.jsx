@@ -8,7 +8,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 
 import {
     getComparator, stableSort, emptyRows, handleChangeRowsPerPage, EnhancedTableHead
-} from 'components/table/Table';
+} from 'components/common/table/Table';
 import GridItem from 'components/layout/container/GridItem';
 import AlertSnackbar from 'components/common/AlertSnackbar';
 
