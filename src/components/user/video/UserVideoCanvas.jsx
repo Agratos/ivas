@@ -11,38 +11,45 @@ import userAction from 'store/actions/user';
  *  2 - ROI 설정
  *  3 - Line ROI 설정
  */
-const UserVideoCanvas = forwardRef(({width, height, type, areaPosition, setAreaPosition}, ref) => {
+const UserVideoCanvas = forwardRef(({width, height, type}, ref) => {
     const canvasRef = useRef();
     const [ctx, setCtx] = useState();
 
     const [startPosition, setStartPosition] = useState([]);
     const [isDraw, setIsDraw] = useState(false);
 
+    const [detectPosition, setDetectPosition] = useState([]);
+    const [roiPosition, setRoiPosition] = useState([]);
+    const [linePosition, setLinePosition] = useState([]);
+
     useEffect(() => {
         const canvas = canvasRef.current;
         canvas.width = width;
         canvas.height = height;
+        canvas.lineWidth = 2.5;
+        canvas.strokeStyle = 'yellow';
         setCtx(canvas.getContext('2d'));
-
         drawAll();
     },[])
+
     useEffect(() => {
         drawAll();
-    },[areaPosition])
+    },[detectPosition,roiPosition,linePosition])
 
-    /** 부모 컴포넌트에서 사용할 초기화 함수 */
+    /** 부모 컴포넌트에서 사용할  함수 */
     useImperativeHandle(ref, () => ({
-        clearArea
+        clearArea,
+        loadPosition,
+        sendPosition
     }))
 
+    /** 타입에 따른 색 설정 */
     const hanldeType = (type) => {
-        ctx.lineWidth = 2.5;
-
         switch(type){
-            case 1:
+            case 'detect':
                 ctx.strokeStyle = yellow[500];
                 break;
-            case 2:
+            case 'roi':
                 ctx.strokeStyle = indigo[800];
                 break;
             default:
@@ -51,19 +58,23 @@ const UserVideoCanvas = forwardRef(({width, height, type, areaPosition, setAreaP
     }
 
     const drawAll = () => {
-        areaPosition.map((area) => {
-            hanldeType(area.type)
-            switch(area.type){
-                case 3:
-                    ctx.beginPath();
-                    ctx.moveTo(area.x1, area.y1)
-                    ctx.lineTo(area.x2, area.y2)
-                    ctx.closePath();
-                    ctx.stroke();
-                    break;
-                default:
-                    ctx.strokeRect(area.x1, area.y1, area.x2, area.y2);
-            }
+        detectPosition.map((position) => {
+            hanldeType('detect');
+            ctx.strokeRect(position[0], position[1], position[2], position[3]);
+        })
+        
+        roiPosition.map((position) => {
+            hanldeType('roi');
+            ctx.strokeRect(position[0], position[1], position[2], position[3]);
+        })
+ 
+        linePosition.map((position) => {
+            hanldeType('line');
+            ctx.beginPath();
+            ctx.moveTo(position[0], position[1])
+            ctx.lineTo(position[2], position[3])
+            ctx.closePath();
+            ctx.stroke();
         })
     }
 
@@ -79,7 +90,7 @@ const UserVideoCanvas = forwardRef(({width, height, type, areaPosition, setAreaP
         let result;
 
         switch(type){
-            case 3:
+            case 'line':
                 result = [
                     startPosition[0], 
                     startPosition[1],
@@ -96,22 +107,31 @@ const UserVideoCanvas = forwardRef(({width, height, type, areaPosition, setAreaP
                 ]
         }
 
-        setAreaPosition([
-            ...areaPosition,
-            {
-                type,
-                x1: result[0],
-                y1: result[1],
-                x2: result[2],
-                y2: result[3],
-            }
-            
-        ])
+        switch(type){
+            case 'detect':
+                setDetectPosition([
+                    ...detectPosition,
+                    [ result[0], result[1], result[2], result[3] ]
+                ])
+                break;
+            case 'roi':
+                setRoiPosition([
+                    ...roiPosition,
+                    [ result[0], result[1], result[2], result[3] ]
+                ])
+                break;
+            case 'line':
+                setLinePosition([
+                    ...linePosition,
+                    [ result[0], result[1], result[2], result[3] ]
+                ])
+                break;
+            default:
+                console.log('타입이 일치하는 것이 없습니다.');
+        }
 
         setIsDraw(false);
     }
-
- 
 
     const drawArea = ({nativeEvent}) => {
         if(!isDraw) return;
@@ -120,7 +140,7 @@ const UserVideoCanvas = forwardRef(({width, height, type, areaPosition, setAreaP
 
         hanldeType(type);
         switch(type){
-            case 3:
+            case 'line':
                 clearArea();
                 ctx.beginPath();
                 ctx.moveTo(startPosition[0], startPosition[1])
@@ -141,11 +161,27 @@ const UserVideoCanvas = forwardRef(({width, height, type, areaPosition, setAreaP
         drawAll();
     }
 
-    const clearArea = () => {
+    /** type: all - 모두 변수도 초기화, default는 canvas만 초기화 */
+    const clearArea = (type) => {
+        if(type === 'all'){
+            setDetectPosition([]);
+            setRoiPosition([]);
+            setLinePosition([]);
+        }
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     }
 
+    /** data 구성 요소 detect, roi, line */
+    const loadPosition = (data) => {
+        setDetectPosition(data.detect);
+        setRoiPosition(data.roi);
+        setLinePosition(data.line);
+    }
 
+    /** 반환 값 [detectPosition, roiPosition, linePosition] */
+    const sendPosition = () => {
+        return [detectPosition, roiPosition, linePosition];
+    }
 
     return (
         <canvas

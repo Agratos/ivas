@@ -19,6 +19,8 @@ import userAction from 'store/actions/user';
 const UserVideoStreamProccess = ({id, streamNumber}) => {
     const dispatch = useDispatch();
     const childCompoentRef = useRef();
+    const alarmRef = useRef([]);
+    const overlayRef = useRef([]);
 
     const getSnapshotInfo = useSelector(({user}) => user.getSnapshotInfo);
     const getVideoConfigInfo = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber - 1])
@@ -27,16 +29,17 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
     const [restFullCheck, setRestFullCheck] = useState(getVideoConfigInfo.alarm.enable);
     const [overlayCheck, setOverlayCheck] = useState(getVideoConfigInfo.overlay.enable);
 
-    const [type, setType] = useState(1);
-    const [areaPosition, setAreaPosition] = useState([]);
+    const [type, setType] = useState('detect');
+
 
     /** 사진 크기 설정 */
     const width = 840;
     const height = 470;
 
-    
     useEffect(() => {
-        onGetSnapShot(); // 스냅샷 가져오기 
+        onGetSnapShot(); // 스냅샷 가져오기
+        childCompoentRef.current.loadPosition(getVideoConfigInfo.proc) // 데이터 불러서 저장
+        onSendData();
     },[])
     useEffect(() => {
         if(getSnapshotInfo){
@@ -51,17 +54,41 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
     const handleOverlayCheck = () => { setOverlayCheck(!overlayCheck) }
     const handleChange = (e) => { setType(e.target.value) }
     const handleReset = () => {
-        setAreaPosition([]);
-        childCompoentRef.current.clearArea();
+        childCompoentRef.current.clearArea('all');
     }
 
     const onSnapShot = () => {
         dispatch(userAction.snapshot({id, idx: streamNumber}));
     }
     const onGetSnapShot = useCallback(() => {
-        console.log(id, streamNumber);
         dispatch(userAction.getSnapshot({id, idx: streamNumber}));
     },[])
+
+    const onSendData = () => {
+        const positionData = childCompoentRef.current.sendPosition();
+        let overlayFunction = [];
+        overlayRef.current.map((data,index) => {
+            data.checked && overlayFunction.push(index + 1);
+        })
+
+        dispatch(userAction.setControlConfig({
+            id,
+            idx: streamNumber,
+            detect: positionData[0],
+            roi: positionData[1],
+            line: positionData[2],
+            alarm: {
+                enable: alarmRef.current[0].checked,
+                address: alarmRef.current[1].value,
+                alarm: alarmRef.current[2].checked,
+                noti: alarmRef.current[3].checked
+            },
+            overlay: {
+                enable: overlayCheck,
+                functions: overlayFunction
+            }
+        }))
+    }
 
     return(
         <GridContainer justifyContent="center">
@@ -84,8 +111,6 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                         width={width} 
                         height={height} 
                         type={type} 
-                        setAreaPosition={setAreaPosition}
-                        areaPosition={areaPosition}
                     />
                 </Box>
             </GridItem>
@@ -114,10 +139,10 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                     alignItems="flex-start"
                     justifyContent="center"
                 >
-                    <Select id="type" defaultValue={1} onChange={handleChange} sx={{ mt: 2 }}>
-                        <MenuItem value={1}>탐지 영역 설정</MenuItem>
-                        <MenuItem value={2}>ROI 설정</MenuItem>
-                        <MenuItem value={3}>Line ROI 설정</MenuItem>
+                    <Select id="type" defaultValue={'detect'} onChange={handleChange} sx={{ mt: 2 }}>
+                        <MenuItem value={'detect'}>탐지 영역 설정</MenuItem>
+                        <MenuItem value={'roi'}>ROI 설정</MenuItem>
+                        <MenuItem value={'line'}>Line ROI 설정</MenuItem>
                     </Select>
                     <Button onClick={handleReset}>모두 지우기</Button>
                     <Typography
@@ -135,6 +160,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                             defaultChecked={getVideoConfigInfo.alarm.enable}
                             key={getVideoConfigInfo.alarm.enable + 'rest'}
                             onChange={handleRestFullCheck}
+                            inputRef={(e) => alarmRef.current[0] = e}
                             size="small"
                             sx={{ marginTop: '30px' }}
                         />
@@ -154,6 +180,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                         name="ctlRestAddr"
                         defaultValue={getVideoConfigInfo.alarm.address}
                         key={getVideoConfigInfo.alarm.address + 'rest-textfield'}
+                        inputRef={(e) => alarmRef.current[1] = e}
                         disabled={!restFullCheck}
                         variant="outlined"
                         size="small"
@@ -166,6 +193,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                             name="alarm"
                             defaultChecked={getVideoConfigInfo.alarm.alarm}
                             key={getVideoConfigInfo.alarm.alarm + 'alarm'}
+                            inputRef={(e) => alarmRef.current[2] = e}
                             disabled={!restFullCheck}
                             size="small"
                         />
@@ -181,6 +209,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                             name="noti"
                             defaultChecked={getVideoConfigInfo.alarm.noti}
                             key={getVideoConfigInfo.alarm.noti + 'noti'}
+                            inputRef={(e) => alarmRef.current[3] = e}
                             disabled={!restFullCheck}
                             size="small"
                         />
@@ -219,14 +248,15 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                         variant="standard"
                     >
                         <FormGroup aria-label="position" row>
-                            {serviceProperties.user.video.types.map((type) => (
+                            {serviceProperties.user.video.types.map((type,index) => (
                                 <FormControlLabel
                                     key={type}
                                     control={
                                         <Checkbox
+                                            name={`over_${type}`}
                                             defaultChecked={getVideoConfigInfo.overlay.functions[type]}
                                             key={getVideoConfigInfo.overlay.functions[type] + 'checkbox'}
-                                            name={`over_${type}`}
+                                            inputRef={(e) => overlayRef.current[index] = e}
                                             size="small"
                                             disabled={!overlayCheck}
                                         />
@@ -241,7 +271,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                         </FormGroup>
                     </FormControl>
                     <Button
-                        //onClick={() => onApplyControl(streamNum, isDraw, ptData)}
+                        onClick={onSendData}
                         variant="contained" 
                         sx={{ mt: 4, alignSelf: 'center' }}
                     >
