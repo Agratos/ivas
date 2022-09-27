@@ -18,6 +18,7 @@ const useStyles = makeStyles(() =>
                 backgroundColor: '#f4f6f8',
                 height: '100%',
                 width: '100%',
+                overflowY: 'scroll'
             },
             a: {
                 textDecoration: 'none',
