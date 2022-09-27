@@ -173,9 +173,9 @@ const UserVideoCanvas = forwardRef(({width, height, type}, ref) => {
 
     /** data 구성 요소 detect, roi, line */
     const loadPosition = (data) => {
-        setDetectPosition(data.detect);
-        setRoiPosition(data.roi);
-        setLinePosition(data.line);
+        setDetectPosition([data.detect]);
+        setRoiPosition([data.roi]);
+        setLinePosition([data.line]);
     }
 
     /** 반환 값 [detectPosition, roiPosition, linePosition] */

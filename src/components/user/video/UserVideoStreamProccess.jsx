@@ -39,7 +39,6 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
     useEffect(() => {
         onGetSnapShot(); // 스냅샷 가져오기
         childCompoentRef.current.loadPosition(getVideoConfigInfo.proc) // 데이터 불러서 저장
-        onSendData();
     },[])
     useEffect(() => {
         if(getSnapshotInfo){
@@ -70,6 +69,8 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
         overlayRef.current.map((data,index) => {
             data.checked && overlayFunction.push(index + 1);
         })
+
+        console.log(positionData)
 
         dispatch(userAction.setControlConfig({
             id,
