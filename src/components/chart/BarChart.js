@@ -3,11 +3,14 @@ import { ResponsiveBar } from '@nivo/bar';
 import { Card } from '@mui/material';
 
 const BarChart = ({ data }) => {
+    console.log(data);
+    const test = [{cpu: '2.9', mem: '8.4', gpu: '0.0', vmem: '0.0', disk: '5.4', index:''}]
     return (
         <Card sx={{ height: 350, maxHeight: 400 }} elevation={10}>
         <ResponsiveBar
-            data={data}
+            data={test}
             keys={['cpu', 'mem', 'gpu', 'vmem', 'disk']}
+            indexBy = {'index'}
             margin={{ top: 50, right: 130, bottom: 50, left: 100 }}
             padding={0}
             innerPadding={10}

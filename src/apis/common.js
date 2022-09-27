@@ -12,7 +12,6 @@ const api = {
     },
 
     post: async (url, jsonData, config) => {
-        console.log(url,jsonData,config)
         return await axios.post(
             url,
             jsonData,
