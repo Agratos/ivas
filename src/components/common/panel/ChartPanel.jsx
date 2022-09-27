@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 import { Typography, Divider, Stack } from '@mui/material';
 
+import BarChart from '../BarChart';
+
 const ChartPanel = ({ index, data }) => {
     return (
         <Wrapper>
@@ -16,7 +18,7 @@ const ChartPanel = ({ index, data }) => {
                     {data.status === 0 ? '양호' : `불량 (${data.description})`}
                 </Typography>
             </Stack>
-            <CommonBarChart data={[data]} />
+            <BarChart data={[data]} />
             <Divider sx={{ py: 1 }} />
         </Wrapper>
     );

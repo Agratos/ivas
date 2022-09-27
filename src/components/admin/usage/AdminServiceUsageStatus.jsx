@@ -15,8 +15,9 @@ import TableHeadCell from 'components/common/table/TableHeadCell';
 
 import { getComparator, stableSort, emptyRows, handleChangeRowsPerPage } from 'components/common/table/Table';
 import { headCells, styles } from 'assets/properties/usageTableProperties';
+import { usageList } from 'assets/dummies/usagedummy';
 import realTimeFormat from 'utils/realTimeFormat';
-import usageList from 'assets/dummies/usageList';
+
 
 
 const AdminServiceUsageStatus = () => {
