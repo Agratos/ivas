@@ -6,7 +6,7 @@ import alarmList from 'assets/dummies/alarmList';
 
 const UserAlartTable = () => {
     const handleAlarm = (id) => {
-        // TODO: 장애 현황 수동종료 추가
+        // TODO: 장애 현황 수동종료 추가 API추가 개발 필요
         console.log(id);
       };
 

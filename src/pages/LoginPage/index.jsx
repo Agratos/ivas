@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, CssBaseline, Typography, Stack } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { pink, deepPurple } from '@mui/material/colors';
@@ -47,6 +47,12 @@ const LoginPage = () => {
             backgroundImage: `url(${"/static/images/background.png"})`
         }
     };
+
+    useEffect(() => {
+        document.body.style.overflowY = 'auto';
+
+        return () => document.body.style.overflowY = 'scroll';
+    },[])
     
     return (
         isLogin ? <Loading />:

@@ -31,7 +31,7 @@ const LoginModal = ({open, onClose, target}) => {
 
     /** 로그인 페이지시 alert 초기화 */
     useEffect(() => {  
-        setAlertOpen(false)
+        setAlertOpen(false);
     },[open])
 
     useEffect(() => {
