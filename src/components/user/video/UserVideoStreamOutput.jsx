@@ -75,7 +75,7 @@ const UserVideoStreamOutput = ({id, streamNumber}) => {
                         label="RTSP addr"
                         name="outRtspAddr"
                         defaultValue={outputData.rtsp.address}
-                        key={outputData.rtsp.address + 'outRtspAddr'}
+                        key={outputData.rtsp.address + 'outRtspAddr' + streamNumber}
                         inputRef={addressRef}
                         variant="outlined"
                         size="small"
@@ -84,7 +84,7 @@ const UserVideoStreamOutput = ({id, streamNumber}) => {
                         <Checkbox
                             name="checkOut"
                             defaultChecked={outputData.rtsp.auth.enable}
-                            key={outputData.rtsp.auth.enable + 'enable'}
+                            key={outputData.rtsp.auth.enable + 'outputEnable' + streamNumber}
                             inputRef={enableRef}
                             onChange={handleEnable}
                             size="small"
@@ -105,7 +105,7 @@ const UserVideoStreamOutput = ({id, streamNumber}) => {
                         label="ID"
                         name="outID"
                         defaultValue={outputData.rtsp.auth.id}
-                        key={outputData.rtsp.auth.id + 'outID'}
+                        key={outputData.rtsp.auth.id + 'outID' + streamNumber}
                         inputRef={authIdRef}
                         disabled={!enable}
                         variant="outlined"
@@ -117,7 +117,7 @@ const UserVideoStreamOutput = ({id, streamNumber}) => {
                         label="Password"
                         name="outPassword"
                         defaultValue={outputData.rtsp.auth.password}
-                        key={outputData.rtsp.auth.password + 'outPassword'}
+                        key={outputData.rtsp.auth.password + 'outPassword' + streamNumber}
                         inputRef={authPwdRef}
                         disabled={!enable}
                         variant="outlined"
@@ -140,7 +140,7 @@ const UserVideoStreamOutput = ({id, streamNumber}) => {
                         label="Web RTC"
                         name="outRtcAddr"
                         defaultValue={outputData.webrtc}
-                        key={outputData.webrtc + 'outRtcAddr'}
+                        key={outputData.webrtc + 'outRtcAddr' + streamNumber}
                         inputRef={rtcRef}
                         variant="outlined"
                         size="small"

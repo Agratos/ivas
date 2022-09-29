@@ -31,7 +31,6 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
 
     const [type, setType] = useState('detect');
 
-
     /** 사진 크기 설정 */
     const width = 840;
     const height = 470;
@@ -48,6 +47,10 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
             setImage(url);
         }
     },[getSnapshotInfo])
+    useEffect(() => { // 데이터 변경후 setState 다시 설정
+        setRestFullCheck(getVideoConfigInfo.alarm.enable);
+        setOverlayCheck(getVideoConfigInfo.overlay.enable);
+    },[getVideoConfigInfo])
 
     const handleRestFullCheck = () => { setRestFullCheck(!restFullCheck) }
     const handleOverlayCheck = () => { setOverlayCheck(!overlayCheck) }
@@ -69,8 +72,6 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
         overlayRef.current.map((data,index) => {
             data.checked && overlayFunction.push(index + 1);
         })
-
-        console.log(positionData)
 
         dispatch(userAction.setControlConfig({
             id,
@@ -159,7 +160,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                         <Checkbox
                             name="rest"
                             defaultChecked={getVideoConfigInfo.alarm.enable}
-                            key={getVideoConfigInfo.alarm.enable + 'rest'}
+                            key={getVideoConfigInfo.alarm.enable + 'rest' + streamNumber}
                             onChange={handleRestFullCheck}
                             inputRef={(e) => alarmRef.current[0] = e}
                             size="small"
@@ -180,7 +181,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                         label="Addr"
                         name="ctlRestAddr"
                         defaultValue={getVideoConfigInfo.alarm.address}
-                        key={getVideoConfigInfo.alarm.address + 'rest-textfield'}
+                        key={getVideoConfigInfo.alarm.address + 'rest-textfield' + streamNumber}
                         inputRef={(e) => alarmRef.current[1] = e}
                         disabled={!restFullCheck}
                         variant="outlined"
@@ -193,7 +194,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                         <Checkbox
                             name="alarm"
                             defaultChecked={getVideoConfigInfo.alarm.alarm}
-                            key={getVideoConfigInfo.alarm.alarm + 'alarm'}
+                            key={getVideoConfigInfo.alarm.alarm + 'alarm' + streamNumber}
                             inputRef={(e) => alarmRef.current[2] = e}
                             disabled={!restFullCheck}
                             size="small"
@@ -209,7 +210,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                         <Checkbox
                             name="noti"
                             defaultChecked={getVideoConfigInfo.alarm.noti}
-                            key={getVideoConfigInfo.alarm.noti + 'noti'}
+                            key={getVideoConfigInfo.alarm.noti + 'noti' + streamNumber}
                             inputRef={(e) => alarmRef.current[3] = e}
                             disabled={!restFullCheck}
                             size="small"
@@ -227,7 +228,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                         <Checkbox
                             name="overlay"
                             defaultChecked={getVideoConfigInfo.overlay.enable}
-                            key={getVideoConfigInfo.overlay.enable + 'overlay'}
+                            key={getVideoConfigInfo.overlay.enable + 'overlay' + streamNumber}
                             onChange={handleOverlayCheck}
                             size="small"
                             sx={{ marginTop: '30px' }}
@@ -256,7 +257,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                                         <Checkbox
                                             name={`over_${type}`}
                                             defaultChecked={getVideoConfigInfo.overlay.functions[type]}
-                                            key={getVideoConfigInfo.overlay.functions[type] + 'checkbox'}
+                                            key={getVideoConfigInfo.overlay.functions[type] + 'checkbox' + streamNumber}
                                             inputRef={(e) => overlayRef.current[index] = e}
                                             size="small"
                                             disabled={!overlayCheck}
