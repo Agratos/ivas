@@ -49,7 +49,12 @@ const UserVideoStream = ({id}) => {
                     sx={{ marginBottom: '-2px' }}
                 >   
                     {streamMaximum.map((data ,index) => (
-                        <StreamTab label={labelComponent(index + 1)} id={index} target={streamNumber} />
+                        <StreamTab 
+                            id={index}
+                            key={`streamTab${index}`}
+                            label={labelComponent(index + 1)} 
+                            target={streamNumber} 
+                        />
                     ))}
                 </Tabs>
             </Box>

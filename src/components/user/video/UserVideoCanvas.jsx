@@ -33,6 +33,7 @@ const UserVideoCanvas = forwardRef(({width, height, type}, ref) => {
     },[])
 
     useEffect(() => {
+        clearArea();
         drawAll();
     },[detectPosition,roiPosition,linePosition])
 
@@ -168,7 +169,8 @@ const UserVideoCanvas = forwardRef(({width, height, type}, ref) => {
             setRoiPosition([]);
             setLinePosition([]);
         }
-        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+        ctx && ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     }
 
     /** data 구성 요소 detect, roi, line */

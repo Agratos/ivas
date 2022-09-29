@@ -35,7 +35,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
     const width = 840;
     const height = 470;
 
-    useEffect(() => {
+    useEffect(() => { // 첫 로딩시 초기화
         onGetSnapShot(); // 스냅샷 가져오기
         childCompoentRef.current.loadPosition(getVideoConfigInfo.proc) // 데이터 불러서 저장
     },[])
@@ -50,6 +50,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
     useEffect(() => { // 데이터 변경후 setState 다시 설정
         setRestFullCheck(getVideoConfigInfo.alarm.enable);
         setOverlayCheck(getVideoConfigInfo.overlay.enable);
+        childCompoentRef.current.loadPosition(getVideoConfigInfo.proc) // 데이터 불러서 저장
     },[getVideoConfigInfo])
 
     const handleRestFullCheck = () => { setRestFullCheck(!restFullCheck) }
@@ -107,7 +108,6 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                         marginTop: '32px'
                     }}
                 >
-                    {/* 다른 component로 분리 예정 */}
                     <UserVideoCanvas 
                         ref={childCompoentRef}
                         width={width} 
