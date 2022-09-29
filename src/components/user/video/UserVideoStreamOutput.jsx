@@ -9,7 +9,7 @@ import userAction from 'store/actions/user';
 
 const UserVideoStreamOutput = ({id, streamNumber}) => {
     const dispatch = useDispatch();
-    const outputData = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber - 1].output);
+    const outputData = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber].output);
 
     const addressRef = useRef();
     const enableRef = useRef();
@@ -27,7 +27,7 @@ const UserVideoStreamOutput = ({id, streamNumber}) => {
     const onApplyWebRTC = () => {
         dispatch(userAction.setOutputConfig({
             id,
-            idx: streamNumber,
+            idx: streamNumber + 1,
             //address: addressRef.current.value,
             auth: {
                 enable: enableRef.current.checked,

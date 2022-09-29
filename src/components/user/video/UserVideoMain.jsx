@@ -19,8 +19,6 @@ const UserVideoMain = () => {
         dispatch(userAction.getVideoConfig({id})); // 데이터 호출
     },[])
 
-    console.log(data);
-
     return (
         <Paper
             sx={{ width: '100%', m: 2, mt: 4, p: 3, backgroundColor: 'white' }}
@@ -37,7 +35,7 @@ const UserVideoMain = () => {
                         승인된 영상 스트림 갯수 :
                     </Typography>
                     <Typography color="royalblue" fontWeight="bold" ml={1} mr={3}>
-                        {data.List.length}
+                        {data && data.List.length}
                     </Typography>
                     <Typography gutterBottom variant="h5" component="div" color="gray">
                         ※ 변경하시려면 서비스 변경 신청을 이용하십시오.
@@ -63,7 +61,7 @@ const UserVideoMain = () => {
                         <UserVideoAlarm id={id} />
                     </GridItem>
                     <GridItem md={12} xs={12}>
-                        <UserVideoStream id={id} streamNumber={1} />
+                        <UserVideoStream id={id} />
                     </GridItem>
                 </StreamWrapper>
             }

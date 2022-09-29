@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stack, Typography, Checkbox, TextField, Button, Avatar,} from '@mui/material';
   
@@ -9,14 +9,14 @@ import userAction from 'store/actions/user';
 
 const UserVideoStreamInput = ({id, streamNumber}) => {
     const dispatch = useDispatch();
-    const inputData = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber - 1].input);
+    const inputData = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber].input);
 
     const addressRef = useRef();
     const enableRef = useRef();
     const authIdRef = useRef();
     const authPwdRef = useRef();
 
-    const [enable, setEneable] = useState(inputData.auth.enable)
+    const [enable, setEneable] = useState(inputData.auth.enable);
 
     const handleEnable = (e) => {
         setEneable(e.target.checked);
@@ -25,7 +25,7 @@ const UserVideoStreamInput = ({id, streamNumber}) => {
     const onApplyRTSP = () => {
         dispatch(userAction.setInputConfig({
             id,
-            idx: streamNumber,
+            idx: streamNumber + 1,
             address: addressRef.current.value,
             auth: {
                 enable: enableRef.current.checked,
@@ -60,7 +60,7 @@ const UserVideoStreamInput = ({id, streamNumber}) => {
                         label="RTSP addr"
                         name="inRtspAddr"
                         defaultValue={inputData.address}
-                        key={`inputData.address` + inputData.address}
+                        key={`inputData.address` + inputData.address + streamNumber}
                         inputRef={addressRef}
                         variant="outlined"
                         size="small"
@@ -69,7 +69,7 @@ const UserVideoStreamInput = ({id, streamNumber}) => {
                         <Checkbox
                             name="inCheck"
                             defaultChecked={inputData.auth.enable}
-                            key={`inputData.auth.enable` + inputData.auth.enable}
+                            key={`inputData.auth.enable` + inputData.auth.enable + streamNumber}
                             inputRef={enableRef}
                             onChange={handleEnable}
                             size="small"
@@ -90,7 +90,7 @@ const UserVideoStreamInput = ({id, streamNumber}) => {
                         label="ID"
                         name="inID"
                         defaultValue={inputData.auth.id}
-                        key={'inputData.auth.id' + inputData.auth.id}
+                        key={'inputData.auth.id' + inputData.auth.id + streamNumber}
                         inputRef={authIdRef}
                         disabled={!enable}
                         variant="outlined"
@@ -102,7 +102,7 @@ const UserVideoStreamInput = ({id, streamNumber}) => {
                         label="Password"
                         name="inPassword"
                         defaultValue={inputData.auth.password}
-                        key={'inputData.auth.password' + inputData.auth.password}
+                        key={'inputData.auth.password' + inputData.auth.password + streamNumber}
                         inputRef={authPwdRef}
                         disabled={!enable}
                         variant="outlined"

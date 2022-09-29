@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styled, { css } from 'styled-components';
 
 import { Box, Typography, Tabs, Tab } from '@mui/material';
@@ -9,13 +10,18 @@ import UserVideoStreamProccess from './UserVideoStreamProccess';
 import UserVideoStreamOutput from './UserVideoStreamOutput';
 import TabPanel from 'components/common/panel/TabPanel';
 
-const UserVideoStream = ({id ,streamNumber}) => {
-    const [ stream, setStream ] = useState(0);
+import userAction from 'store/actions/user';
+
+const UserVideoStream = ({id}) => {
+    const dispatch = useDispatch();
+    const streamMaximum = useSelector(({user}) => user.getVideoConfigInfo.List);
+    const [ streamNumber, setStreamNumber ] = useState(0);
     const [ value, setValue ] = useState(0);
 
 
     const handleStreamChange = (event, newValue) => {
-        setStream(newValue);
+        setStreamNumber(newValue);
+        dispatch(userAction.getVideoConfig({id})); // 탭 변경시 데이터를 한번더 불러온다.
     };
     const handleTabChange = (event, newValue) => {
         setValue(newValue);
@@ -37,14 +43,14 @@ const UserVideoStream = ({id ,streamNumber}) => {
             </Typography> */}
             <Box sx={{ marginTop: '24px' }}>
                 <Tabs
-                    value={stream}
+                    value={streamNumber}
                     onChange={handleStreamChange}
                     TabIndicatorProps={{style: {backgroundColor: "#99999921"}}}
                     sx={{ marginBottom: '-2px' }}
-                >
-                    <StreamTab label={labelComponent(1)} id={0} target={stream} />
-                    <StreamTab label={labelComponent(2)} id={1} target={stream} />
-                    <StreamTab label={labelComponent(3)} id={2} target={stream} />
+                >   
+                    {streamMaximum.map((data ,index) => (
+                        <StreamTab label={labelComponent(index + 1)} id={index} target={streamNumber} />
+                    ))}
                 </Tabs>
             </Box>
             <Box

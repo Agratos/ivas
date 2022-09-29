@@ -23,7 +23,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
     const overlayRef = useRef([]);
 
     const getSnapshotInfo = useSelector(({user}) => user.getSnapshotInfo);
-    const getVideoConfigInfo = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber - 1])
+    const getVideoConfigInfo = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber])
 
     const [image, setImage] = useState('/static/images/background.jpg')
     const [restFullCheck, setRestFullCheck] = useState(getVideoConfigInfo.alarm.enable);
@@ -74,7 +74,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
 
         dispatch(userAction.setControlConfig({
             id,
-            idx: streamNumber,
+            idx: streamNumber + 1,
             detect: positionData[0],
             roi: positionData[1],
             line: positionData[2],
