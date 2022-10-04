@@ -7,7 +7,7 @@ import GridItem from 'components/layout/container/GridItem';
 
 import userAction from 'store/actions/user';
 
-const UserVideoStreamOutput = ({id, streamNumber}) => {
+const UserVideoStreamOutput = ({id, streamNumber, handleAlertOpen}) => {
     const dispatch = useDispatch();
     const outputData = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber].output);
 
@@ -35,6 +35,7 @@ const UserVideoStreamOutput = ({id, streamNumber}) => {
                 password: authPwdRef.current.value
             }
         }))
+        handleAlertOpen('success');
     }
 
 

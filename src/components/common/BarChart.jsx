@@ -3,7 +3,6 @@ import { ResponsiveBar } from '@nivo/bar';
 import { Card } from '@mui/material';
 
 const BarChart = ({ data }) => {
-    console.log(data);
     const test = [{cpu: '2.9', mem: '8.4', gpu: '0.0', vmem: '0.0', disk: '5.4', index:''}]
     return (
         <Card sx={{ height: 350, maxHeight: 400 }} elevation={10}>

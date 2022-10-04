@@ -12,7 +12,7 @@ import TabPanel from 'components/common/panel/TabPanel';
 
 import userAction from 'store/actions/user';
 
-const UserVideoStream = ({id}) => {
+const UserVideoStream = ({id, handleAlertOpen}) => {
     const dispatch = useDispatch();
     const streamMaximum = useSelector(({user}) => user.getVideoConfigInfo.List);
     const [ streamNumber, setStreamNumber ] = useState(0);
@@ -80,13 +80,25 @@ const UserVideoStream = ({id}) => {
                     <Tab label="출력 영상" id={2} sx={{ fontWeight: 700 }} />
                 </Tabs>
                 <TabPanel value={value} index={0}>
-                    <UserVideoStreamInput id={id} streamNumber={streamNumber}/>
+                    <UserVideoStreamInput 
+                        id={id} 
+                        streamNumber={streamNumber} 
+                        handleAlertOpen={handleAlertOpen}
+                    />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    <UserVideoStreamProccess id={id} streamNumber={streamNumber} />
+                    <UserVideoStreamProccess 
+                        id={id} 
+                        streamNumber={streamNumber} 
+                        handleAlertOpen={handleAlertOpen}
+                    />
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                    <UserVideoStreamOutput id={id} streamNumber={streamNumber} />
+                    <UserVideoStreamOutput 
+                        id={id} 
+                        streamNumber={streamNumber}
+                        handleAlertOpen={handleAlertOpen}
+                    />
                 </TabPanel>
             </Box>
         </Wrapper>

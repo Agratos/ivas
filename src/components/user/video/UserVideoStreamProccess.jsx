@@ -16,7 +16,7 @@ import { serviceProperties } from 'assets/properties/serviceProperties';
 import { userVideoProperties } from 'assets/properties/userVideoProperties';
 import userAction from 'store/actions/user';
 
-const UserVideoStreamProccess = ({id, streamNumber}) => {
+const UserVideoStreamProccess = ({id, streamNumber, handleAlertOpen}) => {
     const dispatch = useDispatch();
     const childCompoentRef = useRef();
     const alarmRef = useRef([]);
@@ -91,6 +91,7 @@ const UserVideoStreamProccess = ({id, streamNumber}) => {
                 functions: overlayFunction
             }
         }))
+        handleAlertOpen('success');
     }
 
     return(

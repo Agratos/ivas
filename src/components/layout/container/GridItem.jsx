@@ -22,7 +22,7 @@ export default function GridItem(props) {
     
     return (
         <Grid item {...rest} className={classes.grid + ' ' + className}>
-            {children}
+            { children }
         </Grid>
     );
 }

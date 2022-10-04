@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Stack, Divider, Typography, Checkbox, TextField, Button, Card, CardContent,} from '@mui/material';
 
 import userAction from 'store/actions/user';
 
-const UserVideoAlarm = ({ id }) => {
+const UserVideoAlarm = ({ id, handleAlertOpen }) => {
     const dispatch = useDispatch();
     const alarmData = useSelector(({user}) => user.getVideoConfigInfo.sys_alarm);
 
@@ -14,6 +14,10 @@ const UserVideoAlarm = ({ id }) => {
 
     const [enable, setEnable] = useState(alarmData.enable);
     
+    useEffect(() => {
+        setEnable(alarmData.enable);
+    },[alarmData])
+
     const handleEnable = (e) => {
         setEnable(e.target.checked);
     }
@@ -24,6 +28,7 @@ const UserVideoAlarm = ({ id }) => {
             enable: enableRef.current.checked,
             address: addresRef.current.value
         }))
+        handleAlertOpen('success');
     }
 
     return(

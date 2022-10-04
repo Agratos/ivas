@@ -48,7 +48,7 @@ const Parallax = (props) => {
                 transform: transform,
             }}
         >
-            {children}
+            { children }
         </div>
     );
 };
