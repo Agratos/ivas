@@ -25,18 +25,17 @@ const UserVideoMain = () => {
         dispatch(userAction.getVideoConfig({id})); // 데이터 호출
     },[])
 
-    /** severity */
-    const handleAlertOpen = (severity) => {
+    const handleAlertOpen = ({severity, message=null}) => {
         switch(severity){
             case 'success':
                 setAlertModal(true);
                 setSeverity('success');
-                setMessage(serviceProperties.user.rtsp.success);
+                setMessage(message ? message : serviceProperties.user.rtsp.success);
                 break;
-            default:
+            case 'error':
                 setAlertModal(true);
                 setSeverity('error');
-                setMessage(serviceProperties.user.rtsp.error);
+                setMessage(message ? message : serviceProperties.user.rtsp.error);
         }
     }
     const handleAlertClose = () => { setAlertModal(false) };

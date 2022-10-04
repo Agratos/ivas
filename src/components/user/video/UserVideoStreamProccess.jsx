@@ -22,8 +22,12 @@ const UserVideoStreamProccess = ({id, streamNumber, handleAlertOpen}) => {
     const alarmRef = useRef([]);
     const overlayRef = useRef([]);
 
+    const snapshotInfo = useSelector(({user}) => user.snapshotInfo);
+    const snapshotError = useSelector(({user}) => user.snapshotError);
     const getSnapshotInfo = useSelector(({user}) => user.getSnapshotInfo);
+    const getSnapshotError = useSelector(({user}) => user.getSnapshotError);
     const getVideoConfigInfo = useSelector(({user}) => user.getVideoConfigInfo.List[streamNumber])
+    const getVideoConfigError = useSelector(({user}) => user.getVideoConfigError);
 
     const [image, setImage] = useState('/static/images/background.jpg')
     const [restFullCheck, setRestFullCheck] = useState(getVideoConfigInfo.alarm.enable);
@@ -40,18 +44,45 @@ const UserVideoStreamProccess = ({id, streamNumber, handleAlertOpen}) => {
         childCompoentRef.current.loadPosition(getVideoConfigInfo.proc) // 데이터 불러서 저장
     },[])
     useEffect(() => {
+        snapshotInfo && handleAlertOpen({
+            severity: 'success',
+            message: '스냅샷 촬영하기 성공했습니다.'
+        })
+    },[snapshotInfo])
+    useEffect(() => {
+        getSnapshotError && handleAlertOpen({
+            severity: 'error',
+            message: '스냅샷 촬영하기 실패했습니다.'
+        })
+    },[snapshotError])
+    useEffect(() => {
         if(getSnapshotInfo){
             const blob = new Blob( [ getSnapshotInfo ] );
             const url = URL.createObjectURL( blob );
 
             setImage(url);
         }
+        handleAlertOpen({
+            severity:'success',
+            message: '스냅샷 불러오기 성공했습니다'
+        });
     },[getSnapshotInfo])
+    useEffect(() => {
+        getSnapshotError && handleAlertOpen({
+            severity: 'error',
+            message: '스냅샷 불러오기 실패했습니다.'
+        })
+    },[getSnapshotError])
     useEffect(() => { // 데이터 변경후 setState 다시 설정
         setRestFullCheck(getVideoConfigInfo.alarm.enable);
         setOverlayCheck(getVideoConfigInfo.overlay.enable);
         childCompoentRef.current.loadPosition(getVideoConfigInfo.proc) // 데이터 불러서 저장
     },[getVideoConfigInfo])
+    useEffect(() => {
+        getVideoConfigError && handleAlertOpen({
+            severity: 'error',
+        })
+    },[getVideoConfigError])
 
     const handleRestFullCheck = () => { setRestFullCheck(!restFullCheck) }
     const handleOverlayCheck = () => { setOverlayCheck(!overlayCheck) }
@@ -61,10 +92,10 @@ const UserVideoStreamProccess = ({id, streamNumber, handleAlertOpen}) => {
     }
 
     const onSnapShot = () => {
-        dispatch(userAction.snapshot({id, idx: streamNumber}));
+        dispatch(userAction.snapshot({id, idx: streamNumber + 1}));
     }
     const onGetSnapShot = useCallback(() => {
-        dispatch(userAction.getSnapshot({id, idx: streamNumber}));
+        dispatch(userAction.getSnapshot({id, idx: streamNumber + 1})); 
     },[])
 
     const onSendData = () => {
@@ -91,7 +122,7 @@ const UserVideoStreamProccess = ({id, streamNumber, handleAlertOpen}) => {
                 functions: overlayFunction
             }
         }))
-        handleAlertOpen('success');
+        handleAlertOpen({severity:'success'});
     }
 
     return(
