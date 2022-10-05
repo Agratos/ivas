@@ -28,7 +28,7 @@ const UserVideoAlarm = ({ id, handleAlertOpen }) => {
             enable: enableRef.current.checked,
             address: addresRef.current.value
         }))
-        handleAlertOpen('success');
+        handleAlertOpen({severity :'success'});
     }
 
     return(

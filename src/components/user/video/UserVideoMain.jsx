@@ -26,6 +26,7 @@ const UserVideoMain = () => {
     },[])
 
     const handleAlertOpen = ({severity, message=null}) => {
+        console.log('test');
         switch(severity){
             case 'success':
                 setAlertModal(true);
