@@ -12,6 +12,7 @@ import {
     BarChart,
     Logout,
 } from '@mui/icons-material';
+import CastForEducationIcon from '@mui/icons-material/CastForEducation';
 
 import userAction from 'store/actions/user';
 import adminAction from 'store/actions/admin';
@@ -62,6 +63,16 @@ const HeaderLinks = ({ type }) => {
                         >
                             <VideoStable className={classes.icons} /> 
                             영상 설정
+                        </Button>
+                    </ListItem>
+                    <ListItem className={classes.listItem}>
+                        <Button
+                            color="transparent"
+                            className={classes.navLink}
+                            onClick={() => navigate('/user/learning')}
+                        >
+                            <CastForEducationIcon className={classes.icons} /> 
+                            데이터 학습
                         </Button>
                     </ListItem>
                     <ListItem className={classes.listItem}>

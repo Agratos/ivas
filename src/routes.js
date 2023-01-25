@@ -7,6 +7,7 @@ import NotFoundPage from 'pages/NotFoundPage';
 import UserDashboardPage from 'pages/user/UserDashboardPage';
 import UserVideoSettingPage from 'pages/user/UserVideoSettingPage';
 import UserChangeServicePage from 'pages/user/UserChangeServicePage';
+import UserLearningPage from 'pages/user/UserLearningPage';
 
 import AdminDashboardPage from 'pages/admin/AdminDashboardPage';
 import AdminServiceApprovalPage from 'pages/admin/AdminServiceApprovalPage';
@@ -21,6 +22,7 @@ const routes = [
             { path: 'dashboard', element: <UserDashboardPage /> },
             { path: 'video', element: <UserVideoSettingPage /> },
             { path: 'service', element: <UserChangeServicePage /> },
+            { path: 'learning', element: <UserLearningPage /> },
         ],
     },{
         path: 'admin',
