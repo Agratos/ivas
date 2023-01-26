@@ -8,6 +8,8 @@ import UserDashboardPage from 'pages/user/UserDashboardPage';
 import UserVideoSettingPage from 'pages/user/UserVideoSettingPage';
 import UserChangeServicePage from 'pages/user/UserChangeServicePage';
 import UserLearningPage from 'pages/user/UserLearningPage';
+import UserStatisticPage from 'pages/user/UserStatisticPage';
+import UserAlramPage from 'pages/user/UserAlramPage';
 
 import AdminDashboardPage from 'pages/admin/AdminDashboardPage';
 import AdminServiceApprovalPage from 'pages/admin/AdminServiceApprovalPage';
@@ -23,6 +25,8 @@ const routes = [
             { path: 'video', element: <UserVideoSettingPage /> },
             { path: 'service', element: <UserChangeServicePage /> },
             { path: 'learning', element: <UserLearningPage /> },
+            { path: 'statistic', element: <UserStatisticPage /> },
+            { path: 'alram', element: <UserAlramPage />}
         ],
     },{
         path: 'admin',

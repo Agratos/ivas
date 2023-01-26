@@ -1,15 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import { Paper, Stack, Typography } from '@mui/material';
 
-import GridItem from 'components/layout/container/GridItem';
-import AlertSnackbar from 'components/common/AlertSnackbar';
-
 import UserLearningCard from './UserLearningCard';
+import UserLearningAddCard from './UserLearningAddCard';
+
+import dataLearning1 from 'assets/images/data-learning-1.png';
+import dataLearning2 from 'assets/images/data-learning-2.png';
+import dataLearning3 from 'assets/images/data-learning-3.png';
 
 const UserLearning = () => {
-    const data = Array.from({length: 5}, (v,i) => i + 1); 
+    const defaultData = {id:'', title:'', image: []};
+    const [data, setData] = useState([
+        {
+            id: 1,
+            title: '일반',
+            image: [
+                {url: dataLearning1, name: 'dataLearning1'},
+                {url: dataLearning1, name: 'dataLearning1'},
+                {url: dataLearning1, name: 'dataLearning1'},
+                {url: dataLearning1, name: 'dataLearning1'},
+                {url: dataLearning1, name: 'dataLearning1'},
+                {url: dataLearning1, name: 'dataLearning1'},
+            ]
+        },{
+            id: 2,
+            title: '안경 착용',
+            image: [
+                {url: dataLearning2, name: 'dataLearning2'},
+                {url: dataLearning2, name: 'dataLearning2'},
+                {url: dataLearning2, name: 'dataLearning2'},
+                {url: dataLearning2, name: 'dataLearning2'},
+                {url: dataLearning2, name: 'dataLearning2'},
+                {url: dataLearning2, name: 'dataLearning2'},
+            ]
+        },{
+            id: 3,
+            title: '모자 착용',
+            image: [
+                {url: dataLearning3, name: 'dataLearning3'},
+                {url: dataLearning3, name: 'dataLearning3'},
+                {url: dataLearning3, name: 'dataLearning3'},
+                {url: dataLearning3, name: 'dataLearning3'},
+                {url: dataLearning3, name: 'dataLearning3'},
+                {url: dataLearning3, name: 'dataLearning3'},
+            ]
+        }
+    ])
 
     return (
         <Paper
@@ -42,12 +80,17 @@ const UserLearning = () => {
             </LearningHeader>
             <LearningBodyWrapper>
                 <LearningBodyHeader>
-                    <AddButton>+ Add new <span style={{color: '#1eb9f1'}}>Class</span></AddButton>
+                    <AddButton 
+                        onClick={() => setData((data) => [...data, {...defaultData, id: data.length + 1}])}
+                    >
+                        + Add new <span style={{color: '#1eb9f1'}}>Class</span>
+                    </AddButton>
                 </LearningBodyHeader>
                 <LearningBody  dataLength={data.length}>
-                    {data.map((number) => (
-                        <UserLearningCard key={`card ${number}`} index={number}/>
+                    {data.map(({id, title, image}) => (
+                        <UserLearningCard key={`card ${id}`} id={id} title={title} image={image} setData={setData} />
                     ))}
+                    <UserLearningAddCard onClick={() => setData((data) => [...data, {...defaultData, id: data.length + 1}])} />
                 </LearningBody>
             </LearningBodyWrapper>
         </Paper>

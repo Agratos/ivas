@@ -13,6 +13,8 @@ import {
     Logout,
 } from '@mui/icons-material';
 import CastForEducationIcon from '@mui/icons-material/CastForEducation';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import NotificationImportantIcon from '@mui/icons-material/NotificationImportant';
 
 import userAction from 'store/actions/user';
 import adminAction from 'store/actions/admin';
@@ -73,6 +75,26 @@ const HeaderLinks = ({ type }) => {
                         >
                             <CastForEducationIcon className={classes.icons} /> 
                             데이터 학습
+                        </Button>
+                    </ListItem>
+                    <ListItem className={classes.listItem}>
+                        <Button
+                            color="transparent"
+                            className={classes.navLink}
+                            onClick={() => navigate('/user/statistic')}
+                        >
+                            <AssessmentIcon className={classes.icons} /> 
+                            서비스 통계
+                        </Button>
+                    </ListItem>
+                    <ListItem className={classes.listItem}>
+                        <Button
+                            color="transparent"
+                            className={classes.navLink}
+                            onClick={() => navigate('/user/alram')}
+                        >
+                            <NotificationImportantIcon className={classes.icons} /> 
+                            장애 알람
                         </Button>
                     </ListItem>
                     <ListItem className={classes.listItem}>
